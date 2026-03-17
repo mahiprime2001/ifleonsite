@@ -30,11 +30,16 @@ import { Metrics } from "./components/Metrics";
 import { StickyCTA } from "./components/StickyCTA";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { HowWeWork } from "./components/HowWeWork";
+import { FloatingContactButton } from "./components/FloatingContactButton";
 import FAQPage from "./pages/FAQPage";
 import TechStackPage from "./pages/TechStackPage";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
 import { TrustStrip } from "./components/TrustStrip";
 import PricingPage from "./pages/PricingPage";
+import ServicesPage from "./pages/ServicesPage";
+import TeamPage from "./pages/TeamPage";
+import PortfolioPage from "./pages/PortfolioPage";
+import ProcessPage from "./pages/ProcessPage";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 /* ---------------- Page Transition Wrapper ---------------- */
@@ -196,6 +201,42 @@ function AppContent() {
           />
 
           <Route
+            path="/services"
+            element={
+              <PageTransition>
+                <ServicesPage />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/team"
+            element={
+              <PageTransition>
+                <TeamPage />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/portfolio"
+            element={
+              <PageTransition>
+                <PortfolioPage />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/process"
+            element={
+              <PageTransition>
+                <ProcessPage />
+              </PageTransition>
+            }
+          />
+
+          <Route
             path="/*"
             element={
               <PageTransition>
@@ -206,7 +247,7 @@ function AppContent() {
         </Routes>
       </AnimatePresence>
 
-      {showHeaderFooter && <StickyCTA />}
+      {showHeaderFooter && <FloatingContactButton />}
       {showHeaderFooter && <Footer />}
     </>
   );

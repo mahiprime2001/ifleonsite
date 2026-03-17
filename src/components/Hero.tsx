@@ -15,9 +15,9 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* ===== Background ===== */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900/90 to-slate-900">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-teal-900">
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
         {!shouldReduceMotion && (
@@ -46,7 +46,7 @@ export const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl md:text-7xl xl:text-8xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl md:text-7xl xl:text-8xl font-black bg-gradient-to-r from-blue-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent mb-4">
             IFLEON
           </h1>
 

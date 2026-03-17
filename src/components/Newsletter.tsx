@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Newsletter = () => {
   return (
     <section className="py-12 bg-gray-100 dark:bg-gray-800">

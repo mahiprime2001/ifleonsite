@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-  <head>
-    <meta charset="UTF-8" />
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
 
     <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Browser compatibility -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- Favicon -->
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
 
     <!-- Primary SEO -->
     <title>
@@ -47,10 +43,6 @@
   src="https://plausible.io/js/script.js"
 ></script>
 
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>

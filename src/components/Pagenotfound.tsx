@@ -1,9 +1,28 @@
-
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export function NotFoundPage() {
   const navigate = useNavigate();
+  const [randomQuote, setRandomQuote] = useState("");
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await fetch("/reasons.json");
+        if (!response.ok) throw new Error("Failed to fetch");
+        const quotes: string[] = await response.json();
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        setRandomQuote(quotes[randomIndex]);
+      } catch (error) {
+        console.error("Error fetching quotes:", error);
+        setRandomQuote("The page took a wrong turn into the void!");
+      }
+    };
+
+    fetchQuote();
+  }, []);
+
   return (
     <section className="bg-white font-serif min-h-screen flex items-center justify-center">
       <div className="container mx-auto">
@@ -25,6 +44,11 @@ export function NotFoundPage() {
               <p className="mb-6 text-black sm:mb-5">
                 The page you are looking for is not available!
               </p>
+              {randomQuote && (
+                <p className="mb-6 text-black italic text-lg sm:text-xl font-medium p-4 bg-gray-50 rounded-lg mx-4">
+                  "{randomQuote}"
+                </p>
+              )}
 
               <Button
                 variant="default"

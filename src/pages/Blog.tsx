@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Calendar, ArrowRight, Search, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -44,12 +44,32 @@ export const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
-  const [sortOrder, setSortOrder] = useState('newest');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'most-liked'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const postsPerPage = 9;
 
+  // Smooth page change handler
+  const handlePageChange = useCallback((newPage: number) => {
+    if (newPage === currentPage) return;
+    
+    setIsTransitioning(true);
+    
+    // Scroll to top and trigger transition
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Update page after transition starts
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setCurrentPage(newPage);
+        setIsTransitioning(false);
+      }, 250);
+    });
+  }, [currentPage]);
+
+  // Scroll to top on page change
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [currentPage]);
 
   useEffect(() => {
@@ -59,15 +79,15 @@ export const Blog = () => {
         const firstPageUrl = `https://ifleon.com/wp-json/wp/v2/posts?_embed&acf_format=standard&per_page=${perPage}&page=1`;
         const firstPageRes = await fetch(firstPageUrl);
         const totalPages = parseInt(firstPageRes.headers.get('X-WP-TotalPages') || '1', 10);
-        const firstPageData = await firstPageRes.json();
+        const firstPageData: WPPost[] = await firstPageRes.json();
 
-        let allPosts: WPPost[] = firstPageData;
+        let allPosts: WPPost[] = [...firstPageData];
 
         if (totalPages > 1) {
           const pagePromises = [];
           for (let page = 2; page <= totalPages; page++) {
             const pageUrl = `https://ifleon.com/wp-json/wp/v2/posts?_embed&acf_format=standard&per_page=${perPage}&page=${page}`;
-            pagePromises.push(fetch(pageUrl).then(res => res.json()));
+            pagePromises.push(fetch(pageUrl).then((res) => res.json()));
           }
           const extraPagesData = await Promise.all(pagePromises);
           allPosts = allPosts.concat(...extraPagesData);
@@ -87,19 +107,18 @@ export const Blog = () => {
           slug: post.slug,
         }));
 
-        setPosts(currentPosts => {
-          const postMap = new Map(currentPosts.map(p => [p.id, p]));
-          formatted.forEach(p => postMap.set(p.id, p));
+        setPosts((currentPosts) => {
+          const postMap = new Map(currentPosts.map((p) => [p.id, p]));
+          formatted.forEach((p) => postMap.set(p.id, p));
           return Array.from(postMap.values());
         });
       } catch (err) {
-        console.error('Failed to load blog data:', err);
+        console.error('Failed to load blog data', err);
       }
     };
 
     fetchPosts();
-    const intervalId = setInterval(fetchPosts, 30000); // Poll every 30 seconds
-
+    const intervalId = setInterval(fetchPosts, 30000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -114,11 +133,11 @@ export const Blog = () => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTag = selectedTag === '' || post.tags.includes(selectedTag);
+    const matchesTag = !selectedTag || post.tags.includes(selectedTag);
     return matchesSearch && matchesTag;
   });
 
-  const sortedPosts = filteredPosts.sort((a, b) => {
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
     switch (sortOrder) {
       case 'oldest':
         return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
@@ -135,7 +154,6 @@ export const Blog = () => {
   const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
 
-
   const allTags = Array.from(new Set(posts.flatMap((post) => post.tags)));
 
   return (
@@ -147,8 +165,8 @@ export const Blog = () => {
             IFLEON Tech Blog
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Technical insights, project updates, and source code from our AI, DevOps, and IT consulting work.
-            All code examples are available on our GitHub repository.
+            Technical insights, project updates, and source code from our AI, DevOps, and IT
+            consulting work. All code examples are available on our GitHub repository.
           </p>
         </div>
 
@@ -162,15 +180,13 @@ export const Blog = () => {
                 placeholder="Search articles..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 
-                         focus:ring-blue-600 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
               />
             </div>
             <select
               value={selectedTag}
               onChange={(e) => setSelectedTag(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 
-                       focus:ring-blue-600 focus:border-transparent"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-900 bg-white cursor-pointer"
             >
               <option value="">All Tags</option>
               {allTags.map((tag) => (
@@ -181,9 +197,8 @@ export const Blog = () => {
             </select>
             <select
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 
-                       focus:ring-blue-600 focus:border-transparent"
+              onChange={(e) => setSortOrder(e.target.value as any)}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-900 bg-white cursor-pointer"
             >
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
@@ -192,10 +207,23 @@ export const Blog = () => {
           </div>
         </div>
 
-        {/* Regular Posts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {currentPosts.map((post) => (
-            <article key={post.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+        {/* Posts Grid with Smooth Transition */}
+        <div 
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-500 ease-in-out transform-gpu ${
+            isTransitioning 
+              ? 'opacity-0 scale-[0.98] blur-sm translate-y-2' 
+              : 'opacity-100 scale-100 blur-none translate-y-0'
+          }`}
+        >
+          {currentPosts.map((post, index) => (
+            <article 
+              key={`${post.id}-${currentPage}-${index}`} 
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 ease-out transform hover:-translate-y-2 group"
+              style={{ 
+                transitionDelay: isTransitioning ? '0ms' : `${index * 75}ms`,
+                opacity: isTransitioning ? 0 : 1
+              }}
+            >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2 text-gray-500 text-sm">
@@ -203,26 +231,25 @@ export const Blog = () => {
                     <span>{format(new Date(post.publishedAt), 'MMM dd, yyyy')}</span>
                   </div>
                   <div className="flex items-center space-x-1 text-gray-500 text-sm">
-                    <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+                    <Heart className="h-4 w-4 text-red-500 fill-red-500 group-hover:scale-110 transition-transform" />
                     <span>{getLikes(post.id)}</span>
                   </div>
                 </div>
-
-                <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-all duration-200 line-clamp-2 group-hover:line-clamp-none">
+                  <Link to={`/blog/${post.slug}`} className="block hover:underline">
+                    {post.title}
+                  </Link>
                 </h3>
-
-                <div className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  <div
-                    className="line-clamp-2"
-                    dangerouslySetInnerHTML={{ __html: post.excerpt }}
+                <div className="text-sm text-gray-600 mb-6 leading-relaxed line-clamp-3">
+                  <div 
+                    className="line-clamp-2" 
+                    dangerouslySetInnerHTML={{ __html: post.excerpt }} 
                   />
                 </div>
-
                 <div className="flex items-center justify-between">
                   <Link
                     to={`/blog/${post.slug}`}
-                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center space-x-1"
+                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center space-x-1 group-hover:translate-x-1 transition-all duration-200"
                   >
                     <span>Read More</span>
                     <ArrowRight className="h-3 w-3" />
@@ -237,34 +264,57 @@ export const Blog = () => {
           ))}
         </div>
 
-        {/* Pagination */}
-        <div className="mt-12 flex justify-center">
-          <nav className="flex items-center space-x-2">
+        {/* Loading overlay during transition */}
+        {isTransitioning && (
+          <div className="fixed inset-0 bg-gray-50/80 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+          </div>
+        )}
+
+        {/* Pagination with Enhanced Transitions */}
+        <div className="mt-16 flex justify-center">
+          <nav className={`flex items-center space-x-2 p-2 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transition-all duration-500 ease-in-out ${
+            isTransitioning ? 'opacity-50 scale-95 translate-y-2' : 'opacity-100 scale-100 translate-y-0'
+          }`}>
             <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 border rounded-lg disabled:opacity-50"
+              className="px-4 py-2.5 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm font-medium min-w-[80px]"
             >
               Previous
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 border rounded-lg ${currentPage === page ? 'bg-blue-600 text-white' : ''}`}
+                onClick={() => handlePageChange(page)}
+                disabled={isTransitioning}
+                className={`px-4 py-2.5 border font-medium rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm min-w-[44px] ${
+                  currentPage === page 
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white border-blue-600 shadow-blue-500/25 shadow-md' 
+                    : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 border-gray-300 hover:shadow-md bg-white/80'
+                } ${isTransitioning ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
                 {page}
               </button>
             ))}
+            
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 border rounded-lg disabled:opacity-50"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || isTransitioning}
+              className="px-4 py-2.5 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm font-medium min-w-[80px]"
             >
               Next
             </button>
           </nav>
         </div>
+
+        {/* Page info */}
+        {totalPages > 0 && (
+          <div className="mt-8 text-center text-sm text-gray-500">
+            Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, sortedPosts.length)} of {sortedPosts.length} posts
+          </div>
+        )}
       </div>
     </div>
   );

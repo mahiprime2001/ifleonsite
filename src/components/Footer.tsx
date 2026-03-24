@@ -47,7 +47,7 @@ export const Footer = () => {
 
             <div className="flex items-center space-x-2 text-muted-foreground text-sm">
               <Calendar className="h-4 w-4" />
-              <span>Founded in 2022 • Nellore, Andhra Pradesh</span>
+              <span>Founded in 2022 &bull; Nellore, Andhra Pradesh</span>
             </div>
           </div>
 
@@ -130,14 +130,14 @@ export const Footer = () => {
         >
           <div className="text-center md:text-left">
             <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} IFLEON. All rights reserved.
+              &copy; {new Date().getFullYear()} IFLEON. All rights reserved.
             </p>
             <p className="text-muted-foreground/70 text-xs mt-1">
-              Founded by S. Mahendra Reddy • AI & DevOps Consulting
+              Founded by S. Mahendra Reddy &bull; AI & DevOps Consulting
             </p>
           </div>
 
-          <div className="flex items-center space-x-5">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 gap-y-3">
             {/* Internal Links */}
             <Link
               to="/blog"
@@ -199,3 +199,4 @@ export const Footer = () => {
     </footer>
   );
 };
+

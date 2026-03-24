@@ -39,7 +39,6 @@ import PricingPage from "./pages/PricingPage";
 import ServicesPage from "./pages/ServicesPage";
 import TeamPage from "./pages/TeamPage";
 import PortfolioPage from "./pages/PortfolioPage";
-import ProcessPage from "./pages/ProcessPage";
 import { useAnalytics } from "./hooks/useAnalytics";
 
 /* ---------------- Page Transition Wrapper ---------------- */
@@ -223,15 +222,6 @@ function AppContent() {
             element={
               <PageTransition>
                 <PortfolioPage />
-              </PageTransition>
-            }
-          />
-
-          <Route
-            path="/process"
-            element={
-              <PageTransition>
-                <ProcessPage />
               </PageTransition>
             }
           />

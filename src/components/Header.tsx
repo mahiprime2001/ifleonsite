@@ -32,7 +32,6 @@ export const Header = () => {
     { label: "Home", path: "/" },
     { label: "Services", path: "/services" },
     { label: "Portfolio", path: "/portfolio" },
-    { label: "Process", path: "/process" },
     { label: "Team", path: "/team" },
     { label: "Blog", path: "/blog" },
   ];

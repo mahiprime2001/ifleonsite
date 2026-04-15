@@ -11,7 +11,8 @@
       "Bash(npx tsc:*)",
       "Bash(echo \"EXITCODE=$?\")",
       "Bash(npm install:*)",
-      "WebFetch(domain:lottiefiles.com)"
+      "WebFetch(domain:lottiefiles.com)",
+      "Bash(node -e ' *)"
     ]
   }
 }

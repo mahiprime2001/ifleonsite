@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { animate, stagger } from "animejs";
+import aboutLottieData from "../assets/about-lottie.json";
 
 type Stat = {
   icon: typeof Calendar;
@@ -225,7 +226,7 @@ export const About = () => {
           >
             <div className="rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-teal-50 p-6 overflow-hidden aspect-square flex items-center justify-center">
               <DotLottieReact
-                src="/lottie/about.json"
+                data={JSON.stringify(aboutLottieData)}
                 loop
                 autoplay
                 className="w-full h-full"

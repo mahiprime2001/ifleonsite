@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   Users,
   TrendingUp,
@@ -7,14 +8,109 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { animate, stagger } from "animejs";
+
+type Stat = {
+  icon: typeof Calendar;
+  number: string;
+  label: string;
+  countTo?: number;
+  suffix?: string;
+};
 
 export const About = () => {
-  const stats = [
-    { icon: Calendar, number: "2022", label: "Founded" },
-    { icon: Users, number: "20+", label: "Clients Served" },
+  const stats: Stat[] = [
+    { icon: Calendar, number: "2022", label: "Founded", countTo: 2022 },
+    { icon: Users, number: "20+", label: "Clients Served", countTo: 20, suffix: "+" },
     { icon: MapPin, number: "Nellore, AP", label: "Headquarters" },
     { icon: TrendingUp, number: "Pan-India", label: "Growth Vision" },
   ];
+
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const headlineRef = useRef<HTMLHeadingElement | null>(null);
+
+  useEffect(() => {
+    const statsEl = statsRef.current;
+    if (!statsEl) return;
+
+    let played = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+
+          const cards = statsEl.querySelectorAll<HTMLElement>("[data-stat-card]");
+          animate(cards, {
+            opacity: [0, 1],
+            translateY: [24, 0],
+            scale: [0.92, 1],
+            duration: 700,
+            delay: stagger(110),
+            easing: "easeOutExpo",
+          });
+
+          statsEl
+            .querySelectorAll<HTMLElement>("[data-stat-num]")
+            .forEach((el) => {
+              const target = Number(el.dataset.target || 0);
+              const suffix = el.dataset.suffix || "";
+              const proxy = { v: 0 };
+              animate(proxy, {
+                v: target,
+                duration: 1800,
+                easing: "easeOutQuad",
+                delay: 300,
+                update: () => {
+                  el.textContent = Math.round(proxy.v).toString() + suffix;
+                },
+              });
+            });
+        });
+      },
+      { threshold: 0.3 },
+    );
+
+    observer.observe(statsEl);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = headlineRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const letters = el.querySelectorAll<HTMLElement>(".anim-letter");
+          animate(letters, {
+            opacity: [0, 1],
+            translateY: [18, 0],
+            duration: 600,
+            delay: stagger(35),
+            easing: "easeOutQuad",
+          });
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const renderLetters = (text: string, className = "") =>
+    text.split("").map((ch, i) => (
+      <span
+        key={i}
+        className={`anim-letter inline-block opacity-0 ${className}`}
+      >
+        {ch === " " ? "\u00A0" : ch}
+      </span>
+    ));
 
   const milestones = [
     {
@@ -61,8 +157,12 @@ export const About = () => {
           transition={{ duration: 0.6 }}
         >
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              About <span className="text-blue-600">IFLEON</span>
+            <h2
+              ref={headlineRef}
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+            >
+              {renderLetters("About ")}
+              <span className="text-blue-600">{renderLetters("IFLEON")}</span>
             </h2>
 
             <p className="text-lg text-gray-600 mb-6 leading-relaxed">
@@ -86,18 +186,27 @@ export const About = () => {
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-6">
+            <div ref={statsRef} className="grid grid-cols-2 gap-6">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
+                const canCount = typeof stat.countTo === "number";
                 return (
                   <motion.div
                     key={index}
+                    data-stat-card
                     whileHover={{ scale: 1.05 }}
-                    className="text-center p-4 bg-gray-50 rounded-xl"
+                    className="text-center p-4 bg-gray-50 rounded-xl opacity-0"
                   >
                     <Icon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">
-                      {stat.number}
+                    <div
+                      className="text-2xl font-bold text-gray-900"
+                      {...(canCount && {
+                        "data-stat-num": "",
+                        "data-target": String(stat.countTo),
+                        "data-suffix": stat.suffix ?? "",
+                      })}
+                    >
+                      {canCount ? `0${stat.suffix ?? ""}` : stat.number}
                     </div>
                     <div className="text-gray-600 text-sm">{stat.label}</div>
                   </motion.div>
@@ -106,7 +215,7 @@ export const About = () => {
             </div>
           </div>
 
-          {/* Image */}
+          {/* Lottie Animation — replace `src` with your chosen animation from https://lottiefiles.com */}
           <motion.div
             className="relative"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -114,11 +223,14 @@ export const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <img
-              src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg"
-              alt="IFLEON team collaboration"
-              className="rounded-2xl shadow-2xl"
-            />
+            <div className="rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-teal-50 p-6 overflow-hidden aspect-square flex items-center justify-center">
+              <DotLottieReact
+                src="/lottie/about.lottie"
+                loop
+                autoplay
+                className="w-full h-full"
+              />
+            </div>
             <div className="absolute -bottom-6 -left-6 bg-blue-600 text-white p-6 rounded-xl shadow-lg">
               <div className="text-2xl font-bold">ifleon.com</div>
               <div className="text-blue-200 text-sm">

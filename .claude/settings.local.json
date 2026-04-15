@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/ifleonsite/src/pages -name \"*.tsx\" -exec basename {} \\\\;)",
+      "Bash(npm run:*)",
+      "Bash(node scripts/apply-dark.mjs)",
+      "Bash(rm -f scripts/apply-dark.mjs)",
+      "Bash(ls scripts:*)",
+      "Bash(node scripts/strip-dark.mjs)",
+      "Bash(grep -l \"dark:\" src/**/*.tsx src/*.tsx src/*.css)",
+      "Bash(npx tsc:*)",
+      "Bash(echo \"EXITCODE=$?\")",
+      "Bash(npm install:*)",
+      "WebFetch(domain:lottiefiles.com)"
+    ]
+  }
+}

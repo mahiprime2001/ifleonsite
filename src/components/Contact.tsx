@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,6 +12,7 @@ export const Contact = () => {
   const [formData, setFormData] = useState({
     "your-name": "",
     "your-email": "",
+    "your-phone": "",
     "your-company": "",
     "your-service": "",
     "your-message": "",
@@ -20,6 +21,23 @@ export const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messageRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ service?: string; message?: string }>)
+        .detail;
+      if (!detail) return;
+      setFormData((prev) => ({
+        ...prev,
+        "your-service": detail.service ?? prev["your-service"],
+        "your-message": detail.message ?? prev["your-message"],
+      }));
+      setTimeout(() => messageRef.current?.focus(), 600);
+    };
+    window.addEventListener("prefill-contact", handler);
+    return () => window.removeEventListener("prefill-contact", handler);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +72,7 @@ export const Contact = () => {
         setFormData({
           "your-name": "",
           "your-email": "",
+          "your-phone": "",
           "your-company": "",
           "your-service": "",
           "your-message": "",
@@ -212,17 +231,31 @@ export const Contact = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <input
+                      name="your-phone"
+                      type="tel"
+                      inputMode="tel"
+                      pattern="[0-9+\-\s()]{7,}"
+                      placeholder="Mobile Number *"
+                      required
+                      value={formData["your-phone"]}
+                      onChange={handleChange}
+                      className="input"
+                    />
+                    <input
                       name="your-company"
                       placeholder="Company / Organization"
                       value={formData["your-company"]}
                       onChange={handleChange}
                       className="input"
                     />
+                  </div>
+
+                  <div className="mb-6">
                     <select
                       name="your-service"
                       value={formData["your-service"]}
                       onChange={handleChange}
-                      className="input"
+                      className="input w-full"
                     >
                       <option value="">Select a service</option>
                       <option value="AI Solutions">AI Solutions</option>
@@ -234,13 +267,14 @@ export const Contact = () => {
                   </div>
 
                   <textarea
+                    ref={messageRef}
                     name="your-message"
-                    rows={5}
+                    rows={6}
                     required
                     placeholder="Tell us about your requirements..."
                     value={formData["your-message"]}
                     onChange={handleChange}
-                    className="input resize-none mb-4"
+                    className="input resize-none mb-4 w-full"
                   />
 
                   {error && (

@@ -225,7 +225,7 @@ export const About = () => {
           >
             <div className="rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-teal-50 p-6 overflow-hidden aspect-square flex items-center justify-center">
               <DotLottieReact
-                src="/lottie/about.lottie"
+                src="/lottie/about.json"
                 loop
                 autoplay
                 className="w-full h-full"

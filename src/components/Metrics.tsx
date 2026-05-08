@@ -1,130 +1,174 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { animate, stagger } from "animejs";
 import { Briefcase, Layers, Users, ShieldCheck } from "lucide-react";
+import { ScrollReveal } from "./animations/ScrollReveal";
 
 type MetricProps = {
   value: number;
   label: string;
   suffix?: string;
   icon: React.ElementType;
+  accent: string;
 };
 
-const AnimatedNumber = ({ value }: { value: number }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+const MetricCard = ({ value, label, suffix, icon: Icon, accent }: MetricProps) => {
+  const numRef = useRef<HTMLSpanElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isInView) return;
+    const el = numRef.current;
+    const card = cardRef.current;
+    if (!el || !card) return;
 
-    let start = 0;
-    const duration = 1200;
-    const stepTime = Math.max(Math.floor(duration / value), 20);
-
-    const timer = setInterval(() => {
-      start += 1;
-      setCount(start);
-      if (start >= value) clearInterval(timer);
-    }, stepTime);
-
-    return () => clearInterval(timer);
-  }, [isInView, value]);
+    let played = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+          const proxy = { v: 0 };
+          animate(proxy, {
+            v: value,
+            duration: 1800,
+            easing: "easeOutExpo",
+            update: () => {
+              el.textContent = Math.round(proxy.v).toString();
+            },
+          });
+        });
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [value]);
 
   return (
-    <span ref={ref} className="text-4xl md:text-5xl font-bold">
-      {count}
-    </span>
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 200, damping: 22 }}
+      className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 hover:bg-white/10 hover:shadow-2xl transition-all text-center border border-white/10 hover:border-emerald-400/40 overflow-hidden"
+    >
+      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`} />
+      <div className="relative">
+        <motion.div
+          className={`w-14 h-14 mx-auto mb-4 rounded-xl flex items-center justify-center bg-gradient-to-br ${accent} shadow-lg`}
+          whileHover={{ rotate: 8, scale: 1.06 }}
+        >
+          <Icon className="h-7 w-7 text-white" />
+        </motion.div>
+
+        <div className="flex items-end justify-center gap-1 text-white">
+          <span ref={numRef} className="text-4xl md:text-5xl font-black">
+            0
+          </span>
+          {suffix && (
+            <span className="text-2xl md:text-3xl font-black text-slate-200 mb-1">
+              {suffix}
+            </span>
+          )}
+        </div>
+
+        <p className="mt-2 text-slate-300 font-medium text-sm md:text-base">{label}</p>
+      </div>
+    </motion.div>
   );
 };
 
-const MetricCard = ({ value, label, suffix, icon: Icon }: MetricProps) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    whileHover={{ y: -8 }}
-    className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all text-center"
-  >
-    <div className="w-14 h-14 mx-auto mb-4 bg-blue-100 rounded-xl flex items-center justify-center">
-      <Icon className="h-7 w-7 text-blue-600" />
-    </div>
-
-    <div className="flex items-end justify-center gap-1 text-gray-900">
-      <AnimatedNumber value={value} />
-      {suffix && (
-        <span className="text-2xl font-bold text-gray-700">
-          {suffix}
-        </span>
-      )}
-    </div>
-
-    <p className="mt-2 text-gray-600 font-medium">{label}</p>
-  </motion.div>
-);
-
 export const Metrics = () => {
-  return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Impact That Speaks for Itself
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Measurable outcomes from real-world projects across AI, DevOps,
-            cloud, and cybersecurity.
-          </p>
-        </motion.div>
+  const headRef = useRef<HTMLHeadingElement | null>(null);
 
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <MetricCard
-            value={25}
-            label="Projects Delivered"
-            icon={Briefcase}
-          />
-          <MetricCard
-            value={6}
-            label="Industries Served"
-            icon={Layers}
-          />
-          <MetricCard
-            value={50}
-            suffix="+"
-            label="Clients & Individuals"
-            icon={Users}
-          />
-          <MetricCard
-            value={99}
-            suffix="%"
-            label="Security-First Approach"
-            icon={ShieldCheck}
-          />
+  useEffect(() => {
+    const el = headRef.current;
+    if (!el) return;
+    let played = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+          const letters = el.querySelectorAll<HTMLElement>("[data-l]");
+          animate(letters, {
+            opacity: [0, 1],
+            translateY: [22, 0],
+            rotateZ: [-8, 0],
+            duration: 700,
+            delay: stagger(28),
+            easing: "easeOutExpo",
+          });
+        });
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const headline = "Impact That Speaks for Itself";
+
+  return (
+    <section className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden">
+      <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 iso-grid-bg opacity-15 pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 md:mb-16">
+          <ScrollReveal direction="up">
+            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+              By the Numbers
+            </p>
+          </ScrollReveal>
+
+          <h2
+            ref={headRef}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight"
+            aria-label={headline}
+          >
+            {headline.split("").map((ch, i) => (
+              <span
+                key={i}
+                data-l
+                className="inline-block opacity-0"
+                style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
+              >
+                {ch}
+              </span>
+            ))}
+          </h2>
+
+          <ScrollReveal direction="up" delay={0.1}>
+            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+              Measurable outcomes from real-world projects across AI, DevOps,
+              cloud, and cybersecurity.
+            </p>
+          </ScrollReveal>
         </div>
 
-        {/* Soft CTA */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-gray-700 mb-4">
-            Want to be part of these numbers?
-          </p>
-          <a
-            href="#contact"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
-          >
-            Start a Conversation
-          </a>
-        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} accent="from-blue-500 to-cyan-500" />
+          <MetricCard value={6} label="Industries Served" icon={Layers} accent="from-purple-500 to-pink-500" />
+          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} accent="from-emerald-500 to-teal-500" />
+          <MetricCard value={99} suffix="%" label="Security-First Approach" icon={ShieldCheck} accent="from-amber-500 to-orange-500" />
+        </div>
+
+        <ScrollReveal direction="up">
+          <div className="mt-12 md:mt-16 text-center">
+            <p className="text-slate-300 mb-4 text-base md:text-lg">
+              Want to be part of these numbers?
+            </p>
+            <a
+              href="#contact"
+              className="shine-on-hover inline-block bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+            >
+              Start a Conversation
+            </a>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

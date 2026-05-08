@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, ArrowRight, Mail, Lock, Globe, LucideIcon } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Mail, Lock, LucideIcon } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Logo } from "../components/Logo";
 
 interface AnimatedInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   icon: LucideIcon;
@@ -457,12 +458,7 @@ const SignInCard = () => {
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                  >
-                    <Globe className="text-primary-foreground h-12 w-12" />
-                  </motion.div>
+                  <Logo size={56} className="relative z-10" alt="IFLEON" />
 
                   {/* Enhanced orbital rings with glow */}
                   {[0, 1, 2].map((i) => (

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, ArrowRight, Mail, Lock, Sparkles, LucideIcon, User } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Mail, Lock, LucideIcon, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Logo } from "../components/Logo";
 
 interface AnimatedInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   icon: LucideIcon;
@@ -318,19 +319,12 @@ const SignUpCard = () => {
                 transition={{ delay: 0.8, duration: 0.8, type: "spring", bounce: 0.3 }}
                 className="mb-8 relative"
               >
-                <motion.div 
-                  className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary via-primary/80 to-primary/60 flex items-center justify-center shadow-2xl relative"
-                  animate={{ 
-                    rotate: 360
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <motion.div
+                  className="h-20 w-20 rounded-2xl bg-gradient-to-br from-primary via-primary/80 to-primary/60 flex items-center justify-center shadow-2xl relative"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  >
-                    <Sparkles className="text-primary-foreground h-8 w-8" />
-                  </motion.div>
+                  <Logo size={48} className="relative z-10" alt="IFLEON" />
                 </motion.div>
               </motion.div>
 

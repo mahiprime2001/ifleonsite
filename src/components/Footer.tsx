@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import {
-  Network,
   Mail,
   MapPin,
   Calendar,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { animate, stagger } from "animejs";
+import { Logo } from "./Logo";
 import {
   businessServices,
   individualServices,
@@ -61,10 +61,8 @@ export const Footer = () => {
         >
           {/* Brand */}
           <div data-footer-col className="lg:col-span-2 opacity-0">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center">
-                <Network className="h-5 w-5 text-blue-400" />
-              </div>
+            <div className="flex items-center gap-3 mb-4">
+              <Logo size={44} />
               <div>
                 <span className="text-2xl font-bold text-white">IFLEON</span>
                 <div className="text-xs text-gray-400">

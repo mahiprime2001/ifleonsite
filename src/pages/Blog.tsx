@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Calendar, ArrowRight, Search, Heart } from 'lucide-react';
+import { Calendar, ArrowRight, Search, Heart, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import he from 'he';
+import { motion } from 'framer-motion';
+import { PageHero } from '../components/PageHero';
+import { MagnetCard } from '../components/animations/MagnetCard';
 
 interface WPAuthor {
   name: string;
@@ -49,16 +52,10 @@ export const Blog = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const postsPerPage = 9;
 
-  // Smooth page change handler
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage === currentPage) return;
-    
     setIsTransitioning(true);
-    
-    // Scroll to top and trigger transition
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Update page after transition starts
     requestAnimationFrame(() => {
       setTimeout(() => {
         setCurrentPage(newPage);
@@ -67,7 +64,6 @@ export const Blog = () => {
     });
   }, [currentPage]);
 
-  // Scroll to top on page change
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [currentPage]);
@@ -153,169 +149,168 @@ export const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
-
   const allTags = Array.from(new Set(posts.flatMap((post) => post.tags)));
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            IFLEON Tech Blog
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Technical insights, project updates, and source code from our AI, DevOps, and IT
-            consulting work. All code examples are available on our GitHub repository.
-          </p>
-        </div>
+    <div className="bg-slate-950 min-h-screen">
+      <PageHero
+        eyebrow="Tech Blog"
+        title="Insights from"
+        highlight="our engineering desk"
+        description="Technical deep dives, project updates, and source code from our AI, DevOps, and IT consulting work — all examples available on our GitHub."
+      />
 
-        {/* Search and Filter */}
-        <div className="mb-12">
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <section className="relative py-12 md:py-16 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+        <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Search + Filters */}
+          <div className="flex flex-col md:flex-row gap-3 mb-10 max-w-4xl mx-auto">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 h-5 w-5" />
               <input
                 type="text"
                 placeholder="Search articles..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="input-dark w-full pl-11"
               />
             </div>
             <select
               value={selectedTag}
               onChange={(e) => setSelectedTag(e.target.value)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-900 bg-white cursor-pointer"
+              className="input-dark cursor-pointer min-w-[160px]"
             >
-              <option value="">All Tags</option>
+              <option value="" className="bg-slate-900">All Tags</option>
               {allTags.map((tag) => (
-                <option key={tag} value={tag}>
+                <option key={tag} value={tag} className="bg-slate-900">
                   {tag}
                 </option>
               ))}
             </select>
             <select
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as any)}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent text-gray-900 bg-white cursor-pointer"
+              onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'most-liked')}
+              className="input-dark cursor-pointer min-w-[160px]"
             >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="most-liked">Most Liked</option>
+              <option value="newest" className="bg-slate-900">Newest</option>
+              <option value="oldest" className="bg-slate-900">Oldest</option>
+              <option value="most-liked" className="bg-slate-900">Most Liked</option>
             </select>
           </div>
-        </div>
 
-        {/* Posts Grid with Smooth Transition */}
-        <div 
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-500 ease-in-out transform-gpu ${
-            isTransitioning 
-              ? 'opacity-0 scale-[0.98] blur-sm translate-y-2' 
-              : 'opacity-100 scale-100 blur-none translate-y-0'
-          }`}
-        >
-          {currentPosts.map((post, index) => (
-            <article 
-              key={`${post.id}-${currentPage}-${index}`} 
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 ease-out transform hover:-translate-y-2 group"
-              style={{ 
-                transitionDelay: isTransitioning ? '0ms' : `${index * 75}ms`,
-                opacity: isTransitioning ? 0 : 1
-              }}
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2 text-gray-500 text-sm">
-                    <Calendar className="h-4 w-4" />
-                    <span>{format(new Date(post.publishedAt), 'MMM dd, yyyy')}</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-gray-500 text-sm">
-                    <Heart className="h-4 w-4 text-red-500 fill-red-500 group-hover:scale-110 transition-transform" />
-                    <span>{getLikes(post.id)}</span>
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3 hover:text-blue-600 transition-all duration-200 line-clamp-2 group-hover:line-clamp-none">
-                  <Link to={`/blog/${post.slug}`} className="block hover:underline">
-                    {post.title}
-                  </Link>
-                </h3>
-                <div className="text-sm text-gray-600 mb-6 leading-relaxed line-clamp-3">
-                  <div 
-                    className="line-clamp-2" 
-                    dangerouslySetInnerHTML={{ __html: post.excerpt }} 
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Link
-                    to={`/blog/${post.slug}`}
-                    className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center space-x-1 group-hover:translate-x-1 transition-all duration-200"
-                  >
-                    <span>Read More</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
-                  <div className="flex items-center space-x-1 text-gray-500 text-sm">
-                    <i className="fa-solid fa-comment"></i>
-                    <span>{getCommentCount(post.id)}</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {/* Loading overlay during transition */}
-        {isTransitioning && (
-          <div className="fixed inset-0 bg-gray-50/80 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-          </div>
-        )}
-
-        {/* Pagination with Enhanced Transitions */}
-        <div className="mt-16 flex justify-center">
-          <nav className={`flex items-center space-x-2 p-2 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg transition-all duration-500 ease-in-out ${
-            isTransitioning ? 'opacity-50 scale-95 translate-y-2' : 'opacity-100 scale-100 translate-y-0'
-          }`}>
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm font-medium min-w-[80px]"
-            >
-              Previous
-            </button>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                disabled={isTransitioning}
-                className={`px-4 py-2.5 border font-medium rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm min-w-[44px] ${
-                  currentPage === page 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white border-blue-600 shadow-blue-500/25 shadow-md' 
-                    : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 border-gray-300 hover:shadow-md bg-white/80'
-                } ${isTransitioning ? 'opacity-60 cursor-not-allowed' : ''}`}
+          {/* Posts Grid */}
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out ${
+              isTransitioning
+                ? 'opacity-0 scale-[0.98] blur-sm translate-y-2'
+                : 'opacity-100 scale-100 blur-none translate-y-0'
+            }`}
+          >
+            {currentPosts.map((post, index) => (
+              <motion.article
+                key={`${post.id}-${currentPage}-${index}`}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05, duration: 0.5 }}
               >
-                {page}
-              </button>
-            ))}
-            
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages || isTransitioning}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 active:scale-[0.98] shadow-sm font-medium min-w-[80px]"
-            >
-              Next
-            </button>
-          </nav>
-        </div>
+                <MagnetCard
+                  intensity={5}
+                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                >
+                  <div className="p-6 h-full flex flex-col">
+                    <div className="flex items-center justify-between mb-4 text-xs text-slate-400">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{format(new Date(post.publishedAt), 'MMM dd, yyyy')}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Heart className="h-3.5 w-3.5 text-rose-400 fill-rose-400" />
+                        <span>{getLikes(post.id)}</span>
+                      </div>
+                    </div>
 
-        {/* Page info */}
-        {totalPages > 0 && (
-          <div className="mt-8 text-center text-sm text-gray-500">
-            Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, sortedPosts.length)} of {sortedPosts.length} posts
+                    <Link to={`/blog/${post.slug}`} className="block group">
+                      <h3 className="text-lg font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors line-clamp-2">
+                        {post.title}
+                      </h3>
+                    </Link>
+
+                    <div
+                      className="text-sm text-slate-300 mb-6 leading-relaxed line-clamp-3 flex-1"
+                      dangerouslySetInnerHTML={{ __html: post.excerpt }}
+                    />
+
+                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                      <Link
+                        to={`/blog/${post.slug}`}
+                        className="text-emerald-400 hover:text-emerald-300 font-semibold text-sm flex items-center gap-1.5 group"
+                      >
+                        Read More
+                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                      <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        <span>{getCommentCount(post.id)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </MagnetCard>
+              </motion.article>
+            ))}
           </div>
-        )}
-      </div>
+
+          {isTransitioning && (
+            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="w-10 h-10 border-3 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" />
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex justify-center">
+              <nav className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10 transition"
+                >
+                  Previous
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    disabled={isTransitioning}
+                    className={`min-w-[40px] px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
+                      currentPage === page
+                        ? 'bg-gradient-to-r from-blue-600 to-emerald-500 text-white shadow-lg'
+                        : 'text-slate-200 hover:bg-white/10'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages || isTransitioning}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10 transition"
+                >
+                  Next
+                </button>
+              </nav>
+            </div>
+          )}
+
+          {totalPages > 0 && (
+            <div className="mt-6 text-center text-sm text-slate-400">
+              Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, sortedPosts.length)} of {sortedPosts.length} posts
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 };

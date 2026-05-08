@@ -72,10 +72,15 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     background-image: radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0);
     background-size: 2rem 2rem;
+    overflow-x: hidden;
   }
 }
 
@@ -83,4 +88,116 @@
   .input {
     @apply w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition;
   }
+
+  .input-dark {
+    @apply w-full px-4 py-3 rounded-lg border border-white/10 bg-white/5 text-white placeholder:text-slate-400 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition;
+  }
+}
+
+@layer utilities {
+  /* 3D perspective utilities */
+  .perspective-500 { perspective: 500px; }
+  .perspective-1000 { perspective: 1000px; }
+  .perspective-1500 { perspective: 1500px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+  .rotate-x-180 { transform: rotateX(180deg); }
+
+  /* Isometric helpers */
+  .iso-tile {
+    transform: rotateX(60deg) rotateZ(-45deg);
+  }
+
+  /* Gradient text utility */
+  .text-gradient-iflo {
+    background: linear-gradient(90deg, #34d399, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Animated shine sweep */
+  .shine-on-hover { position: relative; overflow: hidden; }
+  .shine-on-hover::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -150%;
+    width: 60%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.7s ease;
+  }
+  .shine-on-hover:hover::after { left: 150%; }
+
+  /* Soft glow */
+  .glow-emerald { box-shadow: 0 0 40px -8px rgba(52, 211, 153, 0.45); }
+  .glow-blue { box-shadow: 0 0 40px -8px rgba(96, 165, 250, 0.45); }
+  .glow-purple { box-shadow: 0 0 40px -8px rgba(167, 139, 250, 0.45); }
+
+  /* Isometric grid backdrop */
+  .iso-grid-bg {
+    background-image:
+      linear-gradient(rgba(96,165,250,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(96,165,250,0.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Mesh gradient backdrop */
+  .mesh-bg {
+    background-image:
+      radial-gradient(at 20% 20%, rgba(52,211,153,0.18) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(96,165,250,0.16) 0px, transparent 50%),
+      radial-gradient(at 60% 80%, rgba(167,139,250,0.18) 0px, transparent 50%);
+  }
+
+  /* Subtle floating animation */
+  @keyframes float-y { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-12px);} }
+  .animate-float { animation: float-y 6s ease-in-out infinite; }
+  .animate-float-slow { animation: float-y 9s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(52,211,153,0.55)); }
+    50%     { filter: drop-shadow(0 0 18px rgba(96,165,250,0.85)); }
+  }
+  .animate-pulse-glow { animation: pulse-glow 3.5s ease-in-out infinite; }
+
+  @keyframes gradient-shift {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes spin-slow { to { transform: rotate(360deg);} }
+  .animate-spin-slow { animation: spin-slow 18s linear infinite; }
+  .animate-spin-slower { animation: spin-slow 32s linear infinite; }
+
+  /* Scroll-driven section divider line (drawn from center) */
+  @keyframes draw-line { from { transform: scaleX(0);} to { transform: scaleX(1);} }
+  .animate-draw-line { transform-origin: center; animation: draw-line 1.2s cubic-bezier(.2,.7,.2,1) forwards; }
+
+  /* SVG path drawing helpers */
+  .path-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: dash 2.4s ease-out forwards;
+  }
+  @keyframes dash { to { stroke-dashoffset: 0; } }
+
+  /* Section reveal mask */
+  .reveal-mask {
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  /* Marquee */
+  @keyframes marquee { from { transform: translateX(0);} to { transform: translateX(-50%);} }
+  .animate-marquee { animation: marquee 28s linear infinite; }
+
+  /* Disable text selection on decorative elements */
+  .no-select { user-select: none; -webkit-user-select: none; }
 }

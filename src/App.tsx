@@ -27,7 +27,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Settings from "./components/Settings";
 import Profile from "./components/Profile";
 import { Metrics } from "./components/Metrics";
-import { StickyCTA } from "./components/StickyCTA";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { HowWeWork } from "./components/HowWeWork";
 import { FloatingContactButton } from "./components/FloatingContactButton";
@@ -40,20 +39,45 @@ import ServicesPage from "./pages/ServicesPage";
 import TeamPage from "./pages/TeamPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { SectionCut } from "./components/animations/SectionCut";
 
 /* ---------------- Page Transition Wrapper ---------------- */
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
   <motion.div
-    initial={{ opacity: 0, y: 12 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -12 }}
-    transition={{ duration: 0.25, ease: "easeOut" }}
+    initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+    transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
     className="min-h-screen"
   >
     {children}
   </motion.div>
 );
+
+/* ---------------- Route-change scrim sweep ---------------- */
+// Brief gradient sweep that paints across the screen on every route change
+// to feel like a premium dashboard transition.
+const RouteScrim = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        className="fixed inset-0 z-[120] pointer-events-none"
+        initial={{ scaleX: 0, transformOrigin: "left" }}
+        animate={{ scaleX: 1, transformOrigin: "left" }}
+        exit={{ scaleX: 0, transformOrigin: "right" }}
+        transition={{ duration: 0.55, ease: [0.7, 0, 0.3, 1] }}
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(15,23,42,0) 0%, rgba(52,211,153,0.18) 35%, rgba(96,165,250,0.18) 65%, rgba(15,23,42,0) 100%)",
+          mixBlendMode: "screen",
+        }}
+      />
+    </AnimatePresence>
+  );
+};
 
 /* ---------------- App Content ---------------- */
 
@@ -239,6 +263,7 @@ function AppContent() {
 
       {showHeaderFooter && <FloatingContactButton />}
       {showHeaderFooter && <Footer />}
+      <RouteScrim />
     </>
   );
 }
@@ -250,14 +275,20 @@ function HomePage() {
     <>
       <Hero />
       <TrustStrip />
+      <SectionCut variant="blade" accent="emerald" label="What We Do" />
       <Services />
+      <SectionCut variant="diagonal" accent="blue" label="By the Numbers" />
       <Metrics />
       <About />
+      <SectionCut variant="blade" accent="purple" label="Experience" />
       <Experience />
       <WhyChooseUs />
+      <SectionCut variant="flip" accent="emerald" label="Our Process" />
       <HowWeWork />
+      <SectionCut variant="iris" accent="teal" label="Voices" />
       <Testimonials />
       <Newsletter />
+      <SectionCut variant="diagonal" accent="orange" label="Let's Talk" />
       <Contact />
     </>
   );

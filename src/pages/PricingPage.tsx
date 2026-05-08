@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
-import {
-  Briefcase,
-  Clock,
-  Layers,
-  LifeBuoy,
-} from "lucide-react";
+import { Briefcase, Clock, Layers, LifeBuoy, Check, Crown, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { PageHero } from "../components/PageHero";
+import { ScrollReveal } from "../components/animations/ScrollReveal";
+import { MagnetCard } from "../components/animations/MagnetCard";
 
 const plans = [
   {
@@ -19,6 +18,7 @@ const plans = [
       "One-time cost",
       "Documentation included",
     ],
+    accent: "from-blue-500 to-cyan-500",
   },
   {
     icon: Clock,
@@ -32,6 +32,7 @@ const plans = [
       "Expert-level guidance",
       "Fast turnaround",
     ],
+    accent: "from-emerald-500 to-teal-500",
   },
   {
     icon: Layers,
@@ -45,6 +46,7 @@ const plans = [
       "Predictable monthly cost",
       "Long-term partnership",
     ],
+    accent: "from-purple-500 to-pink-500",
   },
   {
     icon: LifeBuoy,
@@ -58,89 +60,153 @@ const plans = [
       "Incident support",
       "Performance optimization",
     ],
+    accent: "from-amber-500 to-orange-500",
   },
 ];
 
 export default function PricingPage() {
   return (
-    <section className="py-24 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Pricing & Engagement Models
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Flexible engagement options designed to match different business
-            needs, project scopes, and growth stages.
-          </p>
-        </motion.div>
+    <div className="bg-slate-950 min-h-screen">
+      <PageHero
+        eyebrow="Pricing"
+        title="Engagement models"
+        highlight="that match your scale"
+        description="Flexible options designed for different business needs, project scopes, and growth stages — every engagement starts with a free consultation."
+      />
 
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {plans.map((plan, index) => {
-            const Icon = plan.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <Icon className="h-6 w-6 text-blue-600" />
+      {/* Plans grid */}
+      <section className="relative py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+        <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 perspective-1000"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.08 } },
+            }}
+          >
+            {plans.map((plan, index) => {
+              const Icon = plan.icon;
+              return (
+                <motion.div
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, y: 30, rotateX: -10 },
+                    show: { opacity: 1, y: 0, rotateX: 0 },
+                  }}
+                  transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+                >
+                  <MagnetCard
+                    intensity={8}
+                    className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 hover:shadow-2xl transition-all"
+                  >
+                    <div className="p-7 md:p-8 h-full flex flex-col">
+                      <div className="flex items-center gap-3 mb-5">
+                        <motion.div
+                          whileHover={{ rotate: 6, scale: 1.05 }}
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${plan.accent} shadow-lg`}
+                        >
+                          <Icon className="h-6 w-6 text-white" />
+                        </motion.div>
+                        <div>
+                          <h3 className="text-xl font-bold text-white">{plan.title}</h3>
+                          <p className="text-sm text-slate-400">{plan.subtitle}</p>
+                        </div>
+                      </div>
+
+                      <p className="text-slate-300 mb-5 text-sm md:text-base leading-relaxed flex-1">
+                        {plan.description}
+                      </p>
+
+                      <ul className="space-y-2.5">
+                        {plan.points.map((point, i) => (
+                          <li key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
+                            <Check className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </MagnetCard>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          {/* Premium / Custom tier — strategic WHITE accent card */}
+          <ScrollReveal direction="scale">
+            <div className="mt-10 relative rounded-3xl bg-white p-8 md:p-12 shadow-[0_30px_80px_-20px_rgba(96,165,250,0.4)] overflow-hidden border border-emerald-200">
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-emerald-100 blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-blue-100 blur-3xl" />
+
+              <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div className="lg:col-span-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300 mb-4">
+                    <Crown className="h-4 w-4 text-amber-700" />
+                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-amber-800">
+                      Custom Enterprise
+                    </span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {plan.title}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {plan.subtitle}
-                    </p>
+                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+                    Need something tailored?
+                  </h2>
+                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                    Multi-team rollouts, complex AI/DevOps programs, and long-term
+                    partnerships — we'll build a bespoke engagement model that fits
+                    your scale, governance, and timeline.
+                  </p>
+
+                  <div className="mt-6 grid grid-cols-2 gap-3 max-w-md">
+                    {[
+                      "Dedicated team",
+                      "SLAs & governance",
+                      "Custom contracts",
+                      "Quarterly reviews",
+                    ].map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-sm text-gray-700"
+                      >
+                        <Check className="h-4 w-4 text-emerald-600" />
+                        {item}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <p className="text-gray-600 mb-4">
-                  {plan.description}
-                </p>
+                <div className="text-center lg:text-right">
+                  <Link
+                    to="/#contact"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-7 py-4 rounded-xl font-semibold transition-all"
+                  >
+                    Talk to Sales
+                    <ArrowRight className="h-5 w-5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
 
-                <ul className="space-y-2 text-gray-600 text-sm">
-                  {plan.points.map((point, i) => (
-                    <li key={i}>• {point}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            );
-          })}
+          <ScrollReveal direction="up">
+            <div className="mt-16 text-center">
+              <p className="text-slate-300 max-w-2xl mx-auto mb-6">
+                Exact pricing depends on scope, complexity, and timeline. Every
+                engagement starts with a free consultation to align expectations.
+              </p>
+              <Link
+                to="/#contact"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-blue-600 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 text-white px-8 py-3.5 rounded-xl font-semibold transition-all"
+              >
+                Request a Free Consultation
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
-
-        {/* Disclaimer */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <p className="text-gray-600 max-w-3xl mx-auto mb-6">
-            Exact pricing depends on scope, complexity, and timeline. All
-            engagements start with a free consultation to ensure the right
-            approach and expectations.
-          </p>
-
-          <a
-            href="/#contact"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
-          >
-            Request a Free Consultation
-          </a>
-        </motion.div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

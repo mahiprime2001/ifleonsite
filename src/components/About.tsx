@@ -8,9 +8,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { animate, stagger } from "animejs";
-import aboutLottieData from "../assets/about-lottie.json";
+import { AboutScene } from "./animations/AboutScene";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
+import { MagnetCard } from "./animations/MagnetCard";
 
 type Stat = {
   icon: typeof Calendar;
@@ -22,14 +24,13 @@ type Stat = {
 
 export const About = () => {
   const stats: Stat[] = [
-    { icon: Calendar, number: "2022", label: "Founded", countTo: 2022 },
+    { icon: Calendar, number: "2022", label: "Founded" },
     { icon: Users, number: "20+", label: "Clients Served", countTo: 20, suffix: "+" },
     { icon: MapPin, number: "Nellore, AP", label: "Headquarters" },
     { icon: TrendingUp, number: "Pan-India", label: "Growth Vision" },
   ];
 
   const statsRef = useRef<HTMLDivElement | null>(null);
-  const headlineRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     const statsEl = statsRef.current;
@@ -77,130 +78,82 @@ export const About = () => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = headlineRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const letters = el.querySelectorAll<HTMLElement>(".anim-letter");
-          animate(letters, {
-            opacity: [0, 1],
-            translateY: [18, 0],
-            duration: 600,
-            delay: stagger(35),
-            easing: "easeOutQuad",
-          });
-          observer.disconnect();
-        });
-      },
-      { threshold: 0.4 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const renderLetters = (text: string, className = "") =>
-    text.split("").map((ch, i) => (
-      <span
-        key={i}
-        className={`anim-letter inline-block opacity-0 ${className}`}
-      >
-        {ch === " " ? "\u00A0" : ch}
-      </span>
-    ));
-
   const milestones = [
     {
       year: "2022",
       title: "Foundation",
       description:
-        "IFLEON was founded in Nellore, Andhra Pradesh with a clear mission to deliver logical, scalable technology solutions.",
+        "Founded in Nellore with a clear mission — deliver logical, scalable technology solutions.",
     },
     {
       year: "2024",
       title: "Service Expansion",
       description:
-        "Expanded into AI solutions, DevOps automation, cloud services, and cybersecurity for local and remote clients.",
+        "Scaled into AI, DevOps automation, cloud, and cybersecurity for local and remote clients.",
     },
     {
       year: "2025",
       title: "Growth Phase",
       description:
-        "Focused on structured growth, long-term client partnerships, and knowledge sharing through blogs and open source.",
+        "Structured growth, long-term partnerships, and open knowledge sharing through blogs.",
     },
     {
-      year: "2026",
-      title: "Regional Expansion",
-      description:
-        "Planned expansion into Hyderabad with deeper cloud partnerships and a stronger enterprise client base.",
-    },
-    {
-      year: "2027+",
+      year: "2026+",
       title: "National Presence",
       description:
-        "Targeting pan-India reach with a sustainable, high-impact technology consulting model.",
+        "Hyderabad expansion and a sustainable, high-impact pan-India consulting footprint.",
     },
   ];
 
   return (
-    <section id="about" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Intro */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+    <section
+      id="about"
+      className="relative py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden"
+    >
+      <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
+      <div className="absolute -top-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-purple-500/10 blur-[120px]" />
+      <div className="absolute -bottom-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-[120px]" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
           <div>
-            <h2
-              ref={headlineRef}
-              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
-            >
-              {renderLetters("About ")}
-              <span className="text-blue-600">{renderLetters("IFLEON")}</span>
-            </h2>
+            <ScrollReveal direction="right">
+              <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+                About IFLEON
+              </p>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                A team that turns{" "}
+                <span className="text-gradient-iflo">infinite ideas</span>{" "}
+                into logical solutions.
+              </h2>
+            </ScrollReveal>
 
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              <strong>IFLEON (Infinite Logical Elements of Network)</strong> is a
-              technology consulting and solutions company founded in 2022 with a
-              focus on AI, DevOps, cloud engineering, and secure digital systems.
-            </p>
+            <ScrollReveal direction="up" delay={0.1}>
+              <p className="text-base md:text-lg text-slate-300 mb-5 leading-relaxed">
+                <strong className="text-white">IFLEON (Infinite Logical Elements of Network)</strong>{" "}
+                is a consulting and solutions company founded in 2022 — focused
+                on AI, DevOps, cloud engineering, and secure digital systems.
+              </p>
+              <p className="text-base md:text-lg text-slate-300 mb-8 leading-relaxed">
+                We help startups, businesses, and individuals build technology
+                that's reliable, secure, and future-ready — combining deep
+                engineering with practical, business-driven thinking.
+              </p>
+            </ScrollReveal>
 
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              We help startups, businesses, and individuals design, automate, and
-              scale technology systems that are reliable, secure, and future-ready.
-              Our approach combines deep technical expertise with practical,
-              business-driven thinking.
-            </p>
-
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Guided by our tagline{" "}
-              <em>“Infinite Possibilities, Logical Solutions,”</em> IFLEON is
-              committed to building long-term value through transparency,
-              engineering excellence, and continuous innovation.
-            </p>
-
-            {/* Stats */}
-            <div ref={statsRef} className="grid grid-cols-2 gap-6">
+            <div ref={statsRef} className="grid grid-cols-2 gap-4">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 const canCount = typeof stat.countTo === "number";
                 return (
-                  <motion.div
+                  <div
                     key={index}
                     data-stat-card
-                    whileHover={{ scale: 1.05 }}
-                    className="text-center p-4 bg-gray-50 rounded-xl opacity-0"
+                    className="text-center p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl hover:bg-white/10 hover:border-emerald-400/40 transition-colors opacity-0"
                   >
-                    <Icon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                    <Icon className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
                     <div
-                      className="text-2xl font-bold text-gray-900"
+                      className="text-2xl font-black text-white"
                       {...(canCount && {
                         "data-stat-num": "",
                         "data-target": String(stat.countTo),
@@ -209,175 +162,169 @@ export const About = () => {
                     >
                       {canCount ? `0${stat.suffix ?? ""}` : stat.number}
                     </div>
-                    <div className="text-gray-600 text-sm">{stat.label}</div>
-                  </motion.div>
+                    <div className="text-slate-400 text-sm mt-1">{stat.label}</div>
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Lottie Animation — replace `src` with your chosen animation from https://lottiefiles.com */}
+          <Parallax offset={40}>
+            <ScrollReveal direction="scale">
+              <MagnetCard
+                intensity={10}
+                className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 p-2 shadow-2xl border border-white/10"
+              >
+                <div className="rounded-2xl bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-4 aspect-square iso-grid-bg">
+                  <AboutScene className="w-full h-full" />
+                </div>
+                <div className="absolute -bottom-5 -left-5 bg-gradient-to-br from-blue-600 to-emerald-500 text-white p-5 rounded-2xl shadow-xl glow-blue">
+                  <div className="text-2xl font-black">ifleon.com</div>
+                  <div className="text-blue-100 text-xs tracking-wide">
+                    AI · DevOps · Cloud · Security
+                  </div>
+                </div>
+              </MagnetCard>
+            </ScrollReveal>
+          </Parallax>
+        </div>
+
+        {/* Founder card */}
+        <ScrollReveal direction="up">
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            className="relative rounded-3xl p-8 md:p-12 mb-24 overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md"
+            whileHover={{ y: -4 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
-            <div className="rounded-2xl shadow-2xl bg-gradient-to-br from-blue-50 via-white to-teal-50 p-6 overflow-hidden aspect-square flex items-center justify-center">
-              <DotLottieReact
-                data={JSON.stringify(aboutLottieData)}
-                loop
-                autoplay
-                className="w-full h-full"
-              />
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-blue-600 text-white p-6 rounded-xl shadow-lg">
-              <div className="text-2xl font-bold">ifleon.com</div>
-              <div className="text-blue-200 text-sm">
-                AI • DevOps • Cloud • Security
-              </div>
+            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-emerald-400/20 blur-3xl" />
+            <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-blue-400/20 blur-3xl" />
+
+            <div className="relative text-center max-w-3xl mx-auto">
+              <h3 className="text-3xl font-bold text-white mb-3">
+                Leadership & Vision
+              </h3>
+              <h4 className="text-2xl font-black text-emerald-400 mb-2">
+                S. Mahendra Reddy
+              </h4>
+              <p className="text-slate-200 mb-4 font-medium">
+                Founder & Lead Engineer — AI, DevOps & Cloud Systems
+              </p>
+              <p className="text-slate-300 leading-relaxed mb-7 max-w-2xl mx-auto">
+                Mahendra brings hands-on experience in AI systems, DevOps
+                automation, cloud infrastructure, and scalable application design.
+                His vision is to make advanced technology accessible, practical,
+                and impactful for businesses across India.
+              </p>
+              <a
+                href="https://mahendra.ifleon.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:shadow-blue-500/30 transition-all font-semibold hover:-translate-y-0.5"
+              >
+                <Brain className="h-5 w-5" />
+                View Founder Portfolio
+              </a>
             </div>
           </motion.div>
-        </motion.div>
-
-        {/* Founder */}
-        <motion.div
-          className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-10 mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center max-w-3xl mx-auto">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">
-              Leadership & Vision
-            </h3>
-
-            <h4 className="text-2xl font-bold text-blue-600 mb-2">
-              S. Mahendra Reddy
-            </h4>
-            <p className="text-gray-700 mb-4">
-              Founder & Lead Engineer — AI, DevOps & Cloud Systems
-            </p>
-
-            <p className="text-gray-600 leading-relaxed mb-6">
-              Mahendra brings hands-on experience in AI systems, DevOps automation,
-              cloud infrastructure, and scalable application design. His vision
-              is to make advanced technology accessible, practical, and impactful
-              for businesses across India.
-            </p>
-
-            <a
-              href="https://mahendra.ifleon.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Brain className="h-5 w-5" />
-              View Founder Portfolio
-            </a>
-          </div>
-        </motion.div>
+        </ScrollReveal>
 
         {/* Vision & Mission */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="bg-blue-50 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
-            <p className="text-gray-700 leading-relaxed">
-              To become a trusted pan-India technology partner delivering
-              intelligent, secure, and scalable digital solutions.
-            </p>
-          </div>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24">
+          <StaggerItem direction="left">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 h-full hover:bg-white/10 hover:border-blue-400/40 transition-all">
+              <h3 className="text-2xl font-bold text-white mb-4">Our Vision</h3>
+              <p className="text-slate-300 leading-relaxed">
+                To become a trusted pan-India technology partner delivering
+                intelligent, secure, and scalable digital solutions.
+              </p>
+            </div>
+          </StaggerItem>
+          <StaggerItem direction="right">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 h-full hover:bg-white/10 hover:border-emerald-400/40 transition-all">
+              <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
+              <p className="text-slate-300 leading-relaxed">
+                To solve real-world business problems using AI, DevOps, and cloud
+                technologies while sharing knowledge through open platforms.
+              </p>
+            </div>
+          </StaggerItem>
+        </StaggerContainer>
 
-          <div className="bg-teal-50 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
-            <p className="text-gray-700 leading-relaxed">
-              To solve real-world business problems using AI, DevOps, and cloud
-              technologies while sharing knowledge through open platforms.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Roadmap */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-3xl font-bold text-gray-900 mb-10 text-center">
+        {/* Roadmap timeline */}
+        <ScrollReveal direction="up">
+          <h3 className="text-3xl md:text-4xl font-black text-white mb-12 text-center">
             Growth Roadmap
           </h3>
+        </ScrollReveal>
 
-          <div className="relative">
-            <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-blue-200" />
+        <div className="relative">
+          <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-400 via-blue-400 to-purple-400 rounded-full opacity-60" />
 
-            <div className="space-y-10">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`flex items-center ${
-                    index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-                  }`}
-                >
-                  <div
-                    className={`w-1/2 ${
-                      index % 2 === 0
-                        ? "pr-8 text-right"
-                        : "pl-8 text-left"
-                    }`}
+          <div className="space-y-12">
+            {milestones.map((milestone, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ delay: index * 0.06 }}
+                className={`flex items-center ${
+                  index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                }`}
+              >
+                <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}>
+                  <motion.div
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/10 hover:border-emerald-400/40 transition-all"
                   >
-                    <div className="bg-white rounded-lg p-6 shadow-lg">
-                      <div className="text-blue-600 font-bold text-xl mb-2">
-                        {milestone.year}
-                      </div>
-                      <h4 className="text-lg font-bold text-gray-900 mb-2">
-                        {milestone.title}
-                      </h4>
-                      <p className="text-gray-600">
-                        {milestone.description}
-                      </p>
+                    <div className="text-emerald-400 font-black text-xl mb-2">
+                      {milestone.year}
                     </div>
-                  </div>
+                    <h4 className="text-lg font-bold text-white mb-2">
+                      {milestone.title}
+                    </h4>
+                    <p className="text-slate-300 text-sm">
+                      {milestone.description}
+                    </p>
+                  </motion.div>
+                </div>
 
-                  <div className="relative z-10 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg" />
-                  <div className="w-1/2" />
-                </motion.div>
-              ))}
-            </div>
+                <motion.div
+                  className="relative z-10 w-5 h-5 rounded-full border-4 border-slate-950 shadow-lg"
+                  style={{
+                    background: "linear-gradient(135deg, #34d399, #3b82f6)",
+                  }}
+                  whileInView={{ scale: [0, 1.4, 1] }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.06 + 0.15 }}
+                />
+                <div className="w-1/2" />
+              </motion.div>
+            ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA */}
-        <motion.div
-          className="mt-20 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
-            Let’s Build Something Meaningful
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Whether you’re a business, startup, or individual — IFLEON is ready
-            to help you turn ideas into reliable, scalable technology.
-          </p>
-
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-colors font-semibold"
-          >
-            Start a Conversation <ArrowRight className="h-5 w-5" />
-          </a>
-        </motion.div>
+        <ScrollReveal direction="up">
+          <div className="mt-24 text-center bg-gradient-to-br from-slate-900 to-blue-950 rounded-3xl p-12 text-white relative overflow-hidden border border-white/10">
+            <div className="absolute inset-0 mesh-bg opacity-50" />
+            <div className="relative">
+              <h3 className="text-3xl md:text-4xl font-black mb-4">
+                Let's build something meaningful.
+              </h3>
+              <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
+                Whether you're a business, startup, or individual — IFLEON is ready
+                to help you turn ideas into reliable, scalable technology.
+              </p>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-xl hover:shadow-emerald-500/30 transition-all font-semibold hover:-translate-y-0.5"
+              >
+                Start a Conversation <ArrowRight className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

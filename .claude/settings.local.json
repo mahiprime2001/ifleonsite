@@ -17,7 +17,18 @@
       "PowerShell(Set-Location 'd:\\\\ifleon\\\\ifleonsite - 3d illsturators'; @\\(Get-ChildItem -File -ErrorAction SilentlyContinue; Get-ChildItem -Directory -Exclude node_modules,.git,.next,.output | ForEach-Object { Write-Host \"[$\\($_.Name\\)/]\"; Get-ChildItem -Path $_.FullName -File -ErrorAction SilentlyContinue | ForEach-Object { Write-Host \"  $\\($_.Name\\)\" } }\\) | ForEach-Object { $_ })",
       "PowerShell(Set-Location 'd:\\\\ifleon\\\\ifleonsite - 3d illsturators\\\\src'; Get-ChildItem -Recurse -Exclude node_modules | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\('d:\\\\ifleon\\\\ifleonsite - 3d illsturators\\\\src\\\\', ''\\) } | Sort-Object)",
       "Bash(npx vite *)",
-      "Bash(pnpm add *)"
+      "Bash(pnpm add *)",
+      "WebFetch(domain:filamentphp.com)",
+      "PowerShell($php = Get-Command php -ErrorAction SilentlyContinue; $composer = Get-Command composer -ErrorAction SilentlyContinue; if \\($php\\) { Write-Host \"PHP found at: $\\($php.Source\\)\"; php -v } else { Write-Host \"PHP: NOT FOUND in PATH\" }; Write-Host \"---\"; if \\($composer\\) { Write-Host \"Composer found at: $\\($composer.Source\\)\"; composer --version } else { Write-Host \"Composer: NOT FOUND in PATH\" })",
+      "PowerShell($paths = @\\(\"C:\\\\laragon\", \"C:\\\\xampp\", \"C:\\\\wamp64\", \"C:\\\\wamp\", \"C:\\\\Program Files\\\\PHP\", \"C:\\\\php\"\\); foreach \\($p in $paths\\) { if \\(Test-Path $p\\) { Write-Host \"FOUND: $p\" } })",
+      "PowerShell($winget = Get-Command winget -ErrorAction SilentlyContinue; if \\($winget\\) { Write-Host \"winget available: $\\($winget.Source\\)\"; winget --version } else { Write-Host \"winget NOT available\" })",
+      "PowerShell(winget search \"php\" --source winget)",
+      "PowerShell(php artisan filament:install --panels --no-interaction 2>&1)",
+      "PowerShell($tinkerCmd = \"App\\\\Models\\\\User::updateOrCreate\\(['email'=>'admin@local.test'], ['name'=>'Admin', 'password'=>bcrypt\\('password'\\)]\\); echo 'User created: admin@local.test / password' . PHP_EOL;\"; php artisan tinker --execute=$tinkerCmd)",
+      "PowerShell(php artisan migrate --no-interaction 2>&1)",
+      "PowerShell(php artisan make:filament-resource Testimonial --generate --no-interaction 2>&1)",
+      "PowerShell(php artisan serve --host=127.0.0.1 --port=8000)",
+      "Bash(curl -sI http://127.0.0.1:8000/admin/login)"
     ]
   }
 }

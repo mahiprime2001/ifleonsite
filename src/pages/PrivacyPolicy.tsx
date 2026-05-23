@@ -1,0 +1,67 @@
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { PageHero } from "../components/PageHero";
+
+const sections = [
+  {
+    title: "Information We Collect",
+    body: "When you create an account or contact us through the website, we collect your name, email address, and the content of your message. We do not collect payment information directly — payments are handled by third-party processors. We also collect standard server logs (IP address, browser type, pages visited) for security and performance monitoring.",
+  },
+  {
+    title: "How We Use Your Information",
+    body: "We use your information to respond to enquiries, deliver services you have engaged us for, send important service updates, and improve the website. We do not sell, rent, or share your personal data with third parties for marketing purposes.",
+  },
+  {
+    title: "Cookies & Analytics",
+    body: "This site uses Plausible Analytics, a privacy-friendly analytics tool that does not use cookies and does not collect personally identifiable information. We also use Google Tag Manager to manage tracking scripts. You can disable JavaScript to prevent any tracking entirely.",
+  },
+  {
+    title: "Data Storage & Security",
+    body: "Account data is stored securely. We apply industry-standard security practices including encrypted connections (HTTPS), access controls, and regular security reviews. No system is completely secure; we encourage you to use a strong, unique password.",
+  },
+  {
+    title: "Your Rights",
+    body: "Under India's Digital Personal Data Protection Act 2023 (DPDP Act), you have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us at mahendra@ifleon.com. We will respond within 30 days.",
+  },
+  {
+    title: "Third-Party Links",
+    body: "Our website may contain links to third-party websites. We are not responsible for the privacy practices of those sites and encourage you to review their privacy policies.",
+  },
+  {
+    title: "Changes to This Policy",
+    body: "We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date. Continued use of the site after changes constitutes acceptance of the updated policy.",
+  },
+  {
+    title: "Contact",
+    body: "For any privacy-related questions or requests, contact: S. Mahendra Reddy, IFLEON, Nellore, Andhra Pradesh, India. Email: mahendra@ifleon.com",
+  },
+];
+
+export default function PrivacyPolicy() {
+  useDocumentMeta({
+    title: "Privacy Policy | IFLEON",
+    description: "IFLEON's Privacy Policy — how we collect, use, and protect your personal data in compliance with India's DPDP Act 2023.",
+    canonical: "https://ifleon.com/privacy",
+  });
+
+  return (
+    <div className="bg-slate-950 min-h-screen">
+      <PageHero
+        eyebrow="Legal"
+        title="Privacy Policy"
+        description={`Effective date: ${new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}`}
+        size="sm"
+      />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="space-y-10">
+          {sections.map((s) => (
+            <div key={s.title}>
+              <h2 className="text-lg font-bold text-white mb-3">{s.title}</h2>
+              <p className="text-slate-400 leading-relaxed text-sm">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

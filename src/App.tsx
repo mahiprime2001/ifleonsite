@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import { Header } from "./components/Header";
@@ -18,28 +18,34 @@ import { Testimonials } from "./components/Testimonials";
 import { Newsletter } from "./components/Newsletter";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
-import { Blog } from "./pages/Blog";
-import { BlogPost } from "./pages/BlogPost";
 import { NotFoundPage } from "./components/Pagenotfound";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import Settings from "./components/Settings";
-import Profile from "./components/Profile";
 import { Metrics } from "./components/Metrics";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { HowWeWork } from "./components/HowWeWork";
 import { FloatingContactButton } from "./components/FloatingContactButton";
-import FAQPage from "./pages/FAQPage";
-import TechStackPage from "./pages/TechStackPage";
-import CaseStudiesPage from "./pages/CaseStudiesPage";
 import { TrustStrip } from "./components/TrustStrip";
-import PricingPage from "./pages/PricingPage";
-import ServicesPage from "./pages/ServicesPage";
-import TeamPage from "./pages/TeamPage";
-import PortfolioPage from "./pages/PortfolioPage";
 import { useAnalytics } from "./hooks/useAnalytics";
+import { useDocumentMeta } from "./hooks/useDocumentMeta";
 import { SectionCut } from "./components/animations/SectionCut";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+
+/* ---------------- Lazy-loaded pages (code splitting) ---------------- */
+const Blog           = lazy(() => import("./pages/Blog").then(m => ({ default: m.Blog })));
+const BlogPost       = lazy(() => import("./pages/BlogPost").then(m => ({ default: m.BlogPost })));
+const Login          = lazy(() => import("./pages/Login"));
+const Signup         = lazy(() => import("./pages/Signup"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Settings       = lazy(() => import("./components/Settings"));
+const Profile        = lazy(() => import("./components/Profile"));
+const FAQPage        = lazy(() => import("./pages/FAQPage"));
+const TechStackPage  = lazy(() => import("./pages/TechStackPage"));
+const CaseStudiesPage = lazy(() => import("./pages/CaseStudiesPage"));
+const PricingPage    = lazy(() => import("./pages/PricingPage"));
+const ServicesPage   = lazy(() => import("./pages/ServicesPage"));
+const TeamPage       = lazy(() => import("./pages/TeamPage"));
+const PortfolioPage   = lazy(() => import("./pages/PortfolioPage"));
+const PrivacyPolicy   = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService  = lazy(() => import("./pages/TermsOfService"));
 
 /* ---------------- Page Transition Wrapper ---------------- */
 
@@ -56,8 +62,6 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => (
 );
 
 /* ---------------- Route-change scrim sweep ---------------- */
-// Brief gradient sweep that paints across the screen on every route change
-// to feel like a premium dashboard transition.
 const RouteScrim = () => {
   const location = useLocation();
   return (
@@ -83,9 +87,8 @@ const RouteScrim = () => {
 
 function AppContent() {
   const location = useLocation();
-  useAnalytics ();
+  useAnalytics();
 
-  // Dev-only Easter egg
   useEffect(() => {
     console.log(
       "%cBuilt with care by IFLEON 🚀",
@@ -113,153 +116,173 @@ function AppContent() {
       <Toaster position="top-center" richColors />
       {showHeaderFooter && <Header />}
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <PageTransition>
-                <HomePage />
-              </PageTransition>
-            }
-          />
+      <Suspense fallback={null}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <HomePage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/blog"
-            element={
-              <PageTransition>
-                <Blog />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/blog"
+              element={
+                <PageTransition>
+                  <Blog />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/pricing"
-            element={
-              <PageTransition>
-                <PricingPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/pricing"
+              element={
+                <PageTransition>
+                  <PricingPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/case-studies"
-            element={
-              <PageTransition>
-                <CaseStudiesPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/case-studies"
+              element={
+                <PageTransition>
+                  <CaseStudiesPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/blog/:slug"
-            element={
-              <PageTransition>
-                <BlogPost />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/blog/:slug"
+              element={
+                <PageTransition>
+                  <BlogPost />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/login"
-            element={
-              <PageTransition>
-                <Login />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/login"
+              element={
+                <PageTransition>
+                  <Login />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/signup"
-            element={
-              <PageTransition>
-                <Signup />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/signup"
+              element={
+                <PageTransition>
+                  <Signup />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/forgot-password"
-            element={
-              <PageTransition>
-                <ForgotPassword />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/forgot-password"
+              element={
+                <PageTransition>
+                  <ForgotPassword />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/settings"
-            element={
-              <PageTransition>
-                <Settings />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/settings"
+              element={
+                <PageTransition>
+                  <Settings />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/profile"
-            element={
-              <PageTransition>
-                <Profile />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/profile"
+              element={
+                <PageTransition>
+                  <Profile />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/faq"
-            element={
-              <PageTransition>
-                <FAQPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/faq"
+              element={
+                <PageTransition>
+                  <FAQPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/tech-stack"
-            element={
-              <PageTransition>
-                <TechStackPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/tech-stack"
+              element={
+                <PageTransition>
+                  <TechStackPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/services"
-            element={
-              <PageTransition>
-                <ServicesPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/services"
+              element={
+                <PageTransition>
+                  <ServicesPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/team"
-            element={
-              <PageTransition>
-                <TeamPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/team"
+              element={
+                <PageTransition>
+                  <TeamPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/portfolio"
-            element={
-              <PageTransition>
-                <PortfolioPage />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/portfolio"
+              element={
+                <PageTransition>
+                  <PortfolioPage />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/*"
-            element={
-              <PageTransition>
-                <NotFoundPage />
-              </PageTransition>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+            <Route
+              path="/privacy"
+              element={
+                <PageTransition>
+                  <PrivacyPolicy />
+                </PageTransition>
+              }
+            />
+
+            <Route
+              path="/terms"
+              element={
+                <PageTransition>
+                  <TermsOfService />
+                </PageTransition>
+              }
+            />
+
+            <Route
+              path="/*"
+              element={
+                <PageTransition>
+                  <NotFoundPage />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </Suspense>
 
       {showHeaderFooter && <FloatingContactButton />}
       {showHeaderFooter && <Footer />}
@@ -271,6 +294,11 @@ function AppContent() {
 /* ---------------- Home Page ---------------- */
 
 function HomePage() {
+  useDocumentMeta({
+    title: "IFLEON — AI, DevOps & IT Consulting | Nellore, India",
+    description: "IFLEON delivers practical AI, DevOps automation, cloud engineering, and cybersecurity solutions for businesses and individuals across India. Get started today.",
+    canonical: "https://ifleon.com/",
+  });
   return (
     <>
       <Hero />
@@ -298,10 +326,12 @@ function HomePage() {
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <AppContent />
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <ScrollToTop />
+        <AppContent />
+      </Router>
+    </ErrorBoundary>
   );
 }
 

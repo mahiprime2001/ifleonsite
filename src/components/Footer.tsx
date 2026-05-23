@@ -232,6 +232,18 @@ export const Footer = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link
+              to="/privacy"
+              className="text-xs text-gray-500 hover:text-blue-400 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-xs text-gray-500 hover:text-blue-400 transition-colors"
+            >
+              Terms of Service
+            </Link>
             <a
               href="https://ifleon.com"
               target="_blank"

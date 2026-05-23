@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Linkedin, Mail, Github, Award, Users, Target, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { PageHero } from "../components/PageHero";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 import { MagnetCard } from "../components/animations/MagnetCard";
@@ -41,6 +42,11 @@ const values = [
 ];
 
 export default function TeamPage() {
+  useDocumentMeta({
+    title: "Our Team — Engineers Driving Real Impact | IFLEON",
+    description: "Meet the founder and lead engineer behind IFLEON — hands-on AI, DevOps, and cloud expertise committed to building practical technology for businesses.",
+    canonical: "https://ifleon.com/team",
+  });
   return (
     <div className="bg-slate-950 min-h-screen">
       <PageHero

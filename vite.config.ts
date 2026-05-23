@@ -17,8 +17,17 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "wp-theme/assets",
+    outDir: "assets",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-motion": ["framer-motion"],
+          "vendor-anime": ["animejs"],
+        },
+      },
+    },
   },
 
   preview: {

@@ -1,10 +1,11 @@
 import { ArrowRight, Zap, Code, Shield, Sparkles, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import FloatingObjects from "./three/FloatingObjects";
+import { lazy, Suspense, useRef } from "react";
 import { UndrawHero } from "./illustrations/UndrawHero";
 import { AnimeText } from "./animations/AnimeText";
+
+const FloatingObjects = lazy(() => import("./three/FloatingObjects"));
 
 export const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -37,7 +38,9 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
         {!shouldReduceMotion && (
           <motion.div className="absolute inset-0" style={{ y: bgY }}>
-            <FloatingObjects density="low" palette="blue" />
+            <Suspense fallback={null}>
+              <FloatingObjects density="low" palette="blue" />
+            </Suspense>
           </motion.div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, ArrowRight, Mail, Lock, LucideIcon, User } from "lucide-react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
@@ -580,6 +581,7 @@ const SignUpCard = () => {
 };
 
 const Signup = () => {
+  useDocumentMeta({ title: "Create an Account | IFLEON", noindex: true });
   return (
     <motion.div 
       className="min-h-screen w-full flex items-center justify-center bg-background relative overflow-hidden"

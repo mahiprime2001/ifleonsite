@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { Calendar, ArrowRight, Search, Heart, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -44,6 +45,11 @@ interface BlogPost {
 }
 
 export const Blog = () => {
+  useDocumentMeta({
+    title: "IFLEON Tech Blog — AI, DevOps & Cloud Insights",
+    description: "Technical deep-dives, project walkthroughs, and engineering insights on AI/ML, DevOps, cloud infrastructure, cybersecurity, and software development from the IFLEON team.",
+    canonical: "https://ifleon.com/blog",
+  });
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('');

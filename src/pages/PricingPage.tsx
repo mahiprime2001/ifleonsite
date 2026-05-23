@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Briefcase, Clock, Layers, LifeBuoy, Check, Crown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { PageHero } from "../components/PageHero";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 import { MagnetCard } from "../components/animations/MagnetCard";
@@ -65,6 +66,11 @@ const plans = [
 ];
 
 export default function PricingPage() {
+  useDocumentMeta({
+    title: "Pricing & Engagement Models | IFLEON Consulting",
+    description: "Flexible pricing for every project stage — project-based, hourly consulting, monthly retainer, and support & maintenance packages. No hidden costs.",
+    canonical: "https://ifleon.com/pricing",
+  });
   return (
     <div className="bg-slate-950 min-h-screen">
       <PageHero

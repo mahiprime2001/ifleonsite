@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, ArrowRight, Mail, Lock, LucideIcon } from "lucide-react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
@@ -516,9 +517,9 @@ const SignInCard = () => {
                 className="mt-8 flex space-x-6"
               >
                 {[
-                  { label: "Active Users", value: "10K+" },
-                  { label: "Countries", value: "50+" },
-                  { label: "Projects", value: "1K+" },
+                  { label: "Response Time", value: "24h" },
+                  { label: "Client Focus", value: "100%" },
+                  { label: "India-wide", value: "✓" },
                 ].map((stat, i) => (
                   <motion.div
                     key={stat.label}
@@ -847,6 +848,7 @@ const SignInCard = () => {
 };
 
 const Login = () => {
+  useDocumentMeta({ title: "Sign In | IFLEON", noindex: true });
   return (
     <motion.div
       className="min-h-screen w-full flex items-center justify-center bg-background relative overflow-hidden"

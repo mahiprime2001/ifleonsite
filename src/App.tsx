@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { lazy, Suspense, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
+import LoadingScreen from "./components/LoadingScreen";
 import { AuroraBackground } from "./components/AuroraBackground";
 import { AtmosphereProvider } from "./components/atmosphere/AtmosphereProvider";
 import AtmosphereToggle from "./components/atmosphere/AtmosphereToggle";
@@ -332,6 +333,7 @@ function App() {
   return (
     <ErrorBoundary>
       <AtmosphereProvider>
+        <LoadingScreen />
         <Router>
           <ScrollToTop />
           <AppContent />

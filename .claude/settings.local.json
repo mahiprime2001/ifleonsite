@@ -28,7 +28,8 @@
       "PowerShell(php artisan migrate --no-interaction 2>&1)",
       "PowerShell(php artisan make:filament-resource Testimonial --generate --no-interaction 2>&1)",
       "PowerShell(php artisan serve --host=127.0.0.1 --port=8000)",
-      "Bash(curl -sI http://127.0.0.1:8000/admin/login)"
+      "Bash(curl -sI http://127.0.0.1:8000/admin/login)",
+      "Bash(grep -o \"data:image/svg[^\\\\\"'\\)]\\\\{0,80\\\\}\" wp-theme/assets/assets/index-BfNCq4-_.js)"
     ]
   }
 }

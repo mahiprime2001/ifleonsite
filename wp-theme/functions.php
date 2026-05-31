@@ -3,30 +3,69 @@
  * IFLEON Theme Functions
  */
 
+/**
+ * Find the current Vite-built asset (e.g. assets/assets/index-<hash>.js).
+ *
+ * Vite generates a fresh content hash on every build, so hardcoding the
+ * filename breaks the site after each rebuild. Instead we glob the build
+ * directory for the entry file matching the given prefix/extension and
+ * return its URL + filesystem path so we never have to touch this file again.
+ *
+ * @param string $prefix    Filename prefix without hash, e.g. 'index'.
+ * @param string $extension File extension without the dot, e.g. 'js'.
+ * @return array{url:string,path:string}|null
+ */
+function ifleon_find_asset($prefix, $extension) {
+    $dir = get_template_directory() . '/assets/assets';
+    $matches = glob($dir . '/' . $prefix . '-*.' . $extension);
+
+    if (empty($matches)) {
+        return null;
+    }
+
+    // If multiple stale builds linger, prefer the most recently modified.
+    usort($matches, function ($a, $b) {
+        return filemtime($b) - filemtime($a);
+    });
+
+    $file = $matches[0];
+
+    return array(
+        'url'  => get_template_directory_uri() . '/assets/assets/' . basename($file),
+        'path' => $file,
+    );
+}
+
 // Enqueue styles and scripts
 function ifleon_enqueue_assets() {
-    // Enqueue the main CSS file
+    // Enqueue the theme stylesheet (style.css)
     wp_enqueue_style('ifleon-style', get_stylesheet_uri());
-    
-    // Enqueue the Vue app CSS
-    wp_enqueue_style(
-        'ifleon-vue-css',
-        get_template_directory_uri() . '/assets/assets/index-D8DMeEOo.css',
-        array(),
-        '1.0'
-    );
-    
-    // Enqueue the JavaScript file
-    wp_enqueue_script(
-        'ifleon-main-js',
-        get_template_directory_uri() . '/assets/assets/index-Do4X0UF9.js',
-        array(),
-        '1.0',
-        true
-    );
-    
-    // Make the script a module
-    add_filter('script_loader_tag', 'ifleon_add_module_to_script', 10, 3);
+
+    // Enqueue the Vite-built app CSS (hash auto-detected)
+    $css = ifleon_find_asset('index', 'css');
+    if ($css) {
+        wp_enqueue_style(
+            'ifleon-app-css',
+            $css['url'],
+            array(),
+            filemtime($css['path']) // cache-bust on every rebuild
+        );
+    }
+
+    // Enqueue the Vite-built app JS (hash auto-detected)
+    $js = ifleon_find_asset('index', 'js');
+    if ($js) {
+        wp_enqueue_script(
+            'ifleon-main-js',
+            $js['url'],
+            array(),
+            filemtime($js['path']), // cache-bust on every rebuild
+            true
+        );
+
+        // Make the entry script load as an ES module
+        add_filter('script_loader_tag', 'ifleon_add_module_to_script', 10, 3);
+    }
 }
 add_action('wp_enqueue_scripts', 'ifleon_enqueue_assets');
 
@@ -37,6 +76,22 @@ function ifleon_add_module_to_script($tag, $handle, $src) {
     }
     return $tag;
 }
+
+// Output the favicon / app icon in <head> using the Vite-built logo asset.
+// Hash auto-detected so it keeps working after every rebuild.
+function ifleon_favicon() {
+    $logo = ifleon_find_asset('logo', 'svg');
+    if (!$logo) {
+        return;
+    }
+    $url = esc_url($logo['url']);
+    echo "\n";
+    echo '<link rel="icon" href="' . $url . '" type="image/svg+xml" />' . "\n";
+    echo '<link rel="shortcut icon" href="' . $url . '" type="image/svg+xml" />' . "\n";
+    echo '<link rel="apple-touch-icon" href="' . $url . '" />' . "\n";
+    echo '<meta name="theme-color" content="#0b1220" />' . "\n";
+}
+add_action('wp_head', 'ifleon_favicon');
 
 // Theme setup
 function ifleon_theme_setup() {

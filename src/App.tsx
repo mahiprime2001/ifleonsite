@@ -29,7 +29,6 @@ import Profile from "./components/Profile";
 import { Metrics } from "./components/Metrics";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { HowWeWork } from "./components/HowWeWork";
-import { FloatingContactButton } from "./components/FloatingContactButton";
 import FAQPage from "./pages/FAQPage";
 import TechStackPage from "./pages/TechStackPage";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
@@ -261,7 +260,6 @@ function AppContent() {
         </Routes>
       </AnimatePresence>
 
-      {showHeaderFooter && <FloatingContactButton />}
       {showHeaderFooter && <Footer />}
       <RouteScrim />
     </>

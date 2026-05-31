@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   Briefcase,
   Calendar,
@@ -135,6 +136,11 @@ const categories = [
 ];
 
 export default function PortfolioPage() {
+  useDocumentMeta({
+    title: "Portfolio — Real AI, DevOps & Cloud Projects | IFLEON",
+    description: "Browse IFLEON's project portfolio — AI customer analytics, DevOps transformation, cloud migration, security frameworks, and more. Real engagements, measurable outcomes.",
+    canonical: "https://ifleon.com/portfolio",
+  });
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const filteredProjects =
@@ -232,6 +238,7 @@ export default function PortfolioPage() {
                       <motion.img
                         src={project.image}
                         alt={project.title}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         whileHover={{ scale: 1.06 }}
                         transition={{ duration: 0.5 }}

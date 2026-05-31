@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   Cloud,
   Server,
@@ -54,6 +55,11 @@ const stacks = [
 ];
 
 export default function TechStackPage() {
+  useDocumentMeta({
+    title: "Tech Stack & Frameworks We Ship With | IFLEON",
+    description: "IFLEON's technology toolkit: Python, TensorFlow, AWS, Azure, Docker, Kubernetes, React, TypeScript, PostgreSQL, and more — the platforms we use to build secure, scalable solutions.",
+    canonical: "https://ifleon.com/tech-stack",
+  });
   return (
     <div className="bg-slate-950 min-h-screen">
       <PageHero

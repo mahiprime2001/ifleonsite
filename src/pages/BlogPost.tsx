@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePost } from "../hooks/usePost";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { useLikes } from "../hooks/useLikes";
 import { useComments } from "../hooks/useComments";
 import { BackButton } from "../components/post/BackButton";
@@ -31,9 +32,49 @@ const incrementPostView = (postId: string): number => {
 
 export const BlogPost = () => {
   const { post, loading } = usePost();
+  useDocumentMeta({
+    title: post ? `${post.title} | IFLEON Blog` : "Blog Post | IFLEON",
+    description: post?.excerpt
+      ? post.excerpt.replace(/<[^>]+>/g, "").slice(0, 160)
+      : "Technical insights on AI, DevOps, and cloud engineering from IFLEON.",
+    canonical: post ? `https://ifleon.com/blog/${post.slug}` : undefined,
+  });
 
   // Likes & comments stay public
   const { likes, liked, handleLike } = useLikes(post?.id || null);
+
+  useEffect(() => {
+    if (!post) return;
+    const id = "blogposting-jsonld";
+    const existing = document.getElementById(id);
+    if (existing) existing.remove();
+    const script = document.createElement("script");
+    script.id = id;
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt?.replace(/<[^>]+>/g, "").slice(0, 160) ?? "",
+      "url": `https://ifleon.com/blog/${post.slug}`,
+      "datePublished": post.publishedAt,
+      "author": {
+        "@type": "Person",
+        "name": post.author,
+        "url": "https://ifleon.com",
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "IFLEON",
+        "url": "https://ifleon.com",
+        "logo": { "@type": "ImageObject", "url": "https://ifleon.com/og-image.png" },
+      },
+      "image": "https://ifleon.com/og-image.png",
+      "mainEntityOfPage": { "@type": "WebPage", "@id": `https://ifleon.com/blog/${post.slug}` },
+    });
+    document.head.appendChild(script);
+    return () => { document.getElementById(id)?.remove(); };
+  }, [post]);
   const { comments, addComment, setSortOrder, sortOrder } =
     useComments(post?.id || null);
 

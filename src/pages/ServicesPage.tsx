@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -298,6 +299,11 @@ const DetailsDialog = ({
 };
 
 export default function ServicesPage() {
+  useDocumentMeta({
+    title: "AI, DevOps & Cloud Services | IFLEON",
+    description: "Explore IFLEON's full range of services: AI/ML solutions, DevOps automation, cloud migration, cybersecurity, and IT consulting for businesses and individuals across India.",
+    canonical: "https://ifleon.com/services",
+  });
   const [active, setActive] = useState<Service | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogPrefill, setDialogPrefill] = useState<{

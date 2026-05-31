@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Briefcase, Cloud, Shield, Brain, ArrowRight, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { PageHero } from "../components/PageHero";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 import { MagnetCard } from "../components/animations/MagnetCard";
@@ -53,6 +54,11 @@ const caseStudies = [
 ];
 
 export default function CaseStudiesPage() {
+  useDocumentMeta({
+    title: "Case Studies — Real-World Projects & Outcomes | IFLEON",
+    description: "See how IFLEON solves real business problems: cloud cost optimization, security hardening, AI automation, and DevOps pipeline modernization — with measurable results.",
+    canonical: "https://ifleon.com/case-studies",
+  });
   return (
     <div className="bg-slate-950 min-h-screen">
       <PageHero

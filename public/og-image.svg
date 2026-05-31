@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="0.5" stop-color="#0f1f3d"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="0.5" stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Glow orbs -->
+  <circle cx="200" cy="150" r="280" fill="#2563eb" opacity="0.07"/>
+  <circle cx="1050" cy="500" r="300" fill="#10b981" opacity="0.07"/>
+
+  <!-- Grid lines (subtle) -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+
+  <!-- Logo mark -->
+  <g transform="translate(100, 220)">
+    <rect x="0" y="0" width="72" height="72" rx="16" fill="url(#accent)"/>
+    <path d="M24 36 C 24 24, 32 24, 36 36 C 40 48, 48 48, 48 36 C 48 24, 40 24, 36 36 C 32 48, 24 48, 24 36 Z"
+      stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="24" cy="36" r="4" fill="#ffffff"/>
+    <circle cx="48" cy="36" r="4" fill="#ffffff"/>
+    <circle cx="36" cy="36" r="2.5" fill="#ffffff"/>
+  </g>
+
+  <!-- IFLEON wordmark -->
+  <text x="192" y="268" font-family="system-ui, -apple-system, sans-serif" font-weight="900"
+    font-size="64" fill="#ffffff" letter-spacing="-2">IFLEON</text>
+
+  <!-- Accent bar under wordmark -->
+  <rect x="192" y="282" width="320" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- Tagline -->
+  <text x="100" y="340" font-family="system-ui, -apple-system, sans-serif" font-weight="400"
+    font-size="26" fill="#94a3b8" letter-spacing="0.5">AI · DevOps · Cloud · Cybersecurity</text>
+
+  <!-- Main headline -->
+  <text x="100" y="420" font-family="system-ui, -apple-system, sans-serif" font-weight="700"
+    font-size="38" fill="#ffffff">Practical technology for businesses</text>
+  <text x="100" y="468" font-family="system-ui, -apple-system, sans-serif" font-weight="700"
+    font-size="38" fill="#ffffff">and individuals across India.</text>
+
+  <!-- Domain -->
+  <text x="100" y="560" font-family="system-ui, -apple-system, sans-serif" font-weight="500"
+    font-size="22" fill="#10b981">ifleon.com</text>
+
+  <!-- Decorative right side dots -->
+  <circle cx="1050" cy="180" r="6" fill="#10b981" opacity="0.6"/>
+  <circle cx="1090" cy="220" r="4" fill="#2563eb" opacity="0.5"/>
+  <circle cx="1020" cy="250" r="5" fill="#14b8a6" opacity="0.5"/>
+  <circle cx="1100" cy="280" r="3" fill="#10b981" opacity="0.4"/>
+  <circle cx="1060" cy="310" r="7" fill="#2563eb" opacity="0.3"/>
+</svg>

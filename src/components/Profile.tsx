@@ -1,7 +1,9 @@
 import React from 'react';
 import { Sidebar } from './Sidebar';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 const Profile: React.FC = () => {
+  useDocumentMeta({ title: "Profile | IFLEON", noindex: true });
   const handleLogout = () => {
     // Redirect to the same page
     window.location.reload();

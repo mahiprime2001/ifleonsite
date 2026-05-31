@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /settings
+Disallow: /profile
+Disallow: /admin/
+
+Sitemap: https://ifleon.com/sitemap.xml

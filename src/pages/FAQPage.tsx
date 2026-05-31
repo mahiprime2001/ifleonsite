@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, MessageCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { PageHero } from "../components/PageHero";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 
@@ -101,8 +102,32 @@ const FAQItem = ({
   </motion.div>
 );
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(({ question, answer }) => ({
+    "@type": "Question",
+    "name": question,
+    "acceptedAnswer": { "@type": "Answer", "text": answer },
+  })),
+};
+
 export default function FAQPage() {
+  useDocumentMeta({
+    title: "FAQ — Working with IFLEON | Pricing, Process & Support",
+    description: "Answers to common questions about IFLEON's services, engagement models, timelines, pricing, and how we work with startups, businesses, and individuals.",
+    canonical: "https://ifleon.com/faq",
+  });
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "faq-jsonld";
+    script.text = JSON.stringify(faqJsonLd);
+    document.head.appendChild(script);
+    return () => { document.getElementById("faq-jsonld")?.remove(); };
+  }, []);
 
   return (
     <div className="bg-slate-950 min-h-screen">

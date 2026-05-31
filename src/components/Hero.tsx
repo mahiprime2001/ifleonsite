@@ -2,7 +2,7 @@ import { ArrowRight, Zap, Code, Shield, Sparkles, CheckCircle2 } from "lucide-re
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { lazy, Suspense, useRef } from "react";
-import { UndrawHero } from "./illustrations/UndrawHero";
+import RoomScene from "./RoomScene";
 import { AnimeText } from "./animations/AnimeText";
 
 const FloatingObjects = lazy(() => import("./three/FloatingObjects"));
@@ -192,20 +192,8 @@ export const Hero = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             <div className="relative aspect-square w-full max-w-[600px] mx-auto">
-              {/*
-                Hero illustration — flat unDraw / Storyset-style SVG.
-
-                To use a real download from undraw.co or storyset.com:
-                1. Pick an illustration (search "developer", "code review",
-                   "team work", "AI", etc.)
-                2. Set the brand color to #10b981 in their customizer (unDraw)
-                   or pick the blue-themed variant (Storyset).
-                3. Download the SVG and save it to:
-                   public/illustrations/your-name.svg
-                4. Replace <UndrawHero /> below with:
-                   <img src="/illustrations/your-name.svg" alt="" className="w-full h-full" />
-              */}
-              <UndrawHero className="w-full h-full" />
+              {/* Lo-fi study room — lighting + window change with the time of day */}
+              <RoomScene className="w-full h-full drop-shadow-2xl" />
 
               {/* floating stat tiles */}
               <motion.div

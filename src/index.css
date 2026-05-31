@@ -302,11 +302,42 @@
 
   .no-select { user-select: none; -webkit-user-select: none; }
 
+  /* ---------- Lo-fi room scene animations ---------- */
+  @keyframes scene-breathe { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-2.2px);} }
+  .anim-breathe { animation: scene-breathe 4.5s ease-in-out infinite; transform-box: fill-box; }
+
+  @keyframes scene-type-a { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(2.4px);} }
+  @keyframes scene-type-b { 0%,100%{ transform: translateY(2.4px);} 50%{ transform: translateY(0);} }
+  .anim-type-a { animation: scene-type-a 0.5s ease-in-out infinite; transform-box: fill-box; transform-origin: top; }
+  .anim-type-b { animation: scene-type-b 0.5s ease-in-out infinite; transform-box: fill-box; transform-origin: top; }
+
+  @keyframes scene-flicker { 0%,100%{ opacity: 0.92; } 48%{ opacity: 1; } 50%{ opacity: 0.8; } 52%{ opacity: 1; } }
+  .anim-flicker { animation: scene-flicker 6s ease-in-out infinite; }
+
+  @keyframes scene-steam { 0%{ opacity: 0; transform: translateY(0) scaleX(1);} 25%{ opacity: 0.55;} 100%{ opacity: 0; transform: translateY(-26px) scaleX(1.5);} }
+  .anim-steam { animation: scene-steam 4s ease-out infinite; transform-box: fill-box; }
+
+  @keyframes scene-twinkle { 0%,100%{ opacity: 0.2; } 50%{ opacity: 1; } }
+  .anim-twinkle { animation: scene-twinkle 3s ease-in-out infinite; }
+
+  @keyframes scene-lamp { 0%,100%{ opacity: 0.82; } 50%{ opacity: 1; } }
+  .anim-lamp { animation: scene-lamp 5s ease-in-out infinite; }
+
+  @keyframes scene-cloud { from{ transform: translateX(-10px);} to{ transform: translateX(18px);} }
+  .anim-cloud { animation: scene-cloud 26s ease-in-out infinite alternate; transform-box: fill-box; }
+
+  @keyframes scene-mote { 0%{ transform: translateY(0); opacity: 0;} 30%{ opacity: 0.8;} 100%{ transform: translateY(-30px); opacity: 0;} }
+  .anim-mote { animation: scene-mote 7s linear infinite; transform-box: fill-box; }
+
+  @keyframes scene-sway { 0%,100%{ transform: rotate(-2deg);} 50%{ transform: rotate(2deg);} }
+  .anim-sway { animation: scene-sway 6s ease-in-out infinite; transform-box: fill-box; }
+
   /* Respect reduced-motion globally for our custom animations */
   @media (prefers-reduced-motion: reduce) {
     .animate-aurora, .animate-aurora-slow, .animate-float, .animate-float-slow,
     .animate-pulse-glow, .animate-gradient, .animate-spin-slow, .animate-spin-slower,
-    .animate-marquee {
+    .animate-marquee, .anim-breathe, .anim-type-a, .anim-type-b, .anim-flicker,
+    .anim-steam, .anim-twinkle, .anim-lamp, .anim-cloud, .anim-mote, .anim-sway {
       animation: none !important;
     }
   }

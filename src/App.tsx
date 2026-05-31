@@ -9,7 +9,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { lazy, Suspense, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
-import LoadingScreen from "./components/LoadingScreen";
 import { AuroraBackground } from "./components/AuroraBackground";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
@@ -329,7 +328,6 @@ function HomePage() {
 function App() {
   return (
     <ErrorBoundary>
-      <LoadingScreen />
       <Router>
         <ScrollToTop />
         <AppContent />

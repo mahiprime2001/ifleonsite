@@ -23,7 +23,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <stop offset="0" stopColor="rgba(15,23,42,0.95)" />
         <stop offset="1" stopColor="rgba(2,6,23,0.95)" />
       </linearGradient>
-      <linearGradient id="dash-cyan" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="dash-sky" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor="#22d3ee" />
         <stop offset="1" stopColor="#3b82f6" />
       </linearGradient>
@@ -31,7 +31,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <stop offset="0" stopColor="#a78bfa" />
         <stop offset="1" stopColor="#7c3aed" />
       </linearGradient>
-      <linearGradient id="dash-emerald" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="dash-indigo" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor="#34d399" />
         <stop offset="1" stopColor="#10b981" />
       </linearGradient>
@@ -227,7 +227,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
         <motion.circle
           cx="20" cy="20" r="16" fill="none"
-          stroke="url(#dash-emerald)" strokeWidth="6"
+          stroke="url(#dash-indigo)" strokeWidth="6"
           strokeDasharray="100" strokeDashoffset="30"
           strokeLinecap="round"
           transform="rotate(-90 20 20)"

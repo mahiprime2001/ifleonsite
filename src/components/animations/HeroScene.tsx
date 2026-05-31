@@ -141,7 +141,7 @@ export const HeroScene = ({ className }: Props) => {
     >
       {/* mesh aura */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
-      <div className="absolute inset-[15%] rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[15%] rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
       <div className="absolute inset-[30%] rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
 
       <motion.div
@@ -160,7 +160,7 @@ export const HeroScene = ({ className }: Props) => {
           transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[2%] rounded-full border border-emerald-400/20 pointer-events-none"
+          className="absolute inset-[2%] rounded-full border border-indigo-400/20 pointer-events-none"
           animate={{ rotate: -360 }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         />
@@ -174,13 +174,13 @@ export const HeroScene = ({ className }: Props) => {
           {/* card chrome */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <Activity className="h-4 w-4 text-emerald-400" />
+              <Activity className="h-4 w-4 text-indigo-400" />
               <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-200">
                 Live Metrics
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span data-dot className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span data-dot className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
               <span data-dot className="w-1.5 h-1.5 rounded-full bg-blue-400" />
               <span data-dot className="w-1.5 h-1.5 rounded-full bg-purple-400" />
             </div>
@@ -241,7 +241,7 @@ export const HeroScene = ({ className }: Props) => {
           <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10">
             <span className="w-2 h-2 rounded-full bg-rose-400" />
             <span className="w-2 h-2 rounded-full bg-amber-400" />
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="w-2 h-2 rounded-full bg-indigo-400" />
             <span className="ml-auto text-[10px] font-mono text-slate-400">
               app.ts
             </span>
@@ -276,7 +276,7 @@ export const HeroScene = ({ className }: Props) => {
           style={{ transform: "translateZ(50px)" }}
         >
           <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <ShieldCheck className="h-3.5 w-3.5 text-indigo-400" />
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-200">
               Uptime
             </span>
@@ -313,7 +313,7 @@ export const HeroScene = ({ className }: Props) => {
               </defs>
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="text-2xl font-black bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">
+              <div className="text-2xl font-black bg-gradient-to-r from-indigo-300 to-sky-300 bg-clip-text text-transparent">
                 99.9%
               </div>
               <div className="text-[9px] tracking-[0.2em] text-slate-400 uppercase">

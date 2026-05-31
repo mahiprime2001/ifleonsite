@@ -38,7 +38,7 @@ const categories: Category[] = [
     subtitle: "Enterprise capabilities to scale operations and teams.",
     icon: Briefcase,
     items: businessServices,
-    accent: "from-blue-500 to-emerald-500",
+    accent: "from-blue-500 to-indigo-500",
   },
   {
     key: "individual",
@@ -73,12 +73,12 @@ export const Services = () => {
     >
       <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
       <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-[120px]" />
-      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-emerald-500/10 blur-[120px]" />
+      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-indigo-500/10 blur-[120px]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
               What We Do
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
@@ -175,7 +175,7 @@ export const Services = () => {
                   >
                     <MagnetCard
                       intensity={8}
-                      className="h-full rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-emerald-400/40 backdrop-blur-md transition-colors"
+                      className="h-full rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-indigo-400/40 backdrop-blur-md transition-colors"
                     >
                       <Link
                         to="/services"
@@ -183,7 +183,7 @@ export const Services = () => {
                       >
                         <div className="flex items-start justify-between mb-4">
                           <IsoIcon variant={variant} className="w-16 h-16" />
-                          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
                         </div>
                         <div className="font-bold text-white leading-tight text-lg mb-2">
                           {s.title}
@@ -191,7 +191,7 @@ export const Services = () => {
                         <div className="text-sm text-slate-400 line-clamp-2">
                           {s.tagline}
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-indigo-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                           Learn more
                           <ArrowRight className="h-3 w-3" />
                         </div>
@@ -207,7 +207,7 @@ export const Services = () => {
         <div className="flex justify-center mb-20">
           <Link
             to="/services"
-            className="shine-on-hover inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-8 py-4 rounded-xl font-semibold transition-all"
+            className="shine-on-hover inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-8 py-4 rounded-xl font-semibold transition-all"
           >
             View All Services With Details
             <ArrowRight className="h-4 w-4" />
@@ -225,7 +225,7 @@ export const Services = () => {
             whileHover={{ y: -4 }}
           >
             <div className="absolute inset-0 mesh-bg opacity-50" />
-            <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-emerald-400/30 blur-3xl" />
+            <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-indigo-400/30 blur-3xl" />
             <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-blue-400/30 blur-3xl" />
 
             <div className="relative">

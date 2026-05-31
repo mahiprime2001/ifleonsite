@@ -29,17 +29,14 @@ export const Hero = () => {
       ref={ref}
       className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-20 md:pt-24 pb-12"
     >
-      {/* ===== Background layers ===== */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950">
-        <div className="absolute -top-40 -left-32 w-[40rem] h-[40rem] rounded-full bg-emerald-500/14 blur-[120px]" />
-        <div className="absolute -bottom-40 -right-32 w-[44rem] h-[44rem] rounded-full bg-blue-500/16 blur-[120px]" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[32rem] h-[32rem] rounded-full bg-purple-500/12 blur-[120px]" />
-        <div className="absolute inset-0 iso-grid-bg opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
+      {/* ===== Background layers (global AuroraBackground shows through) ===== */}
+      <div className="absolute inset-0">
+        {/* localized accent glow that anchors the hero on top of the aurora */}
+        <div className="absolute top-1/4 right-[8%] w-[34rem] h-[34rem] rounded-full blur-[130px] transition-colors duration-1000" style={{ backgroundColor: "hsl(var(--brand) / 0.10)" }} />
         {!shouldReduceMotion && (
           <motion.div className="absolute inset-0" style={{ y: bgY }}>
             <Suspense fallback={null}>
-              <FloatingObjects density="low" palette="blue" />
+              <FloatingObjects density="low" palette="purple" />
             </Suspense>
           </motion.div>
         )}
@@ -54,30 +51,34 @@ export const Hero = () => {
           {/* Left: copy column — fills its half */}
           <div className="relative text-center lg:text-left lg:max-w-[640px]">
             {/* decorative left accent bar (visible on lg+) so left edge feels intentional */}
-            <div className="hidden lg:block absolute -left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-emerald-400/0 via-emerald-400/60 to-emerald-400/0" />
+            <div className="hidden lg:block absolute -left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-indigo-400/0 via-indigo-400/60 to-indigo-400/0" />
 
             <motion.div
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6"
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
             >
-              <Sparkles className="h-4 w-4 text-emerald-400" />
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: "hsl(var(--brand))" }} />
+                <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "hsl(var(--brand))" }} />
+              </span>
+              <Sparkles className="h-4 w-4 text-brand" />
               <span className="text-xs sm:text-sm text-white/80 tracking-wide">
                 AI • DevOps • Cloud • Cybersecurity
               </span>
             </motion.div>
 
-            <h1 className="font-black leading-[1.05] mb-5">
+            <h1 className="font-display font-black leading-[1.03] mb-5">
               <AnimeText
                 as="span"
                 text="IFLEON"
-                className="block text-5xl sm:text-6xl xl:text-7xl 2xl:text-[5.5rem] text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400 animate-gradient"
+                className="block text-5xl sm:text-6xl xl:text-7xl 2xl:text-[5.5rem] text-brand-gradient animate-gradient"
                 staggerMs={50}
                 duration={900}
               />
               <span className="block mt-3 text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-bold">
-                <span className="bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="text-brand-gradient animate-gradient">
                   Infinite Possibilities,
                 </span>{" "}
                 <span className="text-white">Logical Solutions.</span>
@@ -118,7 +119,7 @@ export const Hero = () => {
                 "Security-first approach",
               ].map((item, i) => (
                 <li key={i} className="flex items-center justify-center lg:justify-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-brand flex-shrink-0" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -134,7 +135,8 @@ export const Hero = () => {
                 onClick={scrollToContact}
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="shine-on-hover group relative bg-gradient-to-r from-emerald-500 to-blue-600 text-white px-7 py-3.5 rounded-2xl font-semibold shadow-xl hover:shadow-emerald-500/40 transition-all flex items-center justify-center gap-3 glow-emerald"
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                className="shine-on-hover group relative bg-brand-gradient text-white px-7 py-3.5 rounded-2xl font-semibold shadow-xl flex items-center justify-center gap-3 glow-brand"
               >
                 Get Free Consultation
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -142,7 +144,7 @@ export const Hero = () => {
 
               <Link
                 to="/services"
-                className="bg-white/5 hover:bg-white/10 border border-white/20 backdrop-blur-md px-7 py-3.5 rounded-2xl font-semibold text-white/90 hover:text-white transition-all flex items-center justify-center gap-3"
+                className="glass hover:bg-white/10 px-7 py-3.5 rounded-2xl font-semibold text-white/90 hover:text-white transition-all flex items-center justify-center gap-3"
               >
                 Explore Services
                 <ArrowRight className="h-5 w-5" />
@@ -166,9 +168,10 @@ export const Hero = () => {
                   <motion.div
                     key={i}
                     whileHover={{ y: -4, scale: 1.03 }}
-                    className="flex items-center gap-3 px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md"
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    className="flex items-center gap-3 px-3.5 py-2.5 glass rounded-xl hover:border-brand-soft"
                   >
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex-shrink-0">
+                    <div className="p-2 rounded-lg bg-brand-gradient flex-shrink-0">
                       <Icon className="h-4 w-4 text-white" />
                     </div>
                     <span className="text-sm font-semibold text-white/90 truncate">
@@ -196,7 +199,7 @@ export const Hero = () => {
                 1. Pick an illustration (search "developer", "code review",
                    "team work", "AI", etc.)
                 2. Set the brand color to #10b981 in their customizer (unDraw)
-                   or pick the green-themed variant (Storyset).
+                   or pick the indigo-themed variant (Storyset).
                 3. Download the SVG and save it to:
                    public/illustrations/your-name.svg
                 4. Replace <UndrawHero /> below with:
@@ -210,7 +213,7 @@ export const Hero = () => {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <div className="text-emerald-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
+                <div className="text-indigo-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
                   Live
                 </div>
                 <div className="text-sm sm:text-base font-bold">Pipelines deployed</div>
@@ -220,7 +223,7 @@ export const Hero = () => {
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, delay: 0.4 }}
               >
-                <div className="text-blue-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
+                <div className="text-sky-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
                   99.9%
                 </div>
                 <div className="text-sm sm:text-base font-bold">Uptime</div>
@@ -243,7 +246,7 @@ export const Hero = () => {
             { num: "Founder-led", label: "Execution" },
           ].map((item, i) => (
             <div key={i} className="text-center md:text-left">
-              <div className="text-lg sm:text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-blue-400">
+              <div className="font-display text-lg sm:text-xl md:text-2xl font-black text-brand-gradient">
                 {item.num}
               </div>
               <div className="text-slate-400 text-[11px] sm:text-xs md:text-sm tracking-wide uppercase">
@@ -261,7 +264,7 @@ export const Hero = () => {
         transition={{ duration: 2, repeat: Infinity }}
       >
         <div className="text-[10px] tracking-[0.4em] uppercase">Scroll</div>
-        <div className="w-[2px] h-8 bg-gradient-to-b from-emerald-400 to-transparent" />
+        <div className="w-[2px] h-8 bg-gradient-to-b from-indigo-400 to-transparent" />
       </motion.div>
     </section>
   );

@@ -16,7 +16,7 @@ export const FloatingContactButton = () => {
       icon: Phone,
       label: "Call Us",
       href: "tel:+911234567890",
-      color: "from-green-500 to-green-600",
+      color: "from-indigo-500 to-indigo-600",
     },
     {
       icon: Calendar,
@@ -64,7 +64,7 @@ export const FloatingContactButton = () => {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-teal-600 text-white shadow-2xl flex items-center justify-center hover:shadow-3xl transition-shadow"
+        className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-2xl flex items-center justify-center hover:shadow-3xl transition-shadow"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (

@@ -62,7 +62,7 @@ export const TrustStrip = () => {
                 className="flex items-center gap-3 shrink-0"
               >
                 <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center">
-                  <Icon className="h-4 w-4 text-emerald-400" />
+                  <Icon className="h-4 w-4 text-indigo-400" />
                 </div>
                 <span className="text-sm md:text-base font-medium whitespace-nowrap text-slate-200">
                   {item.label}

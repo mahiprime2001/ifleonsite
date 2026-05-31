@@ -166,7 +166,7 @@ export const ContactFormDialog = ({
 
               {isSubmitted ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-14 w-14 text-green-500 mx-auto mb-3" />
+                  <CheckCircle className="h-14 w-14 text-indigo-500 mx-auto mb-3" />
                   <h4 className="text-xl font-bold text-gray-900 mb-1">
                     Message Sent
                   </h4>
@@ -253,7 +253,7 @@ export const ContactFormDialog = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-lg"
+                    className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-lg"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                     <Send className="h-5 w-5" />

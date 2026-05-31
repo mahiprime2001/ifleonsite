@@ -118,7 +118,7 @@ export const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
           <div>
             <ScrollReveal direction="right">
-              <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+              <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
                 About IFLEON
               </p>
               <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
@@ -149,9 +149,9 @@ export const About = () => {
                   <div
                     key={index}
                     data-stat-card
-                    className="text-center p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl hover:bg-white/10 hover:border-emerald-400/40 transition-colors opacity-0"
+                    className="text-center p-5 bg-white/5 border border-white/10 backdrop-blur-md rounded-xl hover:bg-white/10 hover:border-indigo-400/40 transition-colors opacity-0"
                   >
-                    <Icon className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
+                    <Icon className="h-8 w-8 text-indigo-400 mx-auto mb-2" />
                     <div
                       className="text-2xl font-black text-white"
                       {...(canCount && {
@@ -178,7 +178,7 @@ export const About = () => {
                 <div className="rounded-2xl bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 p-4 aspect-square iso-grid-bg">
                   <AboutScene className="w-full h-full" />
                 </div>
-                <div className="absolute -bottom-5 -left-5 bg-gradient-to-br from-blue-600 to-emerald-500 text-white p-5 rounded-2xl shadow-xl glow-blue">
+                <div className="absolute -bottom-5 -left-5 bg-gradient-to-br from-blue-600 to-indigo-500 text-white p-5 rounded-2xl shadow-xl glow-blue">
                   <div className="text-2xl font-black">ifleon.com</div>
                   <div className="text-blue-100 text-xs tracking-wide">
                     AI · DevOps · Cloud · Security
@@ -196,14 +196,14 @@ export const About = () => {
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
-            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-emerald-400/20 blur-3xl" />
+            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-indigo-400/20 blur-3xl" />
             <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-blue-400/20 blur-3xl" />
 
             <div className="relative text-center max-w-3xl mx-auto">
               <h3 className="text-3xl font-bold text-white mb-3">
                 Leadership & Vision
               </h3>
-              <h4 className="text-2xl font-black text-emerald-400 mb-2">
+              <h4 className="text-2xl font-black text-indigo-400 mb-2">
                 S. Mahendra Reddy
               </h4>
               <p className="text-slate-200 mb-4 font-medium">
@@ -219,7 +219,7 @@ export const About = () => {
                 href="https://mahendra.ifleon.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:shadow-blue-500/30 transition-all font-semibold hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-500 text-white px-6 py-3 rounded-xl hover:shadow-xl hover:shadow-blue-500/30 transition-all font-semibold hover:-translate-y-0.5"
               >
                 <Brain className="h-5 w-5" />
                 View Founder Portfolio
@@ -240,7 +240,7 @@ export const About = () => {
             </div>
           </StaggerItem>
           <StaggerItem direction="right">
-            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 h-full hover:bg-white/10 hover:border-emerald-400/40 transition-all">
+            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-8 h-full hover:bg-white/10 hover:border-indigo-400/40 transition-all">
               <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
               <p className="text-slate-300 leading-relaxed">
                 To solve real-world business problems using AI, DevOps, and cloud
@@ -258,7 +258,7 @@ export const About = () => {
         </ScrollReveal>
 
         <div className="relative">
-          <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-400 via-blue-400 to-purple-400 rounded-full opacity-60" />
+          <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-gradient-to-b from-indigo-400 via-blue-400 to-purple-400 rounded-full opacity-60" />
 
           <div className="space-y-12">
             {milestones.map((milestone, index) => (
@@ -275,9 +275,9 @@ export const About = () => {
                 <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}>
                   <motion.div
                     whileHover={{ y: -4, scale: 1.02 }}
-                    className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                    className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 hover:bg-white/10 hover:border-indigo-400/40 transition-all"
                   >
-                    <div className="text-emerald-400 font-black text-xl mb-2">
+                    <div className="text-indigo-400 font-black text-xl mb-2">
                       {milestone.year}
                     </div>
                     <h4 className="text-lg font-bold text-white mb-2">
@@ -318,7 +318,7 @@ export const About = () => {
               </p>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-xl hover:shadow-emerald-500/30 transition-all font-semibold hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-xl hover:shadow-indigo-500/30 transition-all font-semibold hover:-translate-y-0.5"
               >
                 Start a Conversation <ArrowRight className="h-5 w-5" />
               </a>

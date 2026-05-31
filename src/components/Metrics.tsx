@@ -52,7 +52,7 @@ const MetricCard = ({ value, label, suffix, icon: Icon, accent }: MetricProps) =
       viewport={{ once: true }}
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
-      className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 hover:bg-white/10 hover:shadow-2xl transition-all text-center border border-white/10 hover:border-emerald-400/40 overflow-hidden"
+      className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 hover:bg-white/10 hover:shadow-2xl transition-all text-center border border-white/10 hover:border-indigo-400/40 overflow-hidden"
     >
       <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`} />
       <div className="relative">
@@ -119,7 +119,7 @@ export const Metrics = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
           <ScrollReveal direction="up">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
               By the Numbers
             </p>
           </ScrollReveal>
@@ -150,9 +150,9 @@ export const Metrics = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} accent="from-blue-500 to-cyan-500" />
+          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} accent="from-blue-500 to-sky-500" />
           <MetricCard value={6} label="Industries Served" icon={Layers} accent="from-purple-500 to-pink-500" />
-          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} accent="from-emerald-500 to-teal-500" />
+          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} accent="from-indigo-500 to-violet-500" />
           <MetricCard value={99} suffix="%" label="Security-First Approach" icon={ShieldCheck} accent="from-amber-500 to-orange-500" />
         </div>
 
@@ -163,7 +163,7 @@ export const Metrics = () => {
             </p>
             <a
               href="#contact"
-              className="shine-on-hover inline-block bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+              className="shine-on-hover inline-block bg-gradient-to-r from-blue-600 to-indigo-500 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold transition-all"
             >
               Start a Conversation
             </a>

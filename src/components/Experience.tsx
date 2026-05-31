@@ -21,7 +21,7 @@ export const Experience = () => {
       description:
         "End-to-end CI/CD pipeline that cut deployment time by 75% and improved release reliability.",
       technologies: ["Jenkins", "Docker", "AWS"],
-      accent: "from-emerald-500 to-teal-500",
+      accent: "from-indigo-500 to-violet-500",
     },
     {
       icon: Globe,
@@ -30,7 +30,7 @@ export const Experience = () => {
       description:
         "Legacy-to-cloud migration with performance tuning — achieved 50% operational savings.",
       technologies: ["AWS EC2", "S3", "Lambda"],
-      accent: "from-blue-500 to-cyan-500",
+      accent: "from-blue-500 to-sky-500",
     },
     {
       icon: Zap,
@@ -77,7 +77,7 @@ export const Experience = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
               Our Experience
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
@@ -114,7 +114,7 @@ export const Experience = () => {
               >
                 <MagnetCard
                   intensity={6}
-                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-indigo-400/40 transition-all"
                 >
                   <div className="p-6 md:p-8">
                     <div className="flex items-start gap-4">
@@ -129,7 +129,7 @@ export const Experience = () => {
                         <h3 className="text-lg md:text-xl font-bold text-white mb-1">
                           {project.title}
                         </h3>
-                        <div className="text-xs md:text-sm text-emerald-400 font-semibold mb-3 uppercase tracking-wide">
+                        <div className="text-xs md:text-sm text-indigo-400 font-semibold mb-3 uppercase tracking-wide">
                           {project.client}
                         </div>
                         <p className="text-slate-300 mb-4 leading-relaxed text-sm md:text-base">
@@ -170,7 +170,7 @@ export const Experience = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
                   whileHover={{ y: -4 }}
-                  className="text-center p-5 md:p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                  className="text-center p-5 md:p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-indigo-400/40 transition-all"
                 >
                   <h4 className="text-base md:text-lg font-bold text-white mb-2">
                     {adv.title}

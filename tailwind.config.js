@@ -17,7 +17,16 @@ module.exports = {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				display: ['Outfit', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			},
 			colors: {
+				brand: {
+					DEFAULT: 'hsl(var(--brand))',
+					2: 'hsl(var(--brand-2))',
+					3: 'hsl(var(--brand-3))',
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

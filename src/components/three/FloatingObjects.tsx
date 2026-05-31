@@ -4,7 +4,7 @@ import * as THREE from "three";
 type Props = {
   className?: string;
   density?: "low" | "medium" | "high";
-  palette?: "blue" | "purple" | "emerald";
+  palette?: "blue" | "purple" | "indigo";
 };
 
 // Premium ambient Three.js scene — fewer, freely-drifting glassy polyhedra
@@ -48,13 +48,13 @@ const FloatingObjects = ({
     const palettes = {
       blue: [0x60a5fa, 0x22d3ee, 0x3b82f6, 0xa78bfa, 0x34d399],
       purple: [0xa78bfa, 0x7c3aed, 0xc084fc, 0x60a5fa, 0xf472b6],
-      emerald: [0x34d399, 0x10b981, 0x22d3ee, 0xa7f3d0, 0x60a5fa],
+      indigo: [0x34d399, 0x10b981, 0x22d3ee, 0xa7f3d0, 0x60a5fa],
     }[palette];
 
     const lightColors = {
       blue: [0x60a5fa, 0x34d399, 0xa78bfa],
       purple: [0xa78bfa, 0xf472b6, 0x60a5fa],
-      emerald: [0x34d399, 0x22d3ee, 0xa78bfa],
+      indigo: [0x34d399, 0x22d3ee, 0xa78bfa],
     }[palette];
 
     const getSize = () => {

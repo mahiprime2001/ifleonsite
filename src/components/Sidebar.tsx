@@ -211,7 +211,7 @@ export function Sidebar({ className = "", children }: SidebarProps) {
                   <p className="text-sm font-medium text-slate-800 truncate">John Doe</p>
                   <p className="text-xs text-slate-500 truncate">Senior Administrator</p>
                 </div>
-                <div className="w-2 h-2 bg-green-500 rounded-full ml-2" title="Online" />
+                <div className="w-2 h-2 bg-indigo-500 rounded-full ml-2" title="Online" />
               </div>
             ) : (
               <div className="flex justify-center">
@@ -219,7 +219,7 @@ export function Sidebar({ className = "", children }: SidebarProps) {
                   <div className="w-9 h-9 bg-slate-200 rounded-full flex items-center justify-center">
                     <span className="text-slate-700 font-medium text-sm">JD</span>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-indigo-500 rounded-full border-2 border-white" />
                 </div>
               </div>
             )}

@@ -77,21 +77,29 @@ function ifleon_add_module_to_script($tag, $handle, $src) {
     return $tag;
 }
 
+// Stop WordPress from printing the Customizer "Site Icon" favicon links.
+// If an old logo was set there, its <link rel="icon"> would override ours,
+// so the browser tab keeps showing the stale icon. We emit our own below.
+remove_action('wp_head', 'wp_site_icon', 99);
+
 // Output the favicon / app icon in <head> using the Vite-built logo asset.
-// Hash auto-detected so it keeps working after every rebuild.
+// Hash auto-detected so it keeps working after every rebuild. Runs at a late
+// priority (100) so our links are the last icon declarations in <head>.
 function ifleon_favicon() {
     $logo = ifleon_find_asset('logo', 'svg');
     if (!$logo) {
         return;
     }
-    $url = esc_url($logo['url']);
+    // Append the file mtime as a cache-buster so browsers refetch the new
+    // icon instead of serving the aggressively-cached old favicon.
+    $url = esc_url($logo['url'] . '?v=' . filemtime($logo['path']));
     echo "\n";
     echo '<link rel="icon" href="' . $url . '" type="image/svg+xml" />' . "\n";
     echo '<link rel="shortcut icon" href="' . $url . '" type="image/svg+xml" />' . "\n";
     echo '<link rel="apple-touch-icon" href="' . $url . '" />' . "\n";
     echo '<meta name="theme-color" content="#0b1220" />' . "\n";
 }
-add_action('wp_head', 'ifleon_favicon');
+add_action('wp_head', 'ifleon_favicon', 100);
 
 // Theme setup
 function ifleon_theme_setup() {

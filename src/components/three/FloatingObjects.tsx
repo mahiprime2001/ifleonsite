@@ -27,6 +27,16 @@ const FloatingObjects = ({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Skip the WebGL scene entirely on very low-end devices — software WebGL
+    // and tiny core/memory budgets make this the slowest thing on the page.
+    // The gradient blobs behind it already look fine on their own.
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const lowEnd =
+      (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 2) ||
+      (typeof nav.hardwareConcurrency === "number" &&
+        nav.hardwareConcurrency <= 2);
+    if (lowEnd) return;
+
     // Fewer shapes by default — they drift freely so the scene feels
     // populated even with a small count.
     const counts = {
@@ -82,7 +92,10 @@ const FloatingObjects = ({
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
+    // Cap DPR at 1.5 — this is a soft, blurred background, so rendering at the
+    // full 2x+ of high-DPI screens just quadruples shading cost for no visible
+    // gain. The single biggest GPU saving on retina/4K laptops.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5));
     renderer.setSize(w, h, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -324,11 +337,28 @@ const FloatingObjects = ({
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
 
-    let visible = true;
+    let visible = document.visibilityState === "visible";
     const onVis = () => {
       visible = document.visibilityState === "visible";
     };
     document.addEventListener("visibilitychange", onVis);
+
+    // Pause the render loop when the hero scrolls out of view. The page is
+    // long, so without this the WebGL loop would keep burning CPU/GPU the
+    // whole time the user is reading sections further down.
+    let onScreen = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+      },
+      { rootMargin: "100px" },
+    );
+    io.observe(container);
+
+    // Cap the ambient scene to ~30fps — it doesn't need 60/120fps, and the
+    // lower rate roughly halves its CPU/GPU cost.
+    const FRAME_MS = 1000 / 30;
+    let lastFrameAt = 0;
 
     const clock = new THREE.Clock();
     let frameId = 0;
@@ -337,7 +367,10 @@ const FloatingObjects = ({
 
     const animate = () => {
       frameId = requestAnimationFrame(animate);
-      if (!visible) return;
+      if (!visible || !onScreen) return;
+      const now = performance.now();
+      if (now - lastFrameAt < FRAME_MS) return;
+      lastFrameAt = now;
       const t = clock.getElapsedTime();
       const dt = Math.min(clock.getDelta() || 0.016, 0.05);
       const speed = reduce ? 0 : 1;
@@ -471,6 +504,7 @@ const FloatingObjects = ({
     return () => {
       cancelAnimationFrame(frameId);
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("pointermove", onPointer);
       document.removeEventListener("visibilitychange", onVis);
       if (canvas.parentNode === container) container.removeChild(canvas);

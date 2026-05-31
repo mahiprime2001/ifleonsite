@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useAtmosphere } from "./atmosphere/AtmosphereProvider";
-import type { Season } from "./atmosphere/atmosphere-core";
+import { seasonFromMonth, type Season } from "./atmosphere/atmosphere-core";
 
 type Particle = {
   x: number;
@@ -69,7 +68,8 @@ const CONFIG: Record<Season, SeasonConfig> = {
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 export default function SeasonalEffect() {
-  const { season } = useAtmosphere();
+  // Season follows the current month (no theme provider needed).
+  const season: Season = seasonFromMonth(new Date().getMonth());
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {

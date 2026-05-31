@@ -4,7 +4,7 @@ type Props = { className?: string };
 
 // Flat unDraw / Storyset-style illustration for the Hero section.
 //
-// Brand color = indigo (#10b981 family). No realistic human figures —
+// Brand color = blue (#10b981 family). No realistic human figures —
 // just a stylized laptop with code, a plant, floating UI cards, and
 // decorative geometry. Easy to swap with an actual download from
 // undraw.co or storyset.com — see usage notes in Hero.tsx.

@@ -33,7 +33,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <stop offset="1" stopColor="#1a0f08" />
       </linearGradient>
 
-      {/* SHIRT — indigo hoodie with depth */}
+      {/* SHIRT — blue hoodie with depth */}
       <radialGradient id="shirt3d" cx="0.4" cy="0.3" r="0.95">
         <stop offset="0" stopColor="#5eead4" />
         <stop offset="0.5" stopColor="#10b981" />

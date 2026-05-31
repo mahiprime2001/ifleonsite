@@ -40,7 +40,7 @@ export const PageHero = ({
       className={`relative ${padY} bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden border-b border-white/5`}
     >
       {/* glow orbs */}
-      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-indigo-500/10 blur-[120px]" />
+      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-blue-500/10 blur-[120px]" />
       <div className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full bg-blue-500/12 blur-[120px]" />
       <div className="absolute inset-0 mesh-bg opacity-30" />
       <div className="absolute inset-0 iso-grid-bg opacity-20" />
@@ -54,8 +54,8 @@ export const PageHero = ({
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-semibold text-indigo-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-semibold text-blue-300">
                 {eyebrow}
               </span>
             </motion.div>

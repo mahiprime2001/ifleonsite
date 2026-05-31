@@ -223,7 +223,7 @@ export const NewsletterScene = ({ className }: Props) => {
     >
       {/* mesh aura backdrop */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
-      <div className="absolute inset-[18%] rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[18%] rounded-full bg-blue-500/15 blur-3xl pointer-events-none" />
       <div className="absolute inset-[32%] rounded-full bg-blue-500/15 blur-3xl pointer-events-none" />
 
       <motion.div
@@ -242,7 +242,7 @@ export const NewsletterScene = ({ className }: Props) => {
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[12%] rounded-full border border-indigo-400/15 pointer-events-none"
+          className="absolute inset-[12%] rounded-full border border-blue-400/15 pointer-events-none"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
@@ -253,7 +253,7 @@ export const NewsletterScene = ({ className }: Props) => {
             <span
               key={i}
               data-ripple
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-indigo-400/40"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-blue-400/40"
               style={{ filter: "drop-shadow(0 0 10px rgba(52,211,153,0.4))" }}
             />
           ))}
@@ -314,7 +314,7 @@ export const NewsletterScene = ({ className }: Props) => {
 
           <div data-envelope className="relative">
             {/* envelope body */}
-            <div className="relative w-44 h-28 md:w-52 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-sky-400 shadow-[0_30px_60px_-15px_rgba(34,211,238,0.6)] overflow-visible border border-white/30">
+            <div className="relative w-44 h-28 md:w-52 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500 via-blue-500 to-sky-400 shadow-[0_30px_60px_-15px_rgba(34,211,238,0.6)] overflow-visible border border-white/30">
               {/* shine */}
               <div className="absolute inset-x-2 top-2 h-3 rounded-full bg-white/30 blur-md" />
 
@@ -326,7 +326,7 @@ export const NewsletterScene = ({ className }: Props) => {
                 <div className="h-1.5 rounded-full bg-slate-300" style={{ width: "70%" }} />
                 <div className="h-1 rounded-full bg-slate-200" style={{ width: "55%" }} />
                 <div className="h-1 rounded-full bg-slate-200" style={{ width: "65%" }} />
-                <div className="h-1 rounded-full bg-indigo-400" style={{ width: "30%" }} />
+                <div className="h-1 rounded-full bg-blue-400" style={{ width: "30%" }} />
               </div>
 
               {/* envelope flap (back triangle silhouette) */}
@@ -365,7 +365,7 @@ export const NewsletterScene = ({ className }: Props) => {
               </div>
               <div className="text-[9px] text-slate-400">Weekly digest</div>
             </div>
-            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-blue-400" />
           </div>
           {[
             { c: "#34d399", w: "85%" },
@@ -402,14 +402,14 @@ export const NewsletterScene = ({ className }: Props) => {
             <span data-pulse className="w-1.5 h-1.5 rounded-full bg-blue-400" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span data-count className="text-2xl font-black bg-gradient-to-r from-indigo-300 to-sky-300 bg-clip-text text-transparent">
+            <span data-count className="text-2xl font-black bg-gradient-to-r from-blue-300 to-sky-300 bg-clip-text text-transparent">
               1284
             </span>
-            <span className="text-xs font-semibold text-indigo-300">+1</span>
+            <span className="text-xs font-semibold text-blue-300">+1</span>
           </div>
           <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-sky-400"
+              className="h-full rounded-full bg-gradient-to-r from-blue-400 to-sky-400"
               style={{ width: "78%" }}
             />
           </div>
@@ -418,10 +418,10 @@ export const NewsletterScene = ({ className }: Props) => {
         {/* === SIDE CHIP: send icon === */}
         <div
           data-side
-          className="absolute right-[6%] top-[14%] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900/90 border border-indigo-400/40 backdrop-blur-md shadow-xl"
+          className="absolute right-[6%] top-[14%] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900/90 border border-blue-400/40 backdrop-blur-md shadow-xl"
           style={{ transform: "translateZ(60px)", boxShadow: "0 10px 25px -10px rgba(52,211,153,0.7)" }}
         >
-          <span className="w-6 h-6 rounded-md flex items-center justify-center bg-gradient-to-br from-indigo-400 to-sky-400">
+          <span className="w-6 h-6 rounded-md flex items-center justify-center bg-gradient-to-br from-blue-400 to-sky-400">
             <Send className="h-3 w-3 text-white" />
           </span>
           <span className="text-[10px] font-bold text-slate-200">Sent</span>

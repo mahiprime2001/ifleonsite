@@ -6,15 +6,15 @@ type Variant = "blade" | "diagonal" | "flip" | "iris";
 type Props = {
   variant?: Variant;
   label?: string;
-  accent?: "indigo" | "blue" | "purple" | "violet" | "orange";
+  accent?: "blue" | "blue" | "purple" | "sky" | "orange";
   children?: ReactNode;
 };
 
 const accentMap = {
-  indigo: { from: "#34d399", to: "#10b981", glow: "rgba(52,211,153,0.55)" },
+  blue: { from: "#34d399", to: "#10b981", glow: "rgba(52,211,153,0.55)" },
   blue: { from: "#60a5fa", to: "#3b82f6", glow: "rgba(96,165,250,0.55)" },
   purple: { from: "#a78bfa", to: "#7c3aed", glow: "rgba(167,139,250,0.55)" },
-  violet: { from: "#5eead4", to: "#14b8a6", glow: "rgba(94,234,212,0.55)" },
+  sky: { from: "#5eead4", to: "#14b8a6", glow: "rgba(94,234,212,0.55)" },
   orange: { from: "#fbbf24", to: "#f97316", glow: "rgba(251,191,36,0.55)" },
 };
 

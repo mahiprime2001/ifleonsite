@@ -118,7 +118,7 @@ export const Header = () => {
               >
                 IFLEON
               </span>
-              <span className="block text-[10px] font-medium tracking-widest uppercase text-indigo-300">
+              <span className="block text-[10px] font-medium tracking-widest uppercase text-blue-300">
                 Consulting
               </span>
             </div>
@@ -126,7 +126,7 @@ export const Header = () => {
             {collapsed && (
               <motion.span
                 aria-hidden
-                className="absolute -right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-indigo-400"
+                className="absolute -right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400"
                 animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               />
@@ -200,7 +200,7 @@ export const Header = () => {
                     >
                       <Link
                         to="/#contact"
-                        className="text-sm font-semibold px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-500 hover:shadow-lg hover:shadow-indigo-500/30 text-white transition-all"
+                        className="text-sm font-semibold px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:shadow-lg hover:shadow-blue-500/30 text-white transition-all"
                       >
                         Get Started
                       </Link>
@@ -257,7 +257,7 @@ export const Header = () => {
               <div className="pt-3 border-t border-white/10">
                 <Link
                   to="/#contact"
-                  className="block text-sm font-semibold px-4 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-center"
+                  className="block text-sm font-semibold px-4 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center"
                 >
                   Get Started
                 </Link>

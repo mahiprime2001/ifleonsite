@@ -36,7 +36,7 @@ export const Hero = () => {
         {!shouldReduceMotion && (
           <motion.div className="absolute inset-0" style={{ y: bgY }}>
             <Suspense fallback={null}>
-              <FloatingObjects density="low" palette="purple" />
+              <FloatingObjects density="low" palette="blue" />
             </Suspense>
           </motion.div>
         )}
@@ -51,7 +51,7 @@ export const Hero = () => {
           {/* Left: copy column — fills its half */}
           <div className="relative text-center lg:text-left lg:max-w-[640px]">
             {/* decorative left accent bar (visible on lg+) so left edge feels intentional */}
-            <div className="hidden lg:block absolute -left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-indigo-400/0 via-indigo-400/60 to-indigo-400/0" />
+            <div className="hidden lg:block absolute -left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-blue-400/0 via-blue-400/60 to-blue-400/0" />
 
             <motion.div
               initial={{ y: 24, opacity: 0 }}
@@ -199,7 +199,7 @@ export const Hero = () => {
                 1. Pick an illustration (search "developer", "code review",
                    "team work", "AI", etc.)
                 2. Set the brand color to #10b981 in their customizer (unDraw)
-                   or pick the indigo-themed variant (Storyset).
+                   or pick the blue-themed variant (Storyset).
                 3. Download the SVG and save it to:
                    public/illustrations/your-name.svg
                 4. Replace <UndrawHero /> below with:
@@ -213,7 +213,7 @@ export const Hero = () => {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <div className="text-indigo-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
+                <div className="text-blue-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
                   Live
                 </div>
                 <div className="text-sm sm:text-base font-bold">Pipelines deployed</div>
@@ -264,7 +264,7 @@ export const Hero = () => {
         transition={{ duration: 2, repeat: Infinity }}
       >
         <div className="text-[10px] tracking-[0.4em] uppercase">Scroll</div>
-        <div className="w-[2px] h-8 bg-gradient-to-b from-indigo-400 to-transparent" />
+        <div className="w-[2px] h-8 bg-gradient-to-b from-blue-400 to-transparent" />
       </motion.div>
     </section>
   );

@@ -50,7 +50,7 @@ export const Testimonials = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
               Testimonials
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
@@ -95,9 +95,9 @@ export const Testimonials = () => {
                     viewport={{ once: true }}
                     whileHover={{ y: -8 }}
                     transition={{ type: "spring", stiffness: 200, damping: 22 }}
-                    className="relative bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 h-full flex flex-col justify-between hover:bg-white/10 hover:border-indigo-400/40 hover:shadow-2xl transition-all"
+                    className="relative bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 h-full flex flex-col justify-between hover:bg-white/10 hover:border-blue-400/40 hover:shadow-2xl transition-all"
                   >
-                    <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-500 shadow-lg">
+                    <div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-500 shadow-lg">
                       <Quote className="h-5 w-5 text-white" />
                     </div>
 
@@ -124,7 +124,7 @@ export const Testimonials = () => {
                           className="w-11 h-11 rounded-full object-cover border-2 border-white/20 shadow-sm"
                         />
                       ) : (
-                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-sm">
+                        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-blue-500 flex items-center justify-center shadow-sm">
                           <User className="h-5 w-5 text-white" />
                         </div>
                       )}

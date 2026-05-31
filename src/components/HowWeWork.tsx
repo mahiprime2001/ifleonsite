@@ -70,7 +70,7 @@ export const HowWeWork = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
               Our Process
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight">
@@ -86,7 +86,7 @@ export const HowWeWork = () => {
         {/* Steps with illustrations + connecting line */}
         <div className="relative">
           {/* connecting line — desktop */}
-          <div className="hidden lg:block absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-indigo-400/0 via-indigo-400/50 to-indigo-400/0" />
+          <div className="hidden lg:block absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-400/0 via-blue-400/50 to-blue-400/0" />
 
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-4"
@@ -119,8 +119,8 @@ export const HowWeWork = () => {
                   </motion.div>
 
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-3">
-                    <Icon className="h-3.5 w-3.5 text-indigo-400" />
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-indigo-300">
+                    <Icon className="h-3.5 w-3.5 text-blue-400" />
+                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-300">
                       Step {item.step}
                     </span>
                   </div>
@@ -141,7 +141,7 @@ export const HowWeWork = () => {
         <ScrollReveal direction="up">
           <div className="mt-12 md:mt-16 text-center">
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
               <p className="text-slate-200 text-sm md:text-base">
                 No hidden steps. No surprises. Just clear execution.
               </p>

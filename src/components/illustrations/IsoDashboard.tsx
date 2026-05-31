@@ -31,7 +31,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <stop offset="0" stopColor="#a78bfa" />
         <stop offset="1" stopColor="#7c3aed" />
       </linearGradient>
-      <linearGradient id="dash-indigo" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="dash-blue" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor="#34d399" />
         <stop offset="1" stopColor="#10b981" />
       </linearGradient>
@@ -227,7 +227,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
         <motion.circle
           cx="20" cy="20" r="16" fill="none"
-          stroke="url(#dash-indigo)" strokeWidth="6"
+          stroke="url(#dash-blue)" strokeWidth="6"
           strokeDasharray="100" strokeDashoffset="30"
           strokeLinecap="round"
           transform="rotate(-90 20 20)"

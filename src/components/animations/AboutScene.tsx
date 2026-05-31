@@ -147,7 +147,7 @@ export const AboutScene = ({ className }: Props) => {
     >
       {/* mesh aura */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
-      <div className="absolute inset-[20%] rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[20%] rounded-full bg-blue-500/15 blur-3xl pointer-events-none" />
 
       <motion.div
         className="relative w-full h-full"
@@ -165,7 +165,7 @@ export const AboutScene = ({ className }: Props) => {
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[12%] rounded-full border border-indigo-400/15 pointer-events-none"
+          className="absolute inset-[12%] rounded-full border border-blue-400/15 pointer-events-none"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
@@ -227,7 +227,7 @@ export const AboutScene = ({ className }: Props) => {
               transformOrigin: "center",
             }}
           />
-          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-indigo-400 via-sky-400 to-blue-500 shadow-[0_20px_60px_-10px_rgba(34,211,238,0.6)] flex items-center justify-center border border-white/30">
+          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-blue-400 via-sky-400 to-blue-500 shadow-[0_20px_60px_-10px_rgba(34,211,238,0.6)] flex items-center justify-center border border-white/30">
             <span className="text-white font-black text-xl md:text-2xl tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
               IFLEON
             </span>
@@ -280,11 +280,11 @@ export const AboutScene = ({ className }: Props) => {
           style={{ transform: "translateZ(50px)" }}
         >
           <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/10">
-            <ShieldCheck className="h-3 w-3 text-indigo-400" />
+            <ShieldCheck className="h-3 w-3 text-blue-400" />
             <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-200">
               Status
             </span>
-            <span data-pulse className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400" />
+            <span data-pulse className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400" />
           </div>
           <div className="p-3 space-y-1.5">
             {[

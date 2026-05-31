@@ -23,7 +23,7 @@ const reasons = [
     title: "Strong DevOps Foundation",
     description:
       "From CI/CD pipelines to cloud automation, we build systems that are stable, scalable, and easy to maintain.",
-    accent: "from-indigo-500 to-violet-500",
+    accent: "from-blue-500 to-sky-500",
   },
   {
     icon: ShieldCheck,
@@ -44,7 +44,7 @@ const reasons = [
     title: "Business-Focused Delivery",
     description:
       "We align technology decisions with your business goals, timelines, and budgets.",
-    accent: "from-blue-500 to-indigo-500",
+    accent: "from-blue-500 to-blue-500",
   },
   {
     icon: Zap,
@@ -64,7 +64,7 @@ export const WhyChooseUs = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
               Why IFLEON
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
@@ -101,7 +101,7 @@ export const WhyChooseUs = () => {
               >
                 <MagnetCard
                   intensity={10}
-                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-indigo-400/40 hover:shadow-2xl transition-all"
+                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-blue-400/40 hover:shadow-2xl transition-all"
                 >
                   <div className="p-6 md:p-8 h-full">
                     <motion.div

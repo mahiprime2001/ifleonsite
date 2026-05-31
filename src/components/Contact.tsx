@@ -103,12 +103,12 @@ export const Contact = () => {
     >
       <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
       <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-[120px]" />
-      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-indigo-500/10 blur-[120px]" />
+      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-[120px]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-indigo-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
               Get in Touch
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
@@ -138,7 +138,7 @@ export const Contact = () => {
                   icon: MapPin,
                   label: "Location",
                   value: "Nellore, Andhra Pradesh, India",
-                  accent: "from-indigo-500 to-violet-500",
+                  accent: "from-blue-500 to-sky-500",
                 },
                 {
                   icon: Phone,
@@ -165,7 +165,7 @@ export const Contact = () => {
                   >
                     <Wrapper
                       {...(item.href ? { href: item.href } : {})}
-                      className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:border-indigo-400/40 hover:-translate-y-0.5 transition-all"
+                      className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:border-blue-400/40 hover:-translate-y-0.5 transition-all"
                     >
                       <div
                         className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br ${item.accent} shadow-md`}
@@ -221,7 +221,7 @@ export const Contact = () => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1, rotate: 360 }}
                       transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                      className="w-20 h-20 mx-auto mb-5 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg"
+                      className="w-20 h-20 mx-auto mb-5 rounded-full bg-gradient-to-br from-blue-500 to-sky-500 flex items-center justify-center shadow-lg"
                     >
                       <CheckCircle className="h-10 w-10 text-white" />
                     </motion.div>
@@ -317,7 +317,7 @@ export const Contact = () => {
                       whileTap={{ scale: 0.98 }}
                       type="submit"
                       disabled={isSubmitting}
-                      className="shine-on-hover w-full bg-gradient-to-r from-blue-600 to-indigo-500 hover:shadow-xl hover:shadow-blue-500/40 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
+                      className="shine-on-hover w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:shadow-xl hover:shadow-blue-500/40 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? "Sending..." : "Send Message"}
                       <Send className="h-5 w-5" />

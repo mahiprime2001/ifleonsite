@@ -11,8 +11,6 @@ import { lazy, Suspense, useEffect } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import LoadingScreen from "./components/LoadingScreen";
 import { AuroraBackground } from "./components/AuroraBackground";
-import { AtmosphereProvider } from "./components/atmosphere/AtmosphereProvider";
-import AtmosphereToggle from "./components/atmosphere/AtmosphereToggle";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
@@ -118,7 +116,6 @@ function AppContent() {
   return (
     <>
       <AuroraBackground />
-      {showHeaderFooter && <AtmosphereToggle />}
       <Toaster position="top-center" richColors />
       {showHeaderFooter && <Header />}
 
@@ -308,7 +305,7 @@ function HomePage() {
     <>
       <Hero />
       <TrustStrip />
-      <SectionCut variant="blade" accent="indigo" label="What We Do" />
+      <SectionCut variant="blade" accent="blue" label="What We Do" />
       <Services />
       <SectionCut variant="diagonal" accent="blue" label="By the Numbers" />
       <Metrics />
@@ -316,9 +313,9 @@ function HomePage() {
       <SectionCut variant="blade" accent="purple" label="Experience" />
       <Experience />
       <WhyChooseUs />
-      <SectionCut variant="flip" accent="indigo" label="Our Process" />
+      <SectionCut variant="flip" accent="blue" label="Our Process" />
       <HowWeWork />
-      <SectionCut variant="iris" accent="violet" label="Voices" />
+      <SectionCut variant="iris" accent="sky" label="Voices" />
       <Testimonials />
       <Newsletter />
       <SectionCut variant="diagonal" accent="orange" label="Let's Talk" />
@@ -332,13 +329,11 @@ function HomePage() {
 function App() {
   return (
     <ErrorBoundary>
-      <AtmosphereProvider>
-        <LoadingScreen />
-        <Router>
-          <ScrollToTop />
-          <AppContent />
-        </Router>
-      </AtmosphereProvider>
+      <LoadingScreen />
+      <Router>
+        <ScrollToTop />
+        <AppContent />
+      </Router>
     </ErrorBoundary>
   );
 }

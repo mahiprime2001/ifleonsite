@@ -4,7 +4,7 @@ import * as THREE from "three";
 type Props = {
   className?: string;
   density?: "low" | "medium" | "high";
-  palette?: "blue" | "purple" | "indigo";
+  palette?: "blue" | "purple" | "sky";
 };
 
 // Premium ambient Three.js scene — fewer, freely-drifting glassy polyhedra
@@ -45,16 +45,17 @@ const FloatingObjects = ({
       high: { shapes: isMobile ? 7 : 12, particles: isMobile ? 240 : 460, sparks: isMobile ? 130 : 260 },
     }[density];
 
+    // Electric-blue family across the board — keeps the scene on-theme.
     const palettes = {
-      blue: [0x60a5fa, 0x22d3ee, 0x3b82f6, 0xa78bfa, 0x34d399],
-      purple: [0xa78bfa, 0x7c3aed, 0xc084fc, 0x60a5fa, 0xf472b6],
-      indigo: [0x34d399, 0x10b981, 0x22d3ee, 0xa7f3d0, 0x60a5fa],
+      blue: [0x3a82ff, 0x60a5fa, 0x2563eb, 0x38bdf8, 0x93c5fd],
+      purple: [0x3a82ff, 0x2563eb, 0x60a5fa, 0x38bdf8, 0x818cf8],
+      sky: [0x38bdf8, 0x60a5fa, 0x3a82ff, 0x7dd3fc, 0x2563eb],
     }[palette];
 
     const lightColors = {
-      blue: [0x60a5fa, 0x34d399, 0xa78bfa],
-      purple: [0xa78bfa, 0xf472b6, 0x60a5fa],
-      indigo: [0x34d399, 0x22d3ee, 0xa78bfa],
+      blue: [0x3a82ff, 0x60a5fa, 0x38bdf8],
+      purple: [0x3a82ff, 0x2563eb, 0x60a5fa],
+      sky: [0x38bdf8, 0x60a5fa, 0x3a82ff],
     }[palette];
 
     const getSize = () => {

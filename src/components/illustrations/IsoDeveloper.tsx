@@ -32,12 +32,12 @@ export const IsoDeveloper = ({ className }: Props) => (
         <stop offset="1" stopColor="#d6a36a" />
       </linearGradient>
       <linearGradient id="iso-shirt" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#34d399" />
-        <stop offset="1" stopColor="#047857" />
+        <stop offset="0" stopColor="#2dd4bf" />
+        <stop offset="1" stopColor="#0d9488" />
       </linearGradient>
       <linearGradient id="iso-shirt-side" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#10b981" />
-        <stop offset="1" stopColor="#065f46" />
+        <stop offset="0" stopColor="#14b8a6" />
+        <stop offset="1" stopColor="#134e4a" />
       </linearGradient>
       <linearGradient id="iso-pants" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor="#1e3a8a" />
@@ -48,7 +48,7 @@ export const IsoDeveloper = ({ className }: Props) => (
         <stop offset="1" stopColor="#94a3b8" />
       </linearGradient>
       <radialGradient id="iso-aura" cx="0.5" cy="0.5" r="0.6">
-        <stop offset="0" stopColor="#34d399" stopOpacity="0.5" />
+        <stop offset="0" stopColor="#2dd4bf" stopOpacity="0.5" />
         <stop offset="0.5" stopColor="#22d3ee" stopOpacity="0.2" />
         <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
       </radialGradient>
@@ -76,7 +76,7 @@ export const IsoDeveloper = ({ className }: Props) => (
       <polyline points="-220,18 0,-100 220,18" fill="none" stroke="#334155" strokeWidth="1.2" />
       {/* expanding scan ring */}
       <motion.ellipse
-        cx="0" cy="20" rx="60" ry="24" fill="none" stroke="#34d399" strokeWidth="1.5"
+        cx="0" cy="20" rx="60" ry="24" fill="none" stroke="#2dd4bf" strokeWidth="1.5"
         animate={{ rx: [40, 200, 40], ry: [16, 80, 16], opacity: [0.7, 0, 0.7] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
       />
@@ -103,7 +103,7 @@ export const IsoDeveloper = ({ className }: Props) => (
       transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       style={{ transformOrigin: "300px 290px" }}
     >
-      <ellipse cx="0" cy="0" rx="180" ry="64" fill="none" stroke="#a78bfa" strokeWidth="0.8" opacity="0.35" strokeDasharray="3 6" />
+      <ellipse cx="0" cy="0" rx="180" ry="64" fill="none" stroke="#60a5fa" strokeWidth="0.8" opacity="0.35" strokeDasharray="3 6" />
     </motion.g>
 
     {/* Desk — single clean isometric slab */}
@@ -132,11 +132,11 @@ export const IsoDeveloper = ({ className }: Props) => (
           {[
             { y: 0, w: 26, c: "#fbbf24" },
             { y: 8, w: 64, c: "#22d3ee" },
-            { y: 16, w: 50, c: "#34d399" },
-            { y: 24, w: 80, c: "#a78bfa" },
+            { y: 16, w: 50, c: "#2dd4bf" },
+            { y: 24, w: 80, c: "#60a5fa" },
             { y: 32, w: 42, c: "#22d3ee" },
             { y: 40, w: 60, c: "#fbbf24" },
-            { y: 48, w: 30, c: "#34d399" },
+            { y: 48, w: 30, c: "#2dd4bf" },
           ].map((l, i) => (
             <motion.rect
               key={i}
@@ -163,7 +163,7 @@ export const IsoDeveloper = ({ className }: Props) => (
           <motion.line
             key={i}
             x1={m.x} y1={m.y} x2={m.x + m.dx} y2={m.y + m.dy}
-            stroke="#34d399" strokeWidth="2" strokeLinecap="round"
+            stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round"
             animate={{ opacity: [0.4, 1, 0.4] }}
             transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15 }}
           />
@@ -231,7 +231,7 @@ export const IsoDeveloper = ({ className }: Props) => (
       <polygon points="110,-8 20,12 20,16 110,-4" fill="#334155" />
       {/* key glow */}
       <motion.ellipse
-        cx="55" cy="-3" rx="42" ry="6" fill="#34d399" opacity="0.3"
+        cx="55" cy="-3" rx="42" ry="6" fill="#2dd4bf" opacity="0.3"
         animate={{ opacity: [0.1, 0.45, 0.1] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       />
@@ -258,9 +258,9 @@ export const IsoDeveloper = ({ className }: Props) => (
 
     {/* Floating code/symbol tags — fewer, premium positioning */}
     {[
-      { x: 110, y: 170, t: "{ }", c: "#34d399", s: 18 },
+      { x: 110, y: 170, t: "{ }", c: "#2dd4bf", s: 18 },
       { x: 480, y: 150, t: "</>", c: "#60a5fa", s: 16 },
-      { x: 100, y: 360, t: "AI", c: "#a78bfa", s: 17 },
+      { x: 100, y: 360, t: "AI", c: "#3b82f6", s: 17 },
       { x: 490, y: 370, t: "λ", c: "#22d3ee", s: 22 },
     ].map((p, i) => (
       <motion.g

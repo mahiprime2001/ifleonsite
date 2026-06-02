@@ -22,7 +22,7 @@ export const PostRenderer = ({ content }: PostRendererProps) => {
 
   return (
     <div
-      className="prose max-w-none bg-white rounded-2xl shadow-lg p-8 mb-12"
+      className="prose dark:prose-invert max-w-none surface-card rounded-2xl p-8 mb-12"
       dangerouslySetInnerHTML={{ __html: content }}
     />
   );

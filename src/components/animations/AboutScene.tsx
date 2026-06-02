@@ -123,11 +123,11 @@ export const AboutScene = ({ className }: Props) => {
 
   // Chip positions on a hex layout around the hub
   const chips = [
-    { angle: 0,                     Icon: Brain,      label: "AI",     c: "#a78bfa" },
-    { angle: Math.PI / 3,           Icon: GitBranch,  label: "DevOps", c: "#34d399" },
+    { angle: 0,                     Icon: Brain,      label: "AI",     c: "#7c3aed" },
+    { angle: Math.PI / 3,           Icon: GitBranch,  label: "DevOps", c: "#2dd4bf" },
     { angle: (2 * Math.PI) / 3,     Icon: Cloud,      label: "Cloud",  c: "#22d3ee" },
-    { angle: Math.PI,               Icon: ShieldCheck,label: "Sec",    c: "#fbbf24" },
-    { angle: (4 * Math.PI) / 3,     Icon: Database,   label: "Data",   c: "#f472b6" },
+    { angle: Math.PI,               Icon: ShieldCheck,label: "Sec",    c: "#3b82f6" },
+    { angle: (4 * Math.PI) / 3,     Icon: Database,   label: "Data",   c: "#0d9488" },
     { angle: (5 * Math.PI) / 3,     Icon: Bot,        label: "Auto",   c: "#60a5fa" },
   ];
 
@@ -223,12 +223,12 @@ export const AboutScene = ({ className }: Props) => {
             className="absolute inset-[-30%] rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(52,211,153,0.6) 0%, rgba(34,211,238,0.3) 40%, transparent 70%)",
+                "radial-gradient(circle, rgba(37,99,235,0.6) 0%, rgba(34,211,238,0.3) 40%, transparent 70%)",
               transformOrigin: "center",
             }}
           />
-          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-blue-400 via-sky-400 to-blue-500 shadow-[0_20px_60px_-10px_rgba(34,211,238,0.6)] flex items-center justify-center border border-white/30">
-            <span className="text-white font-black text-xl md:text-2xl tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
+          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-blue-500 via-sky-400 to-cyan-400 shadow-[0_20px_60px_-10px_rgba(34,211,238,0.6)] flex items-center justify-center border border-white/30">
+            <span className="text-white font-black text-xl md:text-2xl tracking-tight" style={{ fontFamily: "Fraunces, Georgia, serif" }}>
               IFLEON
             </span>
             {/* shine */}
@@ -288,9 +288,9 @@ export const AboutScene = ({ className }: Props) => {
           </div>
           <div className="p-3 space-y-1.5">
             {[
-              { label: "Pipelines", v: "100%", c: "#34d399" },
+              { label: "Pipelines", v: "100%", c: "#2dd4bf" },
               { label: "Uptime",    v: "99.9%", c: "#22d3ee" },
-              { label: "Coverage",  v: "Pan-India", c: "#a78bfa" },
+              { label: "Coverage",  v: "Pan-India", c: "#3b82f6" },
             ].map((row, i) => (
               <div key={i} className="flex items-center justify-between">
                 <span className="text-[10px] text-slate-400">{row.label}</span>

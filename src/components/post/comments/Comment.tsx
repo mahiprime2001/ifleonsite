@@ -7,11 +7,11 @@ interface CommentProps {
 
 export const Comment: React.FC<CommentProps> = ({ content, publishedAt }) => {
   return (
-    <li className="p-4 bg-gray-100 rounded-lg">
+    <li className="surface-card p-4 rounded-lg">
       <div className="flex items-center mb-2">
-        <p className="text-xs text-gray-500">{new Date(publishedAt).toLocaleString()}</p>
+        <p className="text-xs text-muted-foreground">{new Date(publishedAt).toLocaleString()}</p>
       </div>
-      <p className="text-gray-700">{content}</p>
+      <p className="text-foreground">{content}</p>
     </li>
   );
 };

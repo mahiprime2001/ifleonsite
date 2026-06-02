@@ -21,20 +21,20 @@ export const PostMeta = ({
 }: PostMetaProps) => (
   <div className="flex flex-wrap items-center gap-6 mb-6 text-sm">
     {/* Author */}
-    <div className="flex items-center space-x-2 text-gray-600">
+    <div className="flex items-center space-x-2 text-muted-foreground">
       <User className="h-5 w-5" />
       <span>{author}</span>
     </div>
 
     {/* Published Date */}
-    <div className="flex items-center space-x-2 text-gray-600">
+    <div className="flex items-center space-x-2 text-muted-foreground">
       <Calendar className="h-5 w-5" />
       <span>{format(new Date(publishedAt), "MMMM dd, yyyy")}</span>
     </div>
 
     {/* Views (Public) */}
     {views !== undefined && (
-      <div className="flex items-center space-x-2 text-gray-600">
+      <div className="flex items-center space-x-2 text-muted-foreground">
         <Eye className="h-5 w-5" />
         <span>{views} views</span>
       </div>

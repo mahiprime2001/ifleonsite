@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   MessageSquare,
@@ -6,8 +7,13 @@ import {
   Rocket,
   LifeBuoy,
 } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { SplitReveal } from "./motion/SplitReveal";
 import { IsoProcess } from "./illustrations/IsoProcess";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Step = 1 | 2 | 3 | 4 | 5;
 
@@ -60,95 +66,207 @@ const steps: {
   },
 ];
 
-export const HowWeWork = () => {
+/* ---- Shared step card (used by both horizontal panels and vertical stack) ---- */
+const StepCard = ({ item }: { item: (typeof steps)[number] }) => {
+  const Icon = item.icon;
   return (
-    <section className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 to-slate-900 text-white overflow-hidden">
+    <div className="surface-card relative flex h-full flex-col justify-center rounded-2xl border border-border p-7 md:p-9 overflow-hidden">
+      {/* oversized ghost number */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -top-6 right-2 select-none font-display text-[7rem] md:text-[9rem] font-bold leading-none text-foreground/[0.04]"
+      >
+        {item.step}
+      </span>
+
+      {/* illustration */}
+      <div className="mb-5 max-w-[200px]">
+        <IsoProcess step={item.num} className="w-full h-auto rounded-xl" />
+      </div>
+
+      {/* step number / eyebrow */}
+      <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 border border-border px-3 py-1">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10 text-brand">
+          <Icon className="h-3.5 w-3.5" />
+        </span>
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-brand">
+          Step {item.step}
+        </span>
+      </div>
+
+      <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-3 leading-tight">
+        {item.title}
+      </h3>
+
+      <p className="text-muted-foreground text-base leading-relaxed">
+        {item.description}
+      </p>
+    </div>
+  );
+};
+
+export const HowWeWork = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  // true => render the pinned horizontal sequence; false => vertical stack fallback
+  const [horizontal, setHorizontal] = useState(false);
+
+  // Decide layout based on viewport + reduced-motion preference.
+  useEffect(() => {
+    const mql = window.matchMedia(
+      "(min-width: 1024px) and (prefers-reduced-motion: no-preference)"
+    );
+    const apply = () => setHorizontal(mql.matches);
+    apply();
+    // addEventListener for modern, addListener fallback handled via try/catch.
+    mql.addEventListener?.("change", apply);
+    window.addEventListener("resize", apply);
+    return () => {
+      mql.removeEventListener?.("change", apply);
+      window.removeEventListener("resize", apply);
+    };
+  }, []);
+
+  // Pinned horizontal-scroll sequence — only when `horizontal` is active.
+  useEffect(() => {
+    if (!horizontal) return;
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const ctx = gsap.context(() => {
+      const total = () => track.scrollWidth - window.innerWidth;
+
+      const tween = gsap.to(track, {
+        x: () => -total(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => "+=" + total(),
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Recompute on size changes (track width / viewport width).
+      const ro = new ResizeObserver(() => ScrollTrigger.refresh());
+      ro.observe(track);
+
+      return () => {
+        ro.disconnect();
+        tween.scrollTrigger?.kill();
+        tween.kill();
+      };
+    }, section);
+
+    return () => ctx.revert();
+  }, [horizontal]);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative bg-transparent overflow-hidden"
+    >
       {/* backdrop */}
       <div className="absolute inset-0 mesh-bg opacity-50" />
       <div className="absolute inset-0 iso-grid-bg opacity-20" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
-              Our Process
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight">
+      {horizontal ? (
+        /* ---------- PINNED HORIZONTAL SEQUENCE (desktop) ---------- */
+        <div className="relative flex h-screen flex-col justify-center py-16">
+          {/* heading */}
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 mb-10">
+            <p className="eyebrow mb-3">Our Process</p>
+            <SplitReveal
+              as="h2"
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-4"
+            >
               How We Work
-            </h2>
-            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+            </SplitReveal>
+            <p className="text-base md:text-xl text-muted-foreground max-w-3xl">
               A clear, transparent, and structured approach — from first
               conversation to long-term success.
             </p>
           </div>
-        </ScrollReveal>
 
-        {/* Steps with illustrations + connecting line */}
-        <div className="relative">
-          {/* connecting line — desktop */}
-          <div className="hidden lg:block absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-400/0 via-blue-400/50 to-blue-400/0" />
+          {/* horizontal track */}
+          <div className="relative">
+            <div
+              ref={trackRef}
+              className="flex w-max items-stretch gap-8 px-4 sm:px-6 lg:px-8 will-change-transform"
+            >
+              {steps.map((item, i) => (
+                <div
+                  key={item.num}
+                  className="relative w-[78vw] max-w-[440px] shrink-0"
+                >
+                  {/* connector dot between panels */}
+                  {i < steps.length - 1 && (
+                    <span className="pointer-events-none absolute top-1/2 -right-[1.35rem] z-20 h-2 w-2 -translate-y-1/2 rounded-full bg-brand/70 shadow-[0_0_12px] shadow-brand/50" />
+                  )}
+                  <StepCard item={item} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* ---------- VERTICAL STACK FALLBACK (mobile / reduced-motion) ---------- */
+        <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+          <div className="mb-12 text-center md:mb-16">
+            <p className="eyebrow mb-3">Our Process</p>
+            <SplitReveal
+              as="h2"
+              className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight mb-4"
+            >
+              How We Work
+            </SplitReveal>
+            <p className="text-base md:text-xl text-muted-foreground mx-auto max-w-3xl">
+              A clear, transparent, and structured approach — from first
+              conversation to long-term success.
+            </p>
+          </div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-4"
+            className="flex flex-col gap-6"
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={{
               hidden: {},
               show: { transition: { staggerChildren: 0.12 } },
             }}
           >
-            {steps.map((item) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.num}
-                  variants={{
-                    hidden: { opacity: 0, y: 40 },
-                    show: { opacity: 1, y: 0 },
-                  }}
-                  transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-                  className="relative text-center"
-                >
-                  {/* Isometric scene */}
-                  <motion.div
-                    whileHover={{ y: -6, scale: 1.02 }}
-                    className="mb-4 mx-auto max-w-[220px]"
-                  >
-                    <IsoProcess step={item.num} className="w-full h-auto rounded-xl" />
-                  </motion.div>
-
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-3">
-                    <Icon className="h-3.5 w-3.5 text-blue-400" />
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-blue-300">
-                      Step {item.step}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-bold mb-2">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+            {steps.map((item) => (
+              <motion.div
+                key={item.num}
+                variants={{
+                  hidden: { opacity: 0, y: 40 },
+                  show: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
+              >
+                <StepCard item={item} />
+              </motion.div>
+            ))}
           </motion.div>
         </div>
+      )}
 
-        <ScrollReveal direction="up">
-          <div className="mt-12 md:mt-16 text-center">
-            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-              <p className="text-slate-200 text-sm md:text-base">
-                No hidden steps. No surprises. Just clear execution.
-              </p>
-            </div>
+      {/* closing note */}
+      <ScrollReveal direction="up">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20 md:pb-24 text-center">
+          <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 border border-border px-5 py-3">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-brand" />
+            <p className="text-foreground text-sm md:text-base">
+              No hidden steps. No surprises. Just clear execution.
+            </p>
           </div>
-        </ScrollReveal>
-      </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 };

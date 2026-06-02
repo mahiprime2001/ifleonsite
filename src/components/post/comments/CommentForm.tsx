@@ -24,21 +24,24 @@ export const CommentForm: React.FC<CommentFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="mt-8">
-      <h3 className="text-xl font-bold mb-4">Leave a Comment</h3>
+      <h3 className="font-display text-xl font-bold mb-4 text-foreground">Leave a Comment</h3>
       <div className="relative">
+        <label htmlFor="content" className="sr-only">
+          Add a comment
+        </label>
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
           rows={4}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm pr-16"
+          className="mt-1 block w-full px-3 py-2 border border-border rounded-md shadow-sm bg-background text-foreground placeholder:text-muted-foreground sm:text-sm pr-16"
           placeholder="Add a comment..."
           required
         />
         <button
           type="submit"
-          className="absolute bottom-2 right-2 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="absolute bottom-2 right-2 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm bg-primary text-primary-foreground hover:bg-primary/90"
         >
           <SendHorizonal size={16} />
         </button>

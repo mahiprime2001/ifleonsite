@@ -94,12 +94,12 @@ export const BlogPost = () => {
   if (!post) return <NotFound />;
 
   return (
-    <div className="relative min-h-screen bg-slate-950 pt-24 pb-20 text-slate-100 overflow-hidden">
+    <div className="relative min-h-screen bg-transparent pt-24 pb-20 text-foreground overflow-hidden">
       <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-[120px]" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-blue-500/10 blur-[120px]" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/10 blur-[120px]" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-2/10 blur-[120px]" />
 
-      <article className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white/5 border border-white/10 backdrop-blur-md rounded-3xl shadow-2xl">
+      <article className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 surface-card rounded-3xl">
         <BackButton />
 
         <PostHeader title={post.title} />

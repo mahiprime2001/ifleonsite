@@ -71,8 +71,8 @@ export const IsoCollab3D = ({ className }: Props) => (
 
       <radialGradient id="auraC" cx="0.5" cy="0.5" r="0.6">
         <stop offset="0" stopColor="#22d3ee" stopOpacity="0.45" />
-        <stop offset="0.6" stopColor="#a78bfa" stopOpacity="0.18" />
-        <stop offset="1" stopColor="#a78bfa" stopOpacity="0" />
+        <stop offset="0.6" stopColor="#3b82f6" stopOpacity="0.18" />
+        <stop offset="1" stopColor="#3b82f6" stopOpacity="0" />
       </radialGradient>
       <radialGradient id="ground-shadowC" cx="0.5" cy="0.5" r="0.5">
         <stop offset="0" stopColor="#000" stopOpacity="0.55" />
@@ -94,7 +94,7 @@ export const IsoCollab3D = ({ className }: Props) => (
     {/* FLOOR */}
     <g transform="translate(300 490)">
       <ellipse cx="0" cy="20" rx="240" ry="80" fill="#0b1220" stroke="#1e293b" />
-      <g opacity="0.18" stroke="#a78bfa" strokeWidth="0.8" fill="none">
+      <g opacity="0.18" stroke="#60a5fa" strokeWidth="0.8" fill="none">
         <ellipse cx="0" cy="20" rx="240" ry="80" />
         <ellipse cx="0" cy="20" rx="170" ry="58" />
         <ellipse cx="0" cy="20" rx="100" ry="36" />
@@ -118,7 +118,7 @@ export const IsoCollab3D = ({ className }: Props) => (
         <g key={i}>
           <rect x="8" y={10 + i * 38} width="58" height="26" rx="3" fill="#0b1220" stroke="#1e293b" />
           <motion.circle
-            cx="16" cy={23 + i * 38} r="2.5" fill="#34d399"
+            cx="16" cy={23 + i * 38} r="2.5" fill="#2dd4bf"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.3 }}
           />
@@ -145,13 +145,13 @@ export const IsoCollab3D = ({ className }: Props) => (
         <g key={i}>
           <rect x="8" y={10 + i * 42} width="58" height="30" rx="3" fill="#0b1220" stroke="#1e293b" />
           <motion.circle
-            cx="16" cy={25 + i * 42} r="2.5" fill="#a78bfa"
+            cx="16" cy={25 + i * 42} r="2.5" fill="#60a5fa"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.3 }}
           />
           <motion.rect
             x="24" y={22 + i * 42} width={28 - i * 3} height="6" rx="1.5"
-            fill={i % 2 ? "#a78bfa" : "#f472b6"} opacity="0.7"
+            fill={i % 2 ? "#60a5fa" : "#22d3ee"} opacity="0.7"
             animate={{ width: [24 - i * 2, 38 - i * 4, 24 - i * 2] }}
             transition={{ duration: 2.6 + i * 0.3, repeat: Infinity, delay: i * 0.4 }}
           />
@@ -175,10 +175,10 @@ export const IsoCollab3D = ({ className }: Props) => (
 
       {/* dashboard mini bars */}
       {[
-        { x: -72, h: 36, c: "#34d399" },
+        { x: -72, h: 36, c: "#2dd4bf" },
         { x: -40, h: 26, c: "#60a5fa" },
-        { x: -8, h: 44, c: "#a78bfa" },
-        { x: 24, h: 30, c: "#f472b6" },
+        { x: -8, h: 44, c: "#3b82f6" },
+        { x: 24, h: 30, c: "#22d3ee" },
         { x: 56, h: 38, c: "#fbbf24" },
       ].map((b, i) => (
         <motion.rect
@@ -209,7 +209,7 @@ export const IsoCollab3D = ({ className }: Props) => (
         <motion.line
           key={i}
           x1={m.x} y1={m.y} x2={m.x + m.dx} y2={m.y}
-          stroke="#34d399" strokeWidth="2" strokeLinecap="round"
+          stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round"
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15 }}
         />
@@ -353,7 +353,7 @@ export const IsoCollab3D = ({ className }: Props) => (
     />
     <motion.path
       d="M 320 280 Q 330 260 340 240"
-      stroke="#a78bfa" strokeWidth="1.2" strokeDasharray="3 4" fill="none" opacity="0.55"
+      stroke="#60a5fa" strokeWidth="1.2" strokeDasharray="3 4" fill="none" opacity="0.55"
       animate={{ strokeDashoffset: [0, -14] }}
       transition={{ duration: 1.8, repeat: Infinity, ease: "linear", delay: 0.4 }}
     />
@@ -365,14 +365,14 @@ export const IsoCollab3D = ({ className }: Props) => (
       transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
       style={{ transformOrigin: "300px 300px" }}
     >
-      <ellipse cx="0" cy="0" rx="220" ry="70" fill="none" stroke="#a78bfa" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
+      <ellipse cx="0" cy="0" rx="220" ry="70" fill="none" stroke="#60a5fa" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
     </motion.g>
 
     {/* FLOATING TAGS */}
     {[
-      { x: 80, y: 130, t: "{ }", c: "#34d399" },
+      { x: 80, y: 130, t: "{ }", c: "#2dd4bf" },
       { x: 490, y: 130, t: "</>", c: "#60a5fa" },
-      { x: 100, y: 470, t: "AI", c: "#a78bfa" },
+      { x: 100, y: 470, t: "AI", c: "#3b82f6" },
       { x: 490, y: 470, t: "λ", c: "#22d3ee" },
     ].map((p, i) => (
       <motion.g

@@ -6,16 +6,23 @@ type Variant = "blade" | "diagonal" | "flip" | "iris";
 type Props = {
   variant?: Variant;
   label?: string;
-  accent?: "blue" | "blue" | "purple" | "sky" | "orange";
+  accent?: "indigo" | "blue" | "purple" | "violet" | "orange";
   children?: ReactNode;
 };
 
+// One brand treatment for every accent: brand blue -> teal.
+const BRAND_ACCENT = {
+  from: "#2563EB",
+  to: "#0D9488",
+  glow: "rgba(37,99,235,0.35)",
+};
+
 const accentMap = {
-  blue: { from: "#34d399", to: "#10b981", glow: "rgba(52,211,153,0.55)" },
-  blue: { from: "#60a5fa", to: "#3b82f6", glow: "rgba(96,165,250,0.55)" },
-  purple: { from: "#a78bfa", to: "#7c3aed", glow: "rgba(167,139,250,0.55)" },
-  sky: { from: "#5eead4", to: "#14b8a6", glow: "rgba(94,234,212,0.55)" },
-  orange: { from: "#fbbf24", to: "#f97316", glow: "rgba(251,191,36,0.55)" },
+  indigo: BRAND_ACCENT,
+  blue: BRAND_ACCENT,
+  purple: BRAND_ACCENT,
+  violet: BRAND_ACCENT,
+  orange: BRAND_ACCENT,
 };
 
 export const SectionCut = ({
@@ -54,7 +61,7 @@ export const SectionCut = ({
         />
         {label && (
           <div className="relative z-10 h-full flex items-center justify-center">
-            <span className="text-xs md:text-sm tracking-[0.4em] uppercase text-white/70 font-semibold">
+            <span className="eyebrow text-xs md:text-sm">
               {label}
             </span>
           </div>
@@ -65,7 +72,7 @@ export const SectionCut = ({
 
   if (variant === "iris") {
     return (
-      <div ref={ref} className="relative h-40 overflow-hidden bg-slate-950">
+      <div ref={ref} className="relative h-40 overflow-hidden bg-transparent">
         <motion.div
           aria-hidden
           className="absolute inset-0 mesh-bg"
@@ -81,7 +88,7 @@ export const SectionCut = ({
         />
         {label && (
           <div className="relative z-10 h-full flex items-center justify-center">
-            <span className="text-sm tracking-[0.3em] uppercase text-white/80 font-semibold">
+            <span className="eyebrow text-sm">
               {label}
             </span>
           </div>
@@ -104,7 +111,7 @@ export const SectionCut = ({
             }}
           >
             {label && (
-              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-white/80 font-bold">
+              <span className="eyebrow text-sm md:text-base">
                 {label}
               </span>
             )}
@@ -116,7 +123,7 @@ export const SectionCut = ({
             }}
           >
             {children ?? (
-              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-white/60 font-semibold">
+              <span className="eyebrow text-sm md:text-base">
                 {label} • next
               </span>
             )}
@@ -144,15 +151,7 @@ export const SectionCut = ({
           className="absolute inset-0 flex items-center justify-center"
           style={{ opacity }}
         >
-          <span
-            className="px-4 py-1 text-[10px] md:text-xs tracking-[0.5em] uppercase font-bold rounded-full"
-            style={{
-              color: palette.from,
-              background: "rgba(2,6,23,0.6)",
-              border: `1px solid ${palette.from}55`,
-              backdropFilter: "blur(6px)",
-            }}
-          >
+          <span className="eyebrow px-4 py-1 text-[10px] md:text-xs rounded-full bg-card border border-brand-soft shadow-card">
             {label}
           </span>
         </motion.div>

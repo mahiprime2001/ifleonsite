@@ -1,11 +1,13 @@
-import { ArrowRight, Zap, Code, Shield, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Zap, Code, Shield, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { lazy, Suspense, useRef } from "react";
-import RoomScene from "./RoomScene";
 import { AnimeText } from "./animations/AnimeText";
+import { Lemniscate } from "./brand/Lemniscate";
+import Magnetic from "./motion/Magnetic";
 
-const FloatingObjects = lazy(() => import("./three/FloatingObjects"));
+// Signature WebGL showpiece — code-split so it never blocks the hero's first paint.
+const HeroFlowField = lazy(() => import("./three/HeroFlowField"));
 
 export const Hero = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -16,9 +18,6 @@ export const Hero = () => {
   });
 
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const illoY = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const illoRotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
 
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -27,49 +26,57 @@ export const Hero = () => {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-20 md:pt-24 pb-12"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden pt-20 md:pt-24 pb-12 bg-transparent"
     >
-      {/* ===== Background layers (global AuroraBackground shows through) ===== */}
-      <div className="absolute inset-0">
-        {/* localized accent glow that anchors the hero on top of the aurora */}
-        <div className="absolute top-1/4 right-[8%] w-[34rem] h-[34rem] rounded-full blur-[130px] transition-colors duration-1000" style={{ backgroundColor: "hsl(var(--brand) / 0.10)" }} />
-        {!shouldReduceMotion && (
-          <motion.div className="absolute inset-0" style={{ y: bgY }}>
-            <Suspense fallback={null}>
-              <FloatingObjects density="low" palette="blue" />
-            </Suspense>
-          </motion.div>
-        )}
-      </div>
+      {/* ===== Full-bleed signature WebGL field (behind everything) ===== */}
+      {shouldReduceMotion ? (
+        <div className="absolute inset-0 z-0 flex items-center justify-center">
+          <Lemniscate withNodes draw className="w-[80%] max-w-[900px] opacity-70" />
+        </div>
+      ) : (
+        <Suspense
+          fallback={
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <Lemniscate
+                withNodes={false}
+                draw={false}
+                className="w-[70%] max-w-[820px] opacity-30"
+              />
+            </div>
+          }
+        >
+          <HeroFlowField className="absolute inset-0 z-0" />
+        </Suspense>
+      )}
+
+      {/* readability scrims so the copy stays crisp over the field */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-background/20 via-transparent to-background/55 pointer-events-none" />
+      <div
+        className="absolute inset-0 z-[1] hidden lg:block pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, hsl(var(--background)) 0%, hsl(var(--background) / 0.55) 34%, transparent 64%)",
+        }}
+      />
 
       {/* ===== Hero content ===== */}
       <motion.div
         className="relative z-10 w-full max-w-[1500px] mx-auto px-5 sm:px-8 lg:px-10"
-        style={{ y: contentY }}
+        style={{ y: shouldReduceMotion ? 0 : contentY }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-12 xl:gap-14 items-center">
-          {/* Left: copy column — fills its half */}
+          {/* ===== Left: copy column ===== */}
           <div className="relative text-center lg:text-left lg:max-w-[640px]">
-            {/* decorative left accent bar (visible on lg+) so left edge feels intentional */}
-            <div className="hidden lg:block absolute -left-10 top-2 bottom-2 w-[2px] bg-gradient-to-b from-blue-400/0 via-blue-400/60 to-blue-400/0" />
-
             <motion.div
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+              className="eyebrow mb-6 inline-block"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full opacity-70 animate-ping" style={{ backgroundColor: "hsl(var(--brand))" }} />
-                <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "hsl(var(--brand))" }} />
-              </span>
-              <Sparkles className="h-4 w-4 text-brand" />
-              <span className="text-xs sm:text-sm text-white/80 tracking-wide">
-                AI • DevOps • Cloud • Cybersecurity
-              </span>
+              AI · DevOps · Cloud · Security
             </motion.div>
 
-            <h1 className="font-display font-black leading-[1.03] mb-5">
+            <h1 className="font-display font-semibold leading-[1.03] mb-5">
               <AnimeText
                 as="span"
                 text="IFLEON"
@@ -81,7 +88,7 @@ export const Hero = () => {
                 <span className="text-brand-gradient animate-gradient">
                   Infinite Possibilities,
                 </span>{" "}
-                <span className="text-white">Logical Solutions.</span>
+                <span className="text-foreground">Logical Solutions.</span>
               </span>
             </h1>
 
@@ -89,7 +96,7 @@ export const Hero = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-base sm:text-lg md:text-xl text-slate-300 mb-3 max-w-2xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground mb-3 max-w-2xl mx-auto lg:mx-0"
             >
               We build AI-powered software, automate DevOps pipelines, and deliver
               secure cloud solutions that help businesses scale faster and smarter.
@@ -99,18 +106,18 @@ export const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.6 }}
-              className="text-sm sm:text-base text-slate-400 mb-6 max-w-2xl mx-auto lg:mx-0"
+              className="text-sm sm:text-base text-muted-foreground mb-6 max-w-2xl mx-auto lg:mx-0"
             >
               From startups to enterprises across India — reliable, future-ready
               technology tailored to real business needs.
             </motion.p>
 
-            {/* Quick value-prop checklist — fills left column visually */}
+            {/* Quick value-prop checklist */}
             <motion.ul
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 mb-8 text-sm text-slate-300 max-w-xl mx-auto lg:mx-0"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 mb-8 text-sm text-muted-foreground max-w-xl mx-auto lg:mx-0"
             >
               {[
                 "Founder-led delivery",
@@ -131,24 +138,27 @@ export const Hero = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.9 }}
             >
-              <motion.button
-                onClick={scrollToContact}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                className="shine-on-hover group relative bg-brand-gradient text-white px-7 py-3.5 rounded-2xl font-semibold shadow-xl flex items-center justify-center gap-3 glow-brand"
-              >
-                Get Free Consultation
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+              <Magnetic strength={0.5}>
+                <button
+                  onClick={scrollToContact}
+                  data-cursor
+                  className="shine-on-hover group relative bg-primary text-primary-foreground hover:bg-primary/90 px-7 py-3.5 rounded-2xl font-semibold shadow-card flex items-center justify-center gap-3 transition-transform hover:-translate-y-0.5"
+                >
+                  Request a Free Consultation
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Magnetic>
 
-              <Link
-                to="/services"
-                className="glass hover:bg-white/10 px-7 py-3.5 rounded-2xl font-semibold text-white/90 hover:text-white transition-all flex items-center justify-center gap-3"
-              >
-                Explore Services
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+              <Magnetic strength={0.4}>
+                <Link
+                  to="/services"
+                  data-cursor
+                  className="border border-border bg-card hover:bg-accent text-foreground px-7 py-3.5 rounded-2xl font-semibold transition-all flex items-center justify-center gap-3"
+                >
+                  Explore Services
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Magnetic>
             </motion.div>
 
             {/* Service pills */}
@@ -169,12 +179,12 @@ export const Hero = () => {
                     key={i}
                     whileHover={{ y: -4, scale: 1.03 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                    className="flex items-center gap-3 px-3.5 py-2.5 glass rounded-xl hover:border-brand-soft"
+                    className="surface-card flex items-center gap-3 px-3.5 py-2.5 rounded-xl"
                   >
-                    <div className="p-2 rounded-lg bg-brand-gradient flex-shrink-0">
-                      <Icon className="h-4 w-4 text-white" />
+                    <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
+                      <Icon className="h-4 w-4 text-brand" />
                     </div>
-                    <span className="text-sm font-semibold text-white/90 truncate">
+                    <span className="text-sm font-semibold text-foreground truncate">
                       {item.text}
                     </span>
                   </motion.div>
@@ -183,38 +193,50 @@ export const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Right: isometric workstation — slightly larger, tighter to the column */}
+          {/* ===== Right: signature lemniscate mark over a soft brand wash ===== */}
           <motion.div
             className="relative w-full"
-            style={{ y: illoY, rotate: illoRotate }}
             initial={{ opacity: 0, scale: 0.92, x: 30 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
             <div className="relative aspect-square w-full max-w-[600px] mx-auto">
-              {/* Lo-fi study room — lighting + window change with the time of day */}
-              <RoomScene className="w-full h-full drop-shadow-2xl" />
-
-              {/* floating stat tiles */}
+              {/* floating stat tiles + compliance pills overlay the full-bleed field */}
               <motion.div
-                className="absolute left-2 top-8 sm:left-4 md:left-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md text-white no-select"
-                animate={{ y: [0, -8, 0] }}
+                className="surface-card absolute left-2 top-8 sm:left-4 md:left-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl no-select"
+                animate={shouldReduceMotion ? undefined : { y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <div className="text-blue-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
-                  Live
+                <div className="eyebrow text-[9px] sm:text-[10px]">Live</div>
+                <div className="text-sm sm:text-base font-bold text-foreground">
+                  Pipelines deployed
                 </div>
-                <div className="text-sm sm:text-base font-bold">Pipelines deployed</div>
               </motion.div>
               <motion.div
-                className="absolute right-2 bottom-12 sm:right-4 md:right-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md text-white no-select"
-                animate={{ y: [0, 10, 0] }}
+                className="surface-card absolute right-2 bottom-12 sm:right-4 md:right-0 px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl no-select"
+                animate={shouldReduceMotion ? undefined : { y: [0, 10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, delay: 0.4 }}
               >
-                <div className="text-sky-300 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-semibold">
-                  99.9%
-                </div>
-                <div className="text-sm sm:text-base font-bold">Uptime</div>
+                <div className="eyebrow text-[9px] sm:text-[10px]">99.9%</div>
+                <div className="text-sm sm:text-base font-bold text-foreground">Uptime</div>
+              </motion.div>
+
+              {/* compliance pills */}
+              <motion.div
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-wrap items-center justify-center gap-2"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.15, duration: 0.6 }}
+              >
+                {["ISO 27001", "DPDP", "SOC 2"].map((label) => (
+                  <span
+                    key={label}
+                    className="surface-card inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono text-muted-foreground no-select"
+                  >
+                    <Shield className="h-3 w-3 text-brand flex-shrink-0" />
+                    {label}
+                  </span>
+                ))}
               </motion.div>
             </div>
           </motion.div>
@@ -222,22 +244,26 @@ export const Hero = () => {
 
         {/* Bottom credibility row */}
         <motion.div
-          className="mt-10 md:mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10"
+          className="mt-10 md:mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-border"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.3 }}
         >
           {[
-            { num: "2022", label: "Founded" },
-            { num: "Pan-India", label: "Reach" },
-            { num: "AI · DevOps", label: "Specialties" },
-            { num: "Founder-led", label: "Execution" },
+            { num: "2022", label: "Founded", gradient: false },
+            { num: "Pan-India", label: "Reach", gradient: false },
+            { num: "AI · DevOps", label: "Specialties", gradient: true },
+            { num: "Founder-led", label: "Execution", gradient: false },
           ].map((item, i) => (
             <div key={i} className="text-center md:text-left">
-              <div className="font-display text-lg sm:text-xl md:text-2xl font-black text-brand-gradient">
+              <div
+                className={`font-display text-lg sm:text-xl md:text-2xl font-bold ${
+                  item.gradient ? "text-brand-gradient" : "text-foreground"
+                }`}
+              >
                 {item.num}
               </div>
-              <div className="text-slate-400 text-[11px] sm:text-xs md:text-sm tracking-wide uppercase">
+              <div className="text-muted-foreground text-[11px] sm:text-xs md:text-sm tracking-wide uppercase">
                 {item.label}
               </div>
             </div>
@@ -247,12 +273,15 @@ export const Hero = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50"
-        animate={{ y: [0, 6, 0] }}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
+        animate={shouldReduceMotion ? undefined : { y: [0, 6, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <div className="text-[10px] tracking-[0.4em] uppercase">Scroll</div>
-        <div className="w-[2px] h-8 bg-gradient-to-b from-blue-400 to-transparent" />
+        <div
+          className="w-[2px] h-8"
+          style={{ background: "linear-gradient(to bottom, hsl(var(--brand)), transparent)" }}
+        />
       </motion.div>
     </section>
   );

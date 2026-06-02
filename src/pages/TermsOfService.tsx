@@ -52,7 +52,7 @@ export default function TermsOfService() {
   });
 
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-transparent min-h-screen">
       <PageHero
         eyebrow="Legal"
         title="Terms of Service"
@@ -64,8 +64,8 @@ export default function TermsOfService() {
         <div className="space-y-10">
           {sections.map((s) => (
             <div key={s.title}>
-              <h2 className="text-lg font-bold text-white mb-3">{s.title}</h2>
-              <p className="text-slate-400 leading-relaxed text-sm">{s.body}</p>
+              <h2 className="text-lg font-bold text-foreground mb-3">{s.title}</h2>
+              <p className="text-muted-foreground leading-relaxed text-sm">{s.body}</p>
             </div>
           ))}
         </div>

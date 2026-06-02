@@ -8,12 +8,12 @@ type Props = { variant: Variant; className?: string };
 export const IsoIcon = ({ variant, className }: Props) => {
   const id = `iso-${variant}`;
   const palette: Record<Variant, { a: string; b: string }> = {
-    ai: { a: "#a78bfa", b: "#7c3aed" },
-    devops: { a: "#34d399", b: "#059669" },
+    ai: { a: "#60a5fa", b: "#2563eb" },
+    devops: { a: "#2dd4bf", b: "#0d9488" },
     cloud: { a: "#60a5fa", b: "#2563eb" },
     security: { a: "#22d3ee", b: "#0891b2" },
     consulting: { a: "#fbbf24", b: "#d97706" },
-    data: { a: "#f472b6", b: "#db2777" },
+    data: { a: "#22d3ee", b: "#0e7490" },
   };
   const { a, b } = palette[variant];
 

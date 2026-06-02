@@ -14,8 +14,9 @@
     <link rel="icon" href="./src/assets/logo.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="./src/assets/logo.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./src/assets/logo.svg" />
-    <link rel="mask-icon" href="./src/assets/logo.svg" color="#10b981" />
-    <meta name="theme-color" content="#0b1220" />
+    <link rel="mask-icon" href="./src/assets/logo.svg" color="#2563EB" />
+    <meta name="theme-color" content="#FBFBFA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A0E14" media="(prefers-color-scheme: dark)" />
 
     <!-- Primary SEO -->
     <title>IFLEON — AI, DevOps &amp; IT Consulting | Nellore, India</title>
@@ -169,12 +170,25 @@
       src="https://plausible.io/js/script.js"
     ></script>
 
-    <!-- Brand fonts: Outfit (display) + Inter (body) -->
+    <!-- Set theme class before paint to avoid flash-of-wrong-skin -->
+    <script>
+      (function () {
+        try {
+          var p = localStorage.getItem("ifleon-theme");
+          var sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var dark = p ? p === "dark" || (p === "system" && sysDark) : sysDark;
+          document.documentElement.classList.toggle("dark", dark);
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Brand fonts: Fraunces (display) + Inter (body) + JetBrains Mono (labels/metrics/code) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     />
 
   </head>

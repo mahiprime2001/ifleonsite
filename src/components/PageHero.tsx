@@ -11,8 +11,8 @@ type Props = {
   size?: "sm" | "md" | "lg";
 };
 
-// Reusable premium dark page header — used across inner pages
-// for visual consistency. Sits on top of the existing dark canvas.
+// Reusable premium page header — used across inner pages
+// for visual consistency. Sits on top of the global page background.
 export const PageHero = ({
   eyebrow,
   title,
@@ -37,11 +37,11 @@ export const PageHero = ({
 
   return (
     <section
-      className={`relative ${padY} bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden border-b border-white/5`}
+      className={`relative ${padY} bg-transparent text-foreground overflow-hidden border-b border-border`}
     >
       {/* glow orbs */}
-      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-blue-500/10 blur-[120px]" />
-      <div className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full bg-blue-500/12 blur-[120px]" />
+      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full glow-brand blur-[120px]" />
+      <div className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full glow-brand blur-[120px]" />
       <div className="absolute inset-0 mesh-bg opacity-30" />
       <div className="absolute inset-0 iso-grid-bg opacity-20" />
 
@@ -52,20 +52,20 @@ export const PageHero = ({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-soft border border-brand-soft mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-semibold text-blue-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+              <span className="eyebrow text-xs sm:text-sm">
                 {eyebrow}
               </span>
             </motion.div>
           )}
 
-          <h1 className={`${titleSize} font-black leading-[1.05] mb-5`}>
+          <h1 className={`${titleSize} font-display font-bold leading-[1.05] mb-5`}>
             <AnimeText
               as="span"
               text={title}
-              className="block text-white"
+              className="block text-foreground"
               staggerMs={28}
               duration={700}
             />
@@ -86,7 +86,7 @@ export const PageHero = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-base md:text-xl text-slate-300 leading-relaxed"
+              className="text-base md:text-xl text-muted-foreground leading-relaxed"
             >
               {description}
             </motion.p>

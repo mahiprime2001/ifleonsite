@@ -11,11 +11,11 @@ const Profile: React.FC = () => {
 
   return (
     <Sidebar>
-      <h1 className="text-3xl font-bold">Profile Page</h1>
+      <h1 className="font-display text-3xl font-bold">Profile Page</h1>
       <p className="mt-4">View and edit your profile information here.</p>
       <button
         onClick={handleLogout}
-        className="mt-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        className="mt-6 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-2 px-4 rounded"
       >
         Logout
       </button>

@@ -18,14 +18,14 @@ export const CommentList: React.FC<CommentListProps> = ({ comments, sortOrder, o
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold">Comments</h3>
+        <h3 className="font-display text-xl font-bold text-foreground">Comments</h3>
         <div className="flex items-center">
-          <label htmlFor="sort" className="mr-2 text-sm font-medium text-gray-700">Sort by:</label>
+          <label htmlFor="sort" className="mr-2 text-sm font-medium text-foreground">Sort by:</label>
           <select
             id="sort"
             value={sortOrder}
             onChange={(e) => onSortChange(e.target.value as SortOrder)}
-            className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            className="block w-full pl-3 pr-10 py-2 text-base border border-border bg-background text-foreground sm:text-sm rounded-md"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -39,7 +39,7 @@ export const CommentList: React.FC<CommentListProps> = ({ comments, sortOrder, o
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+        <p className="text-muted-foreground">No comments yet. Be the first to comment!</p>
       )}
     </div>
   );

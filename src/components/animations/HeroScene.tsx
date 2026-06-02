@@ -142,7 +142,7 @@ export const HeroScene = ({ className }: Props) => {
       {/* mesh aura */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
       <div className="absolute inset-[15%] rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
-      <div className="absolute inset-[30%] rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[30%] rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
 
       <motion.div
         className="relative w-full h-full"
@@ -181,23 +181,23 @@ export const HeroScene = ({ className }: Props) => {
             </div>
             <div className="flex items-center gap-1.5">
               <span data-dot className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-              <span data-dot className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-              <span data-dot className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+              <span data-dot className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span data-dot className="w-1.5 h-1.5 rounded-full bg-violet-500" />
             </div>
           </div>
 
           {/* bars */}
           <div className="relative h-[calc(100%-44px)] flex items-end gap-1.5 px-4 pb-4 pt-3">
             {[
-              "#34d399",
+              "#2dd4bf",
               "#22d3ee",
               "#60a5fa",
-              "#a78bfa",
-              "#f472b6",
-              "#fbbf24",
-              "#34d399",
+              "#7c3aed",
+              "#3b82f6",
+              "#0d9488",
+              "#2dd4bf",
               "#22d3ee",
-              "#a78bfa",
+              "#3b82f6",
               "#60a5fa",
             ].map((c, i) => (
               <div
@@ -222,7 +222,7 @@ export const HeroScene = ({ className }: Props) => {
                 data-line
                 d="M 0 70 L 22 50 L 44 60 L 66 30 L 88 45 L 110 25 L 132 35 L 154 18 L 176 30 L 200 12"
                 fill="none"
-                stroke="#34d399"
+                stroke="#22d3ee"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -235,7 +235,7 @@ export const HeroScene = ({ className }: Props) => {
         {/* === LEFT FLOATING CARD: code editor === */}
         <div
           data-card
-          className="absolute left-[2%] top-[42%] w-[44%] h-[34%] rounded-2xl bg-slate-900/85 border border-white/15 backdrop-blur-md shadow-[0_30px_60px_-20px_rgba(167,139,250,0.5)] overflow-hidden"
+          className="absolute left-[2%] top-[42%] w-[44%] h-[34%] rounded-2xl bg-slate-900/85 border border-white/15 backdrop-blur-md shadow-[0_30px_60px_-20px_rgba(124,58,237,0.5)] overflow-hidden"
           style={{ transform: "translateZ(60px)" }}
         >
           <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10">
@@ -250,10 +250,10 @@ export const HeroScene = ({ className }: Props) => {
             {[
               { c: "#fbbf24", w: "30%" },
               { c: "#22d3ee", w: "65%" },
-              { c: "#34d399", w: "50%" },
-              { c: "#a78bfa", w: "75%" },
+              { c: "#2dd4bf", w: "50%" },
+              { c: "#7c3aed", w: "75%" },
               { c: "#22d3ee", w: "40%" },
-              { c: "#34d399", w: "60%" },
+              { c: "#0d9488", w: "60%" },
               { c: "#fbbf24", w: "35%" },
             ].map((l, i) => (
               <div
@@ -272,7 +272,7 @@ export const HeroScene = ({ className }: Props) => {
         {/* === RIGHT FLOATING CARD: ring metric === */}
         <div
           data-card
-          className="absolute right-[2%] top-[42%] w-[40%] h-[34%] rounded-2xl bg-slate-900/85 border border-white/15 backdrop-blur-md shadow-[0_30px_60px_-20px_rgba(52,211,153,0.5)] overflow-hidden"
+          className="absolute right-[2%] top-[42%] w-[40%] h-[34%] rounded-2xl bg-slate-900/85 border border-white/15 backdrop-blur-md shadow-[0_30px_60px_-20px_rgba(37,99,235,0.5)] overflow-hidden"
           style={{ transform: "translateZ(50px)" }}
         >
           <div className="flex items-center gap-2 px-3 py-2 border-b border-white/10">
@@ -307,13 +307,13 @@ export const HeroScene = ({ className }: Props) => {
               />
               <defs>
                 <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#34d399" />
+                  <stop offset="0" stopColor="#2563eb" />
                   <stop offset="1" stopColor="#22d3ee" />
                 </linearGradient>
               </defs>
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="text-2xl font-black bg-gradient-to-r from-blue-300 to-sky-300 bg-clip-text text-transparent">
+              <div className="text-2xl font-black bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 99.9%
               </div>
               <div className="text-[9px] tracking-[0.2em] text-slate-400 uppercase">
@@ -329,10 +329,10 @@ export const HeroScene = ({ className }: Props) => {
           style={{ transform: "translate(-50%, 0) translateZ(70px)" }}
         >
           {[
-            { Icon: Brain, label: "AI", c: "#a78bfa" },
-            { Icon: GitBranch, label: "DevOps", c: "#34d399" },
+            { Icon: Brain, label: "AI", c: "#7c3aed" },
+            { Icon: GitBranch, label: "DevOps", c: "#2dd4bf" },
             { Icon: Cloud, label: "Cloud", c: "#22d3ee" },
-            { Icon: Zap, label: "Edge", c: "#fbbf24" },
+            { Icon: Zap, label: "Edge", c: "#3b82f6" },
           ].map(({ Icon, label, c }, i) => (
             <div
               key={i}
@@ -363,8 +363,8 @@ export const HeroScene = ({ className }: Props) => {
           preserveAspectRatio="none"
         >
           {[
-            { d: "M 30 38 Q 30 50 24 60", c: "#a78bfa" },
-            { d: "M 70 38 Q 70 50 76 60", c: "#34d399" },
+            { d: "M 30 38 Q 30 50 24 60", c: "#7c3aed" },
+            { d: "M 70 38 Q 70 50 76 60", c: "#2dd4bf" },
             { d: "M 50 56 L 50 80", c: "#22d3ee" },
           ].map((l, i) => (
             <path

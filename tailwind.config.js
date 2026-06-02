@@ -19,7 +19,8 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-				display: ['Outfit', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				display: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+				mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
 			},
 			colors: {
 				brand: {
@@ -52,6 +53,8 @@ module.exports = {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
+				success: 'hsl(var(--success))',
+				warning: 'hsl(var(--warning))',
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
@@ -76,6 +79,10 @@ module.exports = {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			boxShadow: {
+				card: 'var(--shadow-card)',
+				'card-hover': 'var(--shadow-card-hover)',
 			},
 			keyframes: {
 				'accordion-down': {

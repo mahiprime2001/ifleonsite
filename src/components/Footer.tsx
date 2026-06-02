@@ -53,7 +53,7 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer className="bg-gray-950 text-gray-300 border-t border-gray-800">
+    <footer className="bg-transparent text-muted-foreground border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div
           ref={gridRef}
@@ -64,14 +64,14 @@ export const Footer = () => {
             <div className="flex items-center gap-3 mb-4">
               <Logo size={44} />
               <div>
-                <span className="text-2xl font-bold text-white">IFLEON</span>
-                <div className="text-xs text-gray-400">
+                <span className="text-2xl font-bold text-foreground">IFLEON</span>
+                <div className="text-xs text-muted-foreground">
                   Infinite Logical Elements of Network
                 </div>
               </div>
             </div>
 
-            <p className="text-gray-400 mb-6 max-w-md leading-relaxed text-sm">
+            <p className="text-muted-foreground mb-6 max-w-md leading-relaxed text-sm">
               Practical AI solutions, DevOps automation, cloud engineering, and
               secure digital systems for businesses and individuals across
               India.
@@ -83,29 +83,29 @@ export const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="IFLEON on GitHub"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-brand hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
               >
-                <Github className="h-4 w-4 text-gray-300" />
+                <Github className="h-4 w-4" />
               </a>
               <a
                 href="https://www.linkedin.com/company/ifleon/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="IFLEON on LinkedIn"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-brand hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
               >
-                <Linkedin className="h-4 w-4 text-gray-300" />
+                <Linkedin className="h-4 w-4" />
               </a>
               <a
                 href="mailto:info@ifleon.com"
                 aria-label="Email IFLEON"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-brand hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
               >
-                <Mail className="h-4 w-4 text-gray-300" />
+                <Mail className="h-4 w-4" />
               </a>
             </div>
 
-            <div className="flex items-center gap-2 text-gray-500 text-xs">
+            <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <Calendar className="h-3.5 w-3.5" />
               <span>Founded 2022 &bull; Nellore, Andhra Pradesh</span>
             </div>
@@ -113,7 +113,7 @@ export const Footer = () => {
 
           {/* Business Services */}
           <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
+            <h3 className="eyebrow mb-4">
               For Business
             </h3>
             <ul className="space-y-2 text-sm">
@@ -121,7 +121,7 @@ export const Footer = () => {
                 <li key={s.id}>
                   <Link
                     to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
+                    className="text-muted-foreground hover:text-brand transition-colors"
                   >
                     {s.title}
                   </Link>
@@ -132,7 +132,7 @@ export const Footer = () => {
 
           {/* Individual Services */}
           <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
+            <h3 className="eyebrow mb-4">
               For Individuals
             </h3>
             <ul className="space-y-2 text-sm mb-6">
@@ -140,7 +140,7 @@ export const Footer = () => {
                 <li key={s.id}>
                   <Link
                     to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
+                    className="text-muted-foreground hover:text-brand transition-colors"
                   >
                     {s.title}
                   </Link>
@@ -148,7 +148,7 @@ export const Footer = () => {
               ))}
             </ul>
 
-            <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">
+            <h3 className="eyebrow mb-3">
               Specialty
             </h3>
             <ul className="space-y-2 text-sm">
@@ -156,7 +156,7 @@ export const Footer = () => {
                 <li key={s.id}>
                   <Link
                     to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
+                    className="text-muted-foreground hover:text-brand transition-colors"
                   >
                     {s.title}
                   </Link>
@@ -165,7 +165,7 @@ export const Footer = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1"
+                  className="text-brand hover:text-brand/80 transition-colors inline-flex items-center gap-1"
                 >
                   View all <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
@@ -175,46 +175,46 @@ export const Footer = () => {
 
           {/* Company + Contact */}
           <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
+            <h3 className="eyebrow mb-4">
               Company
             </h3>
             <ul className="space-y-2 text-sm mb-6">
               <li>
-                <a href="/#about" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <a href="/#about" className="text-muted-foreground hover:text-brand transition-colors">
                   About
                 </a>
               </li>
               <li>
-                <Link to="/blog" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link to="/blog" className="text-muted-foreground hover:text-brand transition-colors">
                   Technical Blog
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <Link to="/faq" className="text-muted-foreground hover:text-brand transition-colors">
                   FAQ
                 </Link>
               </li>
               <li>
-                <a href="/#contact" className="text-gray-400 hover:text-blue-400 transition-colors">
+                <a href="/#contact" className="text-muted-foreground hover:text-brand transition-colors">
                   Contact
                 </a>
               </li>
             </ul>
 
-            <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">
+            <h3 className="eyebrow mb-3">
               Get in Touch
             </h3>
             <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2 text-gray-400">
+              <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4 shrink-0" />
                 <a
                   href="mailto:info@ifleon.com"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-brand transition-colors"
                 >
                   info@ifleon.com
                 </a>
               </li>
-              <li className="flex items-start gap-2 text-gray-400">
+              <li className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
                 <span>Nellore, Andhra Pradesh, India</span>
               </li>
@@ -223,9 +223,9 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-border mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <p className="text-gray-500 text-xs">
+            <p className="text-muted-foreground text-xs">
               &copy; {new Date().getFullYear()} IFLEON. All rights reserved.
               &nbsp;&bull;&nbsp;Founded by S. Mahendra Reddy
             </p>
@@ -234,13 +234,13 @@ export const Footer = () => {
           <div className="flex items-center gap-4">
             <Link
               to="/privacy"
-              className="text-xs text-gray-500 hover:text-blue-400 transition-colors"
+              className="text-xs text-muted-foreground hover:text-brand transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               to="/terms"
-              className="text-xs text-gray-500 hover:text-blue-400 transition-colors"
+              className="text-xs text-muted-foreground hover:text-brand transition-colors"
             >
               Terms of Service
             </Link>
@@ -248,7 +248,7 @@ export const Footer = () => {
               href="https://ifleon.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-gray-500 hover:text-blue-400 transition-colors inline-flex items-center gap-1"
+              className="text-xs text-muted-foreground hover:text-brand transition-colors inline-flex items-center gap-1"
             >
               Service Portal <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
@@ -257,7 +257,7 @@ export const Footer = () => {
               type="button"
               onClick={scrollToTop}
               aria-label="Back to top"
-              className="inline-flex items-center gap-1 bg-gray-800 hover:bg-blue-600 text-gray-200 px-3 py-1.5 rounded-lg text-xs transition-colors"
+              className="inline-flex items-center gap-1 bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-1.5 rounded-lg text-xs transition-colors"
             >
               <ArrowUp className="h-3.5 w-3.5" />
               Top

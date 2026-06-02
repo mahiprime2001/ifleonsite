@@ -128,7 +128,8 @@ export const ContactFormDialog = ({
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative bg-white rounded-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl"
+            aria-labelledby="contact-dialog-title"
+            className="relative bg-card text-foreground border border-border rounded-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-card"
             initial={{ opacity: 0, y: 30, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
@@ -139,121 +140,194 @@ export const ContactFormDialog = ({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 z-10"
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-muted hover:bg-muted/70 flex items-center justify-center text-muted-foreground z-10"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="p-6 md:p-8">
               <div className="mb-6">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                <h3
+                  id="contact-dialog-title"
+                  className="text-2xl md:text-3xl font-bold font-display text-foreground"
+                >
                   {title}
                 </h3>
-                <p className="text-gray-600 mt-1">{subtitle}</p>
+                <p className="text-muted-foreground mt-1">{subtitle}</p>
               </div>
 
               <div className="flex flex-wrap gap-4 mb-6 text-sm">
                 <a
                   href="mailto:info@ifleon.com"
-                  className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
+                  className="inline-flex items-center gap-2 text-muted-foreground hover:text-brand"
                 >
                   <Mail className="h-4 w-4" /> info@ifleon.com
                 </a>
-                <span className="inline-flex items-center gap-2 text-gray-700">
+                <span className="inline-flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" /> Nellore, India
                 </span>
               </div>
 
               {isSubmitted ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-14 w-14 text-blue-500 mx-auto mb-3" />
-                  <h4 className="text-xl font-bold text-gray-900 mb-1">
+                  <CheckCircle className="h-14 w-14 text-brand mx-auto mb-3" />
+                  <h4 className="text-xl font-bold text-foreground mb-1">
                     Message Sent
                   </h4>
-                  <p className="text-gray-600">
+                  <p className="text-muted-foreground">
                     Thanks — we'll respond within 24 hours.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input
-                      name="your-name"
-                      required
-                      placeholder="Full Name *"
-                      value={formData["your-name"]}
-                      onChange={handleChange}
-                      className="input"
-                    />
-                    <input
-                      name="your-email"
-                      type="email"
-                      required
-                      placeholder="Email Address *"
-                      value={formData["your-email"]}
-                      onChange={handleChange}
-                      className="input"
-                    />
+                    <div>
+                      <label
+                        htmlFor="dialog-name"
+                        className="block text-sm font-medium text-foreground mb-1.5"
+                      >
+                        Full Name{" "}
+                        <span className="text-destructive" aria-hidden="true">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        id="dialog-name"
+                        name="your-name"
+                        required
+                        aria-required="true"
+                        placeholder="Jane Doe"
+                        value={formData["your-name"]}
+                        onChange={handleChange}
+                        className="input"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="dialog-email"
+                        className="block text-sm font-medium text-foreground mb-1.5"
+                      >
+                        Email Address{" "}
+                        <span className="text-destructive" aria-hidden="true">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        id="dialog-email"
+                        name="your-email"
+                        type="email"
+                        required
+                        aria-required="true"
+                        placeholder="jane@company.com"
+                        value={formData["your-email"]}
+                        onChange={handleChange}
+                        className="input"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input
-                      name="your-phone"
-                      type="tel"
-                      inputMode="tel"
-                      pattern="[0-9+\-\s()]{7,}"
+                    <div>
+                      <label
+                        htmlFor="dialog-phone"
+                        className="block text-sm font-medium text-foreground mb-1.5"
+                      >
+                        Mobile Number{" "}
+                        <span className="text-destructive" aria-hidden="true">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        id="dialog-phone"
+                        name="your-phone"
+                        type="tel"
+                        inputMode="tel"
+                        pattern="[0-9+\-\s()]{7,}"
+                        required
+                        aria-required="true"
+                        placeholder="+1 555 000 0000"
+                        value={formData["your-phone"]}
+                        onChange={handleChange}
+                        className="input"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="dialog-company"
+                        className="block text-sm font-medium text-foreground mb-1.5"
+                      >
+                        Company / Organization
+                      </label>
+                      <input
+                        id="dialog-company"
+                        name="your-company"
+                        placeholder="Acme Inc."
+                        value={formData["your-company"]}
+                        onChange={handleChange}
+                        className="input"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="dialog-service"
+                      className="block text-sm font-medium text-foreground mb-1.5"
+                    >
+                      Service
+                    </label>
+                    <select
+                      id="dialog-service"
+                      name="your-service"
+                      value={formData["your-service"]}
+                      onChange={handleChange}
+                      className="input w-full"
+                    >
+                      <option value="">Select a service</option>
+                      <option value="AI Solutions">AI Solutions</option>
+                      <option value="DevOps">DevOps</option>
+                      <option value="Cloud Migration">Cloud Migration</option>
+                      <option value="Cybersecurity">Cybersecurity</option>
+                      <option value="Custom Software">Custom Software</option>
+                      <option value="Data Engineering">Data Engineering</option>
+                      <option value="Mobile Apps">Mobile Apps</option>
+                      <option value="UI/UX Design">UI/UX Design</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="dialog-message"
+                      className="block text-sm font-medium text-foreground mb-1.5"
+                    >
+                      Message{" "}
+                      <span className="text-destructive" aria-hidden="true">
+                        *
+                      </span>
+                    </label>
+                    <textarea
+                      id="dialog-message"
+                      ref={messageRef}
+                      name="your-message"
+                      rows={6}
                       required
-                      placeholder="Mobile Number *"
-                      value={formData["your-phone"]}
+                      aria-required="true"
+                      placeholder="Tell us about your requirements..."
+                      value={formData["your-message"]}
                       onChange={handleChange}
-                      className="input"
-                    />
-                    <input
-                      name="your-company"
-                      placeholder="Company / Organization"
-                      value={formData["your-company"]}
-                      onChange={handleChange}
-                      className="input"
+                      className="input resize-none w-full"
                     />
                   </div>
 
-                  <select
-                    name="your-service"
-                    value={formData["your-service"]}
-                    onChange={handleChange}
-                    className="input w-full mb-4"
-                  >
-                    <option value="">Select a service</option>
-                    <option value="AI Solutions">AI Solutions</option>
-                    <option value="DevOps">DevOps</option>
-                    <option value="Cloud Migration">Cloud Migration</option>
-                    <option value="Cybersecurity">Cybersecurity</option>
-                    <option value="Custom Software">Custom Software</option>
-                    <option value="Data Engineering">Data Engineering</option>
-                    <option value="Mobile Apps">Mobile Apps</option>
-                    <option value="UI/UX Design">UI/UX Design</option>
-                    <option value="Other">Other</option>
-                  </select>
-
-                  <textarea
-                    ref={messageRef}
-                    name="your-message"
-                    rows={6}
-                    required
-                    placeholder="Tell us about your requirements..."
-                    value={formData["your-message"]}
-                    onChange={handleChange}
-                    className="input resize-none mb-4 w-full"
-                  />
-
                   {error && (
-                    <p className="text-red-500 text-sm mb-4">{error}</p>
+                    <p className="text-destructive text-sm mb-4">{error}</p>
                   )}
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-lg"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-60 font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-card"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                     <Send className="h-5 w-5" />

@@ -84,7 +84,7 @@ export const IsoCloud = ({ className }: Props) => (
             <motion.circle
               key={j}
               cx={12 + j * 14} cy={28 + (j * 14) * 0.5} r="2.4"
-              fill={["#34d399", "#60a5fa", "#a78bfa"][j]}
+              fill={["#2dd4bf", "#60a5fa", "#22d3ee"][j]}
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 2 + j * 0.3, repeat: Infinity, delay: i * 0.2 }}
             />
@@ -105,7 +105,7 @@ export const IsoCloud = ({ className }: Props) => (
             <motion.circle
               key={j}
               cx={12 + j * 14} cy={28 + (j * 14) * 0.5} r="2.4"
-              fill={["#22d3ee", "#34d399", "#f472b6"][j]}
+              fill={["#22d3ee", "#2dd4bf", "#3b82f6"][j]}
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 2 + j * 0.3, repeat: Infinity, delay: i * 0.25 }}
             />
@@ -134,7 +134,7 @@ export const IsoCloud = ({ className }: Props) => (
       <motion.circle
         key={`pkt-${i}`}
         r="4"
-        fill={["#34d399", "#60a5fa", "#a78bfa"][i]}
+        fill={["#2dd4bf", "#60a5fa", "#22d3ee"][i]}
         animate={{
           cx: [300, 220, 300, 400, 300],
           cy: [215, 350, 215, 350, 215],

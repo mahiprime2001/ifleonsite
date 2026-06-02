@@ -333,9 +333,9 @@ const SignUpCard = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
-                className="text-4xl font-bold mb-3 text-center relative"
+                className="text-4xl font-display font-semibold mb-3 text-center relative"
               >
-                <span className="bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
+                <span className="text-brand-gradient">
                   IFLEON
                 </span>
               </motion.h2>
@@ -371,8 +371,8 @@ const SignUpCard = () => {
             className="relative z-10"
           >
             <motion.div className="mb-8">
-              <motion.h1 
-                className="text-3xl md:text-4xl font-bold mb-2 text-foreground"
+              <motion.h1
+                className="text-3xl md:text-4xl font-display font-semibold mb-2 text-foreground"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
@@ -405,7 +405,7 @@ const SignUpCard = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 required
               />
-              {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+              {errors.name && <p className="text-destructive text-xs">{errors.name}</p>}
               <AnimatedInput
                 id="email"
                 icon={Mail}
@@ -415,7 +415,7 @@ const SignUpCard = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
               />
-              {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+              {errors.email && <p className="text-destructive text-xs">{errors.email}</p>}
               <AnimatedInput
                 id="password"
                 icon={Lock}
@@ -427,7 +427,7 @@ const SignUpCard = () => {
                 togglePassword={() => setIsPasswordVisible(!isPasswordVisible)}
                 required
               />
-              {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+              {errors.password && <p className="text-destructive text-xs">{errors.password}</p>}
               <AnimatedInput
                 id="confirmPassword"
                 icon={Lock}
@@ -439,7 +439,7 @@ const SignUpCard = () => {
                 togglePassword={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
                 required
               />
-              {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && <p className="text-destructive text-xs">{errors.confirmPassword}</p>}
               
               <motion.div 
                 className="pt-4"
@@ -455,12 +455,11 @@ const SignUpCard = () => {
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                      "w-full h-12 bg-gradient-to-r relative overflow-hidden",
-                      "from-primary via-primary/90 to-primary/80",
-                      "hover:from-primary/90 hover:via-primary/80 hover:to-primary/70",
+                      "w-full h-12 relative overflow-hidden",
+                      "bg-primary hover:bg-primary/90",
                       "text-primary-foreground rounded-xl transition-all duration-500",
-                      "shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30",
-                      "border border-primary/20"
+                      "shadow-card hover:shadow-card-hover",
+                      "border border-border"
                     )}
                   >
                     <AnimatePresence mode="wait">
@@ -525,7 +524,7 @@ const SignUpCard = () => {
                 transition={{ duration: 0.5, delay: 2.4 }}
               >
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
+                  <span className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-card px-2 text-muted-foreground">

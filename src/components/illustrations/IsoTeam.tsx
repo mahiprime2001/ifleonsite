@@ -76,7 +76,7 @@ export const IsoTeam = ({ className }: Props) => (
       ))}
       <motion.path
         d="M -28 -8 Q 0 -20 28 -10"
-        fill="none" stroke="#a78bfa" strokeWidth="1.5"
+        fill="none" stroke="#60a5fa" strokeWidth="1.5"
         animate={{ opacity: [0.4, 1, 0.4] }}
         transition={{ duration: 2, repeat: Infinity }}
       />
@@ -104,15 +104,15 @@ export const IsoTeam = ({ className }: Props) => (
 
     {/* Person 2 — right (man, short hair) */}
     <g transform="translate(370 290)">
-      <polygon points="0,40 30,28 50,55 20,68" fill="#10b981" />
-      <polygon points="30,28 50,55 50,90 30,75" fill="#047857" />
-      <polygon points="0,40 20,68 20,100 0,72" fill="#065f46" />
+      <polygon points="0,40 30,28 50,55 20,68" fill="#2dd4bf" />
+      <polygon points="30,28 50,55 50,90 30,75" fill="#0d9488" />
+      <polygon points="0,40 20,68 20,100 0,72" fill="#134e4a" />
       <ellipse cx="22" cy="20" rx="14" ry="13" fill="url(#team-skin2)" />
       <path d="M 8 18 Q 8 6 22 6 Q 36 6 36 18 Q 30 12 22 12 Q 14 12 8 18 Z" fill="#1e293b" />
       {/* arm */}
       <motion.polygon
         points="-2,52 -28,40 -42,52 -10,68"
-        fill="#10b981"
+        fill="#2dd4bf"
         animate={{ y: [0, -1, 0, 1, 0] }}
         transition={{ duration: 3, repeat: Infinity, delay: 0.2 }}
       />

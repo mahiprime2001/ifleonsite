@@ -10,19 +10,16 @@ export const FloatingContactButton = () => {
       icon: Mail,
       label: "Email Us",
       href: "mailto:info@ifleon.com",
-      color: "from-blue-500 to-blue-600",
     },
     {
       icon: Phone,
       label: "Call Us",
       href: "tel:+911234567890",
-      color: "from-blue-500 to-blue-600",
     },
     {
       icon: Calendar,
       label: "Schedule Call",
       href: "/#contact",
-      color: "from-purple-500 to-purple-600",
     },
   ];
 
@@ -49,7 +46,7 @@ export const FloatingContactButton = () => {
                   transition={{ delay: index * 0.05 }}
                   whileHover={{ scale: 1.05, x: -5 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex items-center gap-3 bg-gradient-to-r ${option.color} text-white px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all group whitespace-nowrap`}
+                  className="flex items-center gap-3 bg-primary text-primary-foreground px-5 py-3 rounded-full shadow-card hover:shadow-xl transition-all group whitespace-nowrap"
                 >
                   <Icon className="h-5 w-5 group-hover:rotate-12 transition-transform" />
                   <span className="font-medium">{option.label}</span>
@@ -62,9 +59,11 @@ export const FloatingContactButton = () => {
 
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close contact menu" : "Open contact menu"}
+        aria-expanded={isOpen}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-sky-600 text-white shadow-2xl flex items-center justify-center hover:shadow-3xl transition-shadow"
+        className="w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-card flex items-center justify-center hover:shadow-xl transition-shadow"
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -93,7 +92,7 @@ export const FloatingContactButton = () => {
 
       {!isOpen && (
         <motion.div
-          className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"
+          className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full animate-pulse"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 1 }}

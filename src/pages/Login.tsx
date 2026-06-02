@@ -483,9 +483,9 @@ const SignInCard = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
-                className="text-4xl font-bold mb-3 text-center relative"
+                className="text-4xl font-display font-semibold mb-3 text-center relative"
               >
-                <span className="bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
+                <span className="text-brand-gradient">
                   IFLEON
                 </span>
                 <motion.div
@@ -566,7 +566,7 @@ const SignInCard = () => {
             {/* Header with typing animation effect */}
             <motion.div className="mb-8">
               <motion.h1
-                className="text-3xl md:text-4xl font-bold mb-2 text-foreground"
+                className="text-3xl md:text-4xl font-display font-semibold mb-2 text-foreground"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
@@ -719,12 +719,11 @@ const SignInCard = () => {
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                      "w-full h-12 bg-gradient-to-r relative overflow-hidden",
-                      "from-green-400 to-yellow-400",
-                      "hover:from-green-500 hover:to-yellow-500",
+                      "w-full h-12 relative overflow-hidden",
+                      "bg-primary hover:bg-primary/90",
                       "text-primary-foreground rounded-xl transition-all duration-500",
-                      "shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30",
-                      "border border-primary/20"
+                      "shadow-card hover:shadow-card-hover",
+                      "border border-border"
                     )}
                   >
                     <AnimatePresence mode="wait">

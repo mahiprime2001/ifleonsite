@@ -15,16 +15,16 @@ export const IsoSecurity = ({ className }: Props) => (
   >
     <defs>
       <linearGradient id="sec-shield" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#34d399" />
-        <stop offset="1" stopColor="#059669" />
+        <stop offset="0" stopColor="#2dd4bf" />
+        <stop offset="1" stopColor="#0d9488" />
       </linearGradient>
       <linearGradient id="sec-lock" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stopColor="#fbbf24" />
         <stop offset="1" stopColor="#d97706" />
       </linearGradient>
       <radialGradient id="sec-glow" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0" stopColor="#34d399" stopOpacity="0.4" />
-        <stop offset="1" stopColor="#34d399" stopOpacity="0" />
+        <stop offset="0" stopColor="#2dd4bf" stopOpacity="0.4" />
+        <stop offset="1" stopColor="#2dd4bf" stopOpacity="0" />
       </radialGradient>
     </defs>
 
@@ -37,7 +37,7 @@ export const IsoSecurity = ({ className }: Props) => (
     {/* floor */}
     <g transform="translate(300 470)">
       <polygon points="0,-80 200,30 0,130 -200,30" fill="#0b1220" stroke="#1e293b" />
-      <g opacity="0.18" stroke="#34d399">
+      <g opacity="0.18" stroke="#2dd4bf">
         <line x1="-130" y1="55" x2="60" y2="-50" />
         <line x1="-60" y1="90" x2="130" y2="-15" />
       </g>
@@ -59,14 +59,14 @@ export const IsoSecurity = ({ className }: Props) => (
       {/* shield back layer (depth) */}
       <path
         d="M 6 -94 L 100 -50 L 90 30 Q 80 80 6 110 Q -68 80 -78 30 L -88 -50 Z"
-        fill="#065f46"
+        fill="#134e4a"
         opacity="0.9"
       />
       {/* shield front */}
       <path
         d="M 0 -100 L 95 -55 L 85 25 Q 75 75 0 105 Q -75 75 -85 25 L -95 -55 Z"
         fill="url(#sec-shield)"
-        stroke="#047857"
+        stroke="#0d9488"
         strokeWidth="2"
       />
       {/* checkmark */}
@@ -78,7 +78,7 @@ export const IsoSecurity = ({ className }: Props) => (
         transition={{ duration: 4, repeat: Infinity, times: [0, 0.4, 0.85, 1] }}
       />
       {/* highlights */}
-      <path d="M -85 -55 L -50 -30 L -40 60 Q -35 75 -10 90" fill="none" stroke="#a7f3d0" strokeWidth="1" opacity="0.6" />
+      <path d="M -85 -55 L -50 -30 L -40 60 Q -35 75 -10 90" fill="none" stroke="#99f6e4" strokeWidth="1" opacity="0.6" />
     </motion.g>
 
     {/* small floating lock */}
@@ -96,8 +96,8 @@ export const IsoSecurity = ({ className }: Props) => (
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 4.5, repeat: Infinity, delay: 0.6 }}
     >
-      <rect x="-12" y="-3" width="24" height="20" rx="3" fill="#1e293b" stroke="#34d399" />
-      <path d="M -7 -3 L -7 -12 Q -7 -19 0 -19 Q 7 -19 7 -12 L 7 -3" fill="none" stroke="#34d399" strokeWidth="2.5" />
+      <rect x="-12" y="-3" width="24" height="20" rx="3" fill="#1e293b" stroke="#2dd4bf" />
+      <path d="M -7 -3 L -7 -12 Q -7 -19 0 -19 Q 7 -19 7 -12 L 7 -3" fill="none" stroke="#2dd4bf" strokeWidth="2.5" />
     </motion.g>
 
     {/* Orbiting key icons */}
@@ -112,8 +112,8 @@ export const IsoSecurity = ({ className }: Props) => (
           style={{ transformOrigin: "300px 280px" }}
         >
           <g transform={`translate(${300 + Math.cos(angle) * rx} ${280 + Math.sin(angle) * ry})`}>
-            <circle r="9" fill="#0f172a" stroke="#34d399" strokeWidth="1.5" />
-            <circle r="3" fill="#34d399" />
+            <circle r="9" fill="#0f172a" stroke="#2dd4bf" strokeWidth="1.5" />
+            <circle r="3" fill="#2dd4bf" />
           </g>
         </motion.g>
       );
@@ -122,7 +122,7 @@ export const IsoSecurity = ({ className }: Props) => (
     {/* Scan lines */}
     <motion.line
       x1="120" y1="280" x2="480" y2="280"
-      stroke="#34d399" strokeWidth="1" opacity="0.6"
+      stroke="#2dd4bf" strokeWidth="1" opacity="0.6"
       animate={{ y1: [180, 380, 180], y2: [180, 380, 180] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     />

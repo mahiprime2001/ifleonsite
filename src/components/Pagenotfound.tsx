@@ -24,7 +24,7 @@ export function NotFoundPage() {
   }, []);
 
   return (
-    <section className="bg-white font-serif min-h-screen flex items-center justify-center">
+    <section className="bg-transparent min-h-screen flex items-center justify-center">
       <div className="container mx-auto">
         <div className="flex justify-center">
           <div className="w-full sm:w-10/12 md:w-8/12 text-center">
@@ -32,20 +32,20 @@ export function NotFoundPage() {
               className="bg-[url('/paint-spill-404.gif')] h-[250px] sm:h-[350px] md:h-[400px] bg-center bg-no-repeat bg-contain"
               aria-hidden="true"
             >
-              <h1 className="text-center text-black text-6xl sm:text-7xl md:text-8xl pt-6 sm:pt-8">
+              <h1 className="font-display text-center text-foreground text-6xl sm:text-7xl md:text-8xl pt-6 sm:pt-8">
                 404
               </h1>
             </div>
 
             <div className="mt-[-50px]">
-              <h3 className="text-2xl text-black sm:text-3xl font-bold mb-4">
+              <h3 className="font-display text-2xl text-foreground sm:text-3xl font-semibold mb-4">
                 Look like you're lost
               </h3>
-              <p className="mb-6 text-black sm:mb-5">
+              <p className="mb-6 text-muted-foreground sm:mb-5">
                 The page you are looking for is not available!
               </p>
               {randomQuote && (
-                <p className="mb-6 text-black italic text-lg sm:text-xl font-medium p-4 bg-gray-50 rounded-lg mx-4">
+                <p className="mb-6 text-foreground italic text-lg sm:text-xl font-medium p-4 surface-card rounded-lg mx-4">
                   "{randomQuote}"
                 </p>
               )}
@@ -53,7 +53,7 @@ export function NotFoundPage() {
               <Button
                 variant="default"
                 onClick={() => navigate("/")}
-                className="my-5 bg-blue-600 hover:bg-blue-700 "
+                className="my-5 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Go to Home
               </Button>

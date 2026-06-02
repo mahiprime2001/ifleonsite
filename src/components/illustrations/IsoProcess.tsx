@@ -4,7 +4,7 @@ type Props = { className?: string; step?: 1 | 2 | 3 | 4 | 5 };
 
 // Compact isometric scene per process step (used in HowWeWork)
 export const IsoProcess = ({ className, step = 1 }: Props) => {
-  const palette = ["#34d399", "#22d3ee", "#a78bfa", "#f472b6", "#fbbf24"];
+  const palette = ["#2563EB", "#22d3ee", "#7C3AED", "#2DD4BF", "#fbbf24"];
   const accent = palette[step - 1];
 
   return (
@@ -47,7 +47,7 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
         <g transform="translate(110 70)">
           <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity }}>
             <path d="M -50 0 L 50 0 L 50 30 L 20 30 L 8 42 L 12 30 L -50 30 Z"
-              fill="rgba(52,211,153,0.15)" stroke={accent} />
+              fill="rgba(37,99,235,0.15)" stroke={accent} />
             <circle cx="-25" cy="15" r="3" fill={accent} />
             <circle cx="-10" cy="15" r="3" fill={accent} />
             <circle cx="5" cy="15" r="3" fill={accent} />

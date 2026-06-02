@@ -33,11 +33,11 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <stop offset="1" stopColor="#1a0f08" />
       </linearGradient>
 
-      {/* SHIRT — blue hoodie with depth */}
+      {/* SHIRT — electric-blue hoodie with depth */}
       <radialGradient id="shirt3d" cx="0.4" cy="0.3" r="0.95">
-        <stop offset="0" stopColor="#5eead4" />
-        <stop offset="0.5" stopColor="#10b981" />
-        <stop offset="1" stopColor="#064e3b" />
+        <stop offset="0" stopColor="#60a5fa" />
+        <stop offset="0.5" stopColor="#2563EB" />
+        <stop offset="1" stopColor="#1e3a8a" />
       </radialGradient>
 
       {/* PANTS */}
@@ -73,7 +73,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
 
       {/* ATMOSPHERIC GLOWS */}
       <radialGradient id="aura3d" cx="0.5" cy="0.5" r="0.6">
-        <stop offset="0" stopColor="#34d399" stopOpacity="0.45" />
+        <stop offset="0" stopColor="#3B82F6" stopOpacity="0.45" />
         <stop offset="0.6" stopColor="#22d3ee" stopOpacity="0.18" />
         <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
       </radialGradient>
@@ -103,7 +103,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <ellipse cx="0" cy="20" rx="100" ry="36" />
       </g>
       <motion.ellipse
-        cx="0" cy="20" rx="60" ry="20" fill="none" stroke="#34d399" strokeWidth="1.5"
+        cx="0" cy="20" rx="60" ry="20" fill="none" stroke="#22D3EE" strokeWidth="1.5"
         animate={{ rx: [40, 200, 40], ry: [16, 72, 16], opacity: [0.7, 0, 0.7] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeOut" }}
       />
@@ -124,7 +124,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <g key={i}>
           <rect x="8" y={10 + i * 32} width="68" height="22" rx="3" fill="#0b1220" stroke="#1e293b" />
           <motion.circle
-            cx="16" cy={21 + i * 32} r="2.5" fill="#34d399"
+            cx="16" cy={21 + i * 32} r="2.5" fill="#2DD4BF"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.3 }}
           />
@@ -171,10 +171,10 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         {[
           { y: -68, w: 70, c: "#fbbf24" },
           { y: -52, w: 180, c: "#fff" },
-          { y: -36, w: 130, c: "#a7f3d0" },
+          { y: -36, w: 130, c: "#93c5fd" },
           { y: -20, w: 200, c: "#fde68a" },
           { y: -4, w: 110, c: "#fff" },
-          { y: 12, w: 170, c: "#a7f3d0" },
+          { y: 12, w: 170, c: "#93c5fd" },
           { y: 28, w: 90, c: "#fbbf24" },
           { y: 44, w: 150, c: "#fff" },
         ].map((l, i) => (
@@ -227,16 +227,16 @@ export const IsoWorkstation3D = ({ className }: Props) => (
       <path
         d="M -18 50 Q -28 38 -22 22 Q -18 4 -2 0 L 36 0 Q 52 4 56 22 Q 62 38 52 50 L 52 110 Q 50 125 30 128 L 4 128 Q -16 125 -18 110 Z"
         fill="url(#shirt3d)"
-        stroke="#064e3b"
+        stroke="#1e3a8a"
         strokeWidth="1.5"
       />
       {/* Shirt highlight */}
       <path
         d="M -10 32 Q -14 18 -2 12 L 18 10 Q 14 28 4 36 Z"
-        fill="#5eead4" opacity="0.55"
+        fill="#93c5fd" opacity="0.55"
       />
       {/* Collar */}
-      <path d="M 8 0 Q 18 -4 28 0 L 24 12 Q 18 16 12 12 Z" fill="#064e3b" />
+      <path d="M 8 0 Q 18 -4 28 0 L 24 12 Q 18 16 12 12 Z" fill="#1e3a8a" />
       <ellipse cx="18" cy="6" rx="8" ry="3" fill="#fde2c2" opacity="0.8" />
 
       {/* RIGHT ARM (toward keyboard) — rounded */}
@@ -248,7 +248,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <path
           d="M 52 24 Q 70 30 86 50 Q 96 64 100 80 Q 100 90 90 92 Q 80 92 76 84 Q 68 70 56 56 Q 48 46 50 32 Z"
           fill="url(#shirt3d)"
-          stroke="#064e3b"
+          stroke="#1e3a8a"
         />
         {/* hand */}
         <ellipse cx="92" cy="86" rx="9" ry="7" fill="url(#skin3d-arm)" stroke="#a87858" strokeWidth="0.8" />
@@ -263,7 +263,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
         <path
           d="M -16 26 Q -34 32 -50 52 Q -60 66 -62 82 Q -62 92 -52 94 Q -42 94 -38 86 Q -32 70 -22 56 Q -14 46 -16 32 Z"
           fill="url(#shirt3d)"
-          stroke="#064e3b"
+          stroke="#1e3a8a"
         />
         {/* hand */}
         <ellipse cx="-54" cy="88" rx="9" ry="7" fill="url(#skin3d)" stroke="#a87858" strokeWidth="0.8" />
@@ -325,7 +325,7 @@ export const IsoWorkstation3D = ({ className }: Props) => (
       <rect x="0" y="-8" width="120" height="14" rx="3" fill="#475569" stroke="#334155" />
       <rect x="0" y="-8" width="120" height="3" rx="1" fill="#64748b" opacity="0.7" />
       <motion.ellipse
-        cx="60" cy="-3" rx="50" ry="4" fill="#34d399" opacity="0.3"
+        cx="60" cy="-3" rx="50" ry="4" fill="#22D3EE" opacity="0.3"
         animate={{ opacity: [0.1, 0.5, 0.1] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       />
@@ -356,14 +356,14 @@ export const IsoWorkstation3D = ({ className }: Props) => (
       transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
       style={{ transformOrigin: "300px 280px" }}
     >
-      <ellipse cx="0" cy="0" rx="200" ry="60" fill="none" stroke="#a78bfa" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
+      <ellipse cx="0" cy="0" rx="200" ry="60" fill="none" stroke="#7C3AED" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
     </motion.g>
 
     {/* FLOATING CODE TAGS */}
     {[
-      { x: 90, y: 130, t: "{ }", c: "#34d399" },
+      { x: 90, y: 130, t: "{ }", c: "#3B82F6" },
       { x: 490, y: 140, t: "</>", c: "#60a5fa" },
-      { x: 100, y: 460, t: "λ", c: "#a78bfa" },
+      { x: 100, y: 460, t: "λ", c: "#7C3AED" },
       { x: 500, y: 460, t: "@", c: "#fbbf24" },
     ].map((p, i) => (
       <motion.g

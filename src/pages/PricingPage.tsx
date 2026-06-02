@@ -19,7 +19,6 @@ const plans = [
       "One-time cost",
       "Documentation included",
     ],
-    accent: "from-blue-500 to-cyan-500",
   },
   {
     icon: Clock,
@@ -33,7 +32,6 @@ const plans = [
       "Expert-level guidance",
       "Fast turnaround",
     ],
-    accent: "from-emerald-500 to-teal-500",
   },
   {
     icon: Layers,
@@ -47,7 +45,6 @@ const plans = [
       "Predictable monthly cost",
       "Long-term partnership",
     ],
-    accent: "from-purple-500 to-pink-500",
   },
   {
     icon: LifeBuoy,
@@ -61,7 +58,6 @@ const plans = [
       "Incident support",
       "Performance optimization",
     ],
-    accent: "from-amber-500 to-orange-500",
   },
 ];
 
@@ -72,7 +68,7 @@ export default function PricingPage() {
     canonical: "https://ifleon.com/pricing",
   });
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="min-h-screen">
       <PageHero
         eyebrow="Pricing"
         title="Engagement models"
@@ -81,8 +77,7 @@ export default function PricingPage() {
       />
 
       {/* Plans grid */}
-      <section className="relative py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-        <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
+      <section className="relative py-20 bg-transparent overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-6 perspective-1000"
@@ -107,30 +102,30 @@ export default function PricingPage() {
                 >
                   <MagnetCard
                     intensity={8}
-                    className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 hover:shadow-2xl transition-all"
+                    className="surface-card h-full rounded-2xl transition-all"
                   >
                     <div className="p-7 md:p-8 h-full flex flex-col">
                       <div className="flex items-center gap-3 mb-5">
                         <motion.div
                           whileHover={{ rotate: 6, scale: 1.05 }}
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${plan.accent} shadow-lg`}
+                          className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 text-brand"
                         >
-                          <Icon className="h-6 w-6 text-white" />
+                          <Icon className="h-6 w-6" />
                         </motion.div>
                         <div>
-                          <h3 className="text-xl font-bold text-white">{plan.title}</h3>
-                          <p className="text-sm text-slate-400">{plan.subtitle}</p>
+                          <h3 className="text-xl font-bold text-foreground">{plan.title}</h3>
+                          <p className="text-sm text-muted-foreground">{plan.subtitle}</p>
                         </div>
                       </div>
 
-                      <p className="text-slate-300 mb-5 text-sm md:text-base leading-relaxed flex-1">
+                      <p className="text-muted-foreground mb-5 text-sm md:text-base leading-relaxed flex-1">
                         {plan.description}
                       </p>
 
                       <ul className="space-y-2.5">
                         {plan.points.map((point, i) => (
-                          <li key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
-                            <Check className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                            <Check className="h-4 w-4 text-brand mt-0.5 flex-shrink-0" />
                             <span>{point}</span>
                           </li>
                         ))}
@@ -142,24 +137,21 @@ export default function PricingPage() {
             })}
           </motion.div>
 
-          {/* Premium / Custom tier — strategic WHITE accent card */}
+          {/* Premium / Custom tier — strategic accent card */}
           <ScrollReveal direction="scale">
-            <div className="mt-10 relative rounded-3xl bg-white p-8 md:p-12 shadow-[0_30px_80px_-20px_rgba(96,165,250,0.4)] overflow-hidden border border-emerald-200">
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-emerald-100 blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-blue-100 blur-3xl" />
-
+            <div className="surface-card mt-10 relative rounded-3xl p-8 md:p-12 overflow-hidden">
               <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300 mb-4">
-                    <Crown className="h-4 w-4 text-amber-700" />
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-amber-800">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-border mb-4">
+                    <Crown className="h-4 w-4 text-brand" />
+                    <span className="eyebrow">
                       Custom Enterprise
                     </span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+                  <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-3">
                     Need something tailored?
                   </h2>
-                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
                     Multi-team rollouts, complex AI/DevOps programs, and long-term
                     partnerships — we'll build a bespoke engagement model that fits
                     your scale, governance, and timeline.
@@ -174,9 +166,9 @@ export default function PricingPage() {
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-2 text-sm text-gray-700"
+                        className="flex items-center gap-2 text-sm text-muted-foreground"
                       >
-                        <Check className="h-4 w-4 text-emerald-600" />
+                        <Check className="h-4 w-4 text-brand" />
                         {item}
                       </div>
                     ))}
@@ -186,7 +178,7 @@ export default function PricingPage() {
                 <div className="text-center lg:text-right">
                   <Link
                     to="/#contact"
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-7 py-4 rounded-xl font-semibold transition-all"
+                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:-translate-y-0.5 px-7 py-4 rounded-xl font-semibold transition-all"
                   >
                     Talk to Sales
                     <ArrowRight className="h-5 w-5" />
@@ -198,13 +190,13 @@ export default function PricingPage() {
 
           <ScrollReveal direction="up">
             <div className="mt-16 text-center">
-              <p className="text-slate-300 max-w-2xl mx-auto mb-6">
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
                 Exact pricing depends on scope, complexity, and timeline. Every
                 engagement starts with a free consultation to align expectations.
               </p>
               <Link
                 to="/#contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-blue-600 hover:shadow-xl hover:shadow-emerald-500/40 hover:-translate-y-0.5 text-white px-8 py-3.5 rounded-xl font-semibold transition-all"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:-translate-y-0.5 px-8 py-3.5 rounded-xl font-semibold transition-all"
               >
                 Request a Free Consultation
                 <ArrowRight className="h-4 w-4" />

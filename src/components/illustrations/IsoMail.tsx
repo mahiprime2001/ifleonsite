@@ -86,7 +86,7 @@ export const IsoMail = ({ className }: Props) => (
         x={p.x} y={p.y}
         fontSize="22"
         fontWeight="800"
-        fill={i % 2 ? "#34d399" : "#a78bfa"}
+        fill={i % 2 ? "#2dd4bf" : "#22d3ee"}
         animate={{ y: [p.y, p.y - 12, p.y], opacity: [0.4, 0.95, 0.4] }}
         transition={{ duration: 4, repeat: Infinity, delay: i * 0.3 }}
       >

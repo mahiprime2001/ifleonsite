@@ -5,11 +5,13 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { lazy, Suspense, useEffect } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
-import ScrollToTop from "./components/ScrollToTop";
 import { AuroraBackground } from "./components/AuroraBackground";
+import { ThemeProvider, useTheme } from "./components/theme/ThemeProvider";
+import { SmoothScrollProvider, useRouteScroll } from "./components/motion/SmoothScroll";
+import Cursor from "./components/motion/Cursor";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
@@ -50,37 +52,75 @@ const TermsOfService  = lazy(() => import("./pages/TermsOfService"));
 
 /* ---------------- Page Transition Wrapper ---------------- */
 
-const PageTransition = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-    exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
-    transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
-    className="min-h-screen"
-  >
-    {children}
-  </motion.div>
-);
+const PageTransition = ({ children }: { children: React.ReactNode }) => {
+  const reduce = useReducedMotion();
 
-/* ---------------- Route-change scrim sweep ---------------- */
-const RouteScrim = () => {
-  const location = useLocation();
+  // Reduced motion: no fade/blur, render content instantly.
+  if (reduce) return <div className="min-h-screen">{children}</div>;
+
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        className="fixed inset-0 z-[120] pointer-events-none"
-        initial={{ scaleX: 0, transformOrigin: "left" }}
-        animate={{ scaleX: 1, transformOrigin: "left" }}
-        exit={{ scaleX: 0, transformOrigin: "right" }}
-        transition={{ duration: 0.55, ease: [0.7, 0, 0.3, 1] }}
+    <motion.div
+      initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+      // Hold briefly so the new page reveals just as the curtain wipes away.
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+      transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1], delay: 0.12 }}
+      className="min-h-screen"
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+/* ---------------- Route-change curtain wipe ---------------- */
+/**
+ * Full-screen brand-gradient curtain that wipes ACROSS the viewport on every
+ * route change. Driven by clip-path so it never repaints layout: the panel
+ * enters from the right (covering the screen), then exits to the left
+ * (uncovering the freshly-mounted page). Keyed on location.pathname inside an
+ * AnimatePresence mode="wait" so each navigation fires exactly one sweep.
+ *
+ * It is pointer-events-none and sits at a very high z-index, so it can paint
+ * over the page without ever intercepting clicks.
+ */
+const RouteCurtain = () => {
+  const location = useLocation();
+  const reduce = useReducedMotion();
+  const firstRender = useRef(true);
+  const [show, setShow] = useState(false);
+
+  // Only sweep on actual navigations — never cover the very first load.
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    setShow(true);
+    const t = setTimeout(() => setShow(false), 750);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
+  // Reduced-motion (or between navigations) renders nothing.
+  if (reduce || !show) return null;
+
+  return (
+    <motion.div
+      key={location.pathname}
+      className="bg-brand-gradient fixed inset-0 z-[200] pointer-events-none"
+      // Starts covering, then wipes AWAY to the right to reveal the new page.
+      initial={{ clipPath: "inset(0 0 0 0)" }}
+      animate={{ clipPath: "inset(0 0 0 100%)" }}
+      transition={{ duration: 0.6, ease: [0.7, 0, 0.3, 1] }}
+    >
+      {/* Subtle sheen so the flat gradient reads as a moving panel of light. */}
+      <div
+        className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(15,23,42,0) 0%, rgba(52,211,153,0.18) 35%, rgba(96,165,250,0.18) 65%, rgba(15,23,42,0) 100%)",
-          mixBlendMode: "screen",
+            "linear-gradient(105deg, transparent 30%, hsl(0 0% 100% / 0.18) 50%, transparent 70%)",
         }}
       />
-    </AnimatePresence>
+    </motion.div>
   );
 };
 
@@ -88,6 +128,7 @@ const RouteScrim = () => {
 
 function AppContent() {
   const location = useLocation();
+  const { setForced } = useTheme();
   useAnalytics();
 
   useEffect(() => {
@@ -112,12 +153,24 @@ function AppContent() {
     !isSettingsPage &&
     !isProfilePage;
 
+  // Marketing pages follow the user's light/dark choice; the app/console
+  // "engine room" (auth, settings, profile, admin) is pinned to dark SIGNAL.
+  useEffect(() => {
+    setForced(showHeaderFooter ? null : "dark");
+  }, [showHeaderFooter, setForced]);
+
+  // Smooth scroll on marketing routes; native scroll in the app/console.
+  useRouteScroll(location.pathname, showHeaderFooter);
+
   return (
     <>
+      <a href="#main" className="skip-link">Skip to content</a>
+      <Cursor />
       <AuroraBackground />
       <Toaster position="top-center" richColors />
       {showHeaderFooter && <Header />}
 
+      <main id="main">
       <Suspense fallback={null}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -285,9 +338,11 @@ function AppContent() {
           </Routes>
         </AnimatePresence>
       </Suspense>
+      </main>
 
       {showHeaderFooter && <Footer />}
-      <RouteScrim />
+      {showHeaderFooter && <FloatingContactButton />}
+      <RouteCurtain />
     </>
   );
 }
@@ -304,7 +359,7 @@ function HomePage() {
     <>
       <Hero />
       <TrustStrip />
-      <SectionCut variant="blade" accent="blue" label="What We Do" />
+      <SectionCut variant="blade" accent="indigo" label="What We Do" />
       <Services />
       <SectionCut variant="diagonal" accent="blue" label="By the Numbers" />
       <Metrics />
@@ -312,9 +367,9 @@ function HomePage() {
       <SectionCut variant="blade" accent="purple" label="Experience" />
       <Experience />
       <WhyChooseUs />
-      <SectionCut variant="flip" accent="blue" label="Our Process" />
+      <SectionCut variant="flip" accent="indigo" label="Our Process" />
       <HowWeWork />
-      <SectionCut variant="iris" accent="sky" label="Voices" />
+      <SectionCut variant="iris" accent="violet" label="Voices" />
       <Testimonials />
       <Newsletter />
       <SectionCut variant="diagonal" accent="orange" label="Let's Talk" />
@@ -328,10 +383,13 @@ function HomePage() {
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <ScrollToTop />
-        <AppContent />
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <SmoothScrollProvider>
+            <AppContent />
+          </SmoothScrollProvider>
+        </Router>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

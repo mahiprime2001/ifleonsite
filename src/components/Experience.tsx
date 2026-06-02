@@ -2,6 +2,7 @@ import { Zap, Globe, Brain, GitBranch } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "./animations/ScrollReveal";
 import { MagnetCard } from "./animations/MagnetCard";
+import { SplitReveal } from "./motion/SplitReveal";
 
 export const Experience = () => {
   const projects = [
@@ -12,7 +13,6 @@ export const Experience = () => {
       description:
         "ML models for fraud detection and customer analytics — improved detection accuracy by 40%.",
       technologies: ["Python", "TensorFlow", "AWS SageMaker"],
-      accent: "from-purple-500 to-pink-500",
     },
     {
       icon: GitBranch,
@@ -21,7 +21,6 @@ export const Experience = () => {
       description:
         "End-to-end CI/CD pipeline that cut deployment time by 75% and improved release reliability.",
       technologies: ["Jenkins", "Docker", "AWS"],
-      accent: "from-blue-500 to-sky-500",
     },
     {
       icon: Globe,
@@ -30,7 +29,6 @@ export const Experience = () => {
       description:
         "Legacy-to-cloud migration with performance tuning — achieved 50% operational savings.",
       technologies: ["AWS EC2", "S3", "Lambda"],
-      accent: "from-blue-500 to-sky-500",
     },
     {
       icon: Zap,
@@ -39,7 +37,6 @@ export const Experience = () => {
       description:
         "Security framework aligned with DPDP compliance and ISO 27001 standards.",
       technologies: ["DPDP", "Threat Detection", "ISO 27001"],
-      accent: "from-amber-500 to-orange-500",
     },
   ];
 
@@ -69,22 +66,21 @@ export const Experience = () => {
   return (
     <section
       id="experience"
-      className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden"
+      className="relative py-20 md:py-24 bg-transparent text-foreground overflow-hidden"
     >
-      <div className="absolute inset-0 mesh-bg opacity-35 pointer-events-none" />
-      <div className="absolute -top-40 left-1/3 w-[40rem] h-[40rem] rounded-full bg-purple-500/10 blur-[120px]" />
+      <div className="absolute -top-40 left-1/3 w-[40rem] h-[40rem] rounded-full glow-brand opacity-30 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-blue-400 tracking-[0.3em] uppercase mb-3">
+            <p className="eyebrow mb-3">
               Our Experience
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+            <SplitReveal as="h2" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground mb-4 leading-tight">
               Real projects.{" "}
-              <span className="text-gradient-iflo">Measurable outcomes.</span>
-            </h2>
-            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+              <span className="font-display text-gradient-iflo">Measurable outcomes.</span>
+            </SplitReveal>
+            <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto">
               Since 2022, IFLEON has delivered practical AI, DevOps, and cloud
               solutions — building a foundation for scalable, long-term growth.
             </p>
@@ -114,32 +110,32 @@ export const Experience = () => {
               >
                 <MagnetCard
                   intensity={6}
-                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-blue-400/40 transition-all"
+                  className="surface-card h-full rounded-2xl"
                 >
                   <div className="p-6 md:p-8">
                     <div className="flex items-start gap-4">
                       <motion.div
                         whileHover={{ rotate: 6, scale: 1.05 }}
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br ${project.accent} shadow-lg`}
+                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-primary/10 text-brand"
                       >
-                        <Icon className="h-6 w-6 text-white" />
+                        <Icon className="h-6 w-6" />
                       </motion.div>
 
                       <div className="flex-1">
-                        <h3 className="text-lg md:text-xl font-bold text-white mb-1">
+                        <h3 className="text-lg md:text-xl font-bold text-foreground mb-1">
                           {project.title}
                         </h3>
-                        <div className="text-xs md:text-sm text-blue-400 font-semibold mb-3 uppercase tracking-wide">
+                        <div className="text-xs md:text-sm text-brand font-semibold mb-3 uppercase tracking-wide">
                           {project.client}
                         </div>
-                        <p className="text-slate-300 mb-4 leading-relaxed text-sm md:text-base">
+                        <p className="text-muted-foreground mb-4 leading-relaxed text-sm md:text-base">
                           {project.description}
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {project.technologies.map((tech, i) => (
                             <span
                               key={i}
-                              className="px-3 py-1 bg-white/10 border border-white/10 text-slate-200 rounded-full text-xs font-medium"
+                              className="px-3 py-1 bg-card border border-border text-muted-foreground rounded-full text-xs font-medium"
                             >
                               {tech}
                             </span>
@@ -156,8 +152,8 @@ export const Experience = () => {
 
         {/* Competitive Advantage */}
         <ScrollReveal direction="up">
-          <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12">
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-10 text-center">
+          <div className="surface-card rounded-3xl p-8 md:p-12">
+            <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-10 text-center">
               Our Competitive Advantage
             </h3>
 
@@ -170,12 +166,12 @@ export const Experience = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
                   whileHover={{ y: -4 }}
-                  className="text-center p-5 md:p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-blue-400/40 transition-all"
+                  className="surface-card text-center p-5 md:p-6 rounded-2xl"
                 >
-                  <h4 className="text-base md:text-lg font-bold text-white mb-2">
+                  <h4 className="text-base md:text-lg font-bold text-foreground mb-2">
                     {adv.title}
                   </h4>
-                  <p className="text-slate-300 text-xs md:text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-xs md:text-sm leading-relaxed">
                     {adv.description}
                   </p>
                 </motion.div>

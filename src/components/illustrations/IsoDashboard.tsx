@@ -27,17 +27,13 @@ export const IsoDashboard = ({ className }: Props) => (
         <stop offset="0" stopColor="#22d3ee" />
         <stop offset="1" stopColor="#3b82f6" />
       </linearGradient>
-      <linearGradient id="dash-purple" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#a78bfa" />
-        <stop offset="1" stopColor="#7c3aed" />
-      </linearGradient>
-      <linearGradient id="dash-blue" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#34d399" />
-        <stop offset="1" stopColor="#10b981" />
+      <linearGradient id="dash-indigo" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#60a5fa" />
+        <stop offset="1" stopColor="#2563EB" />
       </linearGradient>
       <radialGradient id="dash-aura" cx="0.5" cy="0.5" r="0.6">
         <stop offset="0" stopColor="#22d3ee" stopOpacity="0.4" />
-        <stop offset="0.5" stopColor="#34d399" stopOpacity="0.18" />
+        <stop offset="0.5" stopColor="#3B82F6" stopOpacity="0.18" />
         <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
       </radialGradient>
       <filter id="dash-blur" x="-30%" y="-30%" width="160%" height="160%">
@@ -64,7 +60,7 @@ export const IsoDashboard = ({ className }: Props) => (
       <polyline points="-230,18 0,-100 230,18" fill="none" stroke="#334155" strokeWidth="1.2" />
       {/* expanding scan ring */}
       <motion.ellipse
-        cx="0" cy="20" rx="60" ry="24" fill="none" stroke="#34d399" strokeWidth="1.5"
+        cx="0" cy="20" rx="60" ry="24" fill="none" stroke="#22D3EE" strokeWidth="1.5"
         animate={{ rx: [40, 200, 40], ry: [16, 80, 16], opacity: [0.7, 0, 0.7] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
       />
@@ -91,7 +87,7 @@ export const IsoDashboard = ({ className }: Props) => (
       transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       style={{ transformOrigin: "300px 290px" }}
     >
-      <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="#a78bfa" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
+      <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="#7C3AED" strokeWidth="0.8" opacity="0.32" strokeDasharray="3 6" />
     </motion.g>
 
     {/* MAIN center panel — floating dashboard */}
@@ -114,9 +110,9 @@ export const IsoDashboard = ({ className }: Props) => (
 
         {/* metric cards row */}
         {[
-          { x: 0, c: "#34d399", h: 16 },
+          { x: 0, c: "#2563EB", h: 16 },
           { x: 28, c: "#60a5fa", h: 14 },
-          { x: 56, c: "#a78bfa", h: 18 },
+          { x: 56, c: "#22d3ee", h: 18 },
         ].map((m, i) => (
           <g key={i} transform={`translate(${m.x} 14)`}>
             <rect width="22" height="20" rx="2" fill="rgba(255,255,255,0.04)" stroke={m.c} strokeWidth="0.5" />
@@ -142,7 +138,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <g transform="translate(0 42)">
           <motion.path
             d="M 0 8 L 12 4 L 24 6 L 36 2 L 48 5 L 60 1 L 72 3"
-            fill="none" stroke="#34d399" strokeWidth="1.5"
+            fill="none" stroke="#3B82F6" strokeWidth="1.5"
             strokeLinecap="round" strokeLinejoin="round"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: [0, 1, 1, 0] }}
@@ -150,7 +146,7 @@ export const IsoDashboard = ({ className }: Props) => (
           />
           {[0, 12, 24, 36, 48, 60, 72].map((x, i) => (
             <motion.circle
-              key={i} cx={x} cy={[8, 4, 6, 2, 5, 1, 3][i]} r="1.5" fill="#34d399"
+              key={i} cx={x} cy={[8, 4, 6, 2, 5, 1, 3][i]} r="1.5" fill="#3B82F6"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.12 }}
             />
@@ -168,7 +164,7 @@ export const IsoDashboard = ({ className }: Props) => (
         <motion.line
           key={i}
           x1={m.x} y1={m.y} x2={m.x + m.dx} y2={m.y}
-          stroke="#34d399" strokeWidth="2" strokeLinecap="round"
+          stroke="#3B82F6" strokeWidth="2" strokeLinecap="round"
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15 }}
         />
@@ -181,18 +177,18 @@ export const IsoDashboard = ({ className }: Props) => (
       animate={{ y: [0, -8, 0] }}
       transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
     >
-      <ellipse cx="55" cy="50" rx="70" ry="22" fill="#a78bfa" opacity="0.18" filter="url(#dash-blur)" />
+      <ellipse cx="55" cy="50" rx="70" ry="22" fill="#3B82F6" opacity="0.18" filter="url(#dash-blur)" />
       {/* iso card */}
-      <polygon points="0,0 80,-40 130,-15 50,25" fill="url(#dash-panel)" stroke="#a78bfa" />
-      <polygon points="0,0 50,25 50,75 0,50" fill="rgba(2,6,23,0.95)" stroke="#a78bfa" opacity="0.9" />
-      <polygon points="130,-15 50,25 50,75 130,35" fill="rgba(15,23,42,0.95)" stroke="#a78bfa" opacity="0.85" />
+      <polygon points="0,0 80,-40 130,-15 50,25" fill="url(#dash-panel)" stroke="#3B82F6" />
+      <polygon points="0,0 50,25 50,75 0,50" fill="rgba(2,6,23,0.95)" stroke="#3B82F6" opacity="0.9" />
+      <polygon points="130,-15 50,25 50,75 130,35" fill="rgba(15,23,42,0.95)" stroke="#3B82F6" opacity="0.85" />
       {/* code lines on top face */}
       <g transform="translate(8 5) skewY(26.5) skewX(-26.5)">
         {[
           { y: 0, w: 18, c: "#fbbf24" },
           { y: 6, w: 50, c: "#22d3ee" },
-          { y: 12, w: 38, c: "#34d399" },
-          { y: 18, w: 60, c: "#a78bfa" },
+          { y: 12, w: 38, c: "#3B82F6" },
+          { y: 18, w: 60, c: "#60a5fa" },
           { y: 24, w: 28, c: "#22d3ee" },
         ].map((l, i) => (
           <motion.rect
@@ -217,17 +213,17 @@ export const IsoDashboard = ({ className }: Props) => (
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
     >
-      <ellipse cx="40" cy="55" rx="60" ry="22" fill="#34d399" opacity="0.18" filter="url(#dash-blur)" />
+      <ellipse cx="40" cy="55" rx="60" ry="22" fill="#22D3EE" opacity="0.18" filter="url(#dash-blur)" />
       {/* iso card */}
-      <polygon points="0,0 80,-40 130,-15 50,25" fill="url(#dash-panel)" stroke="#34d399" />
-      <polygon points="0,0 50,25 50,80 0,55" fill="rgba(2,6,23,0.95)" stroke="#34d399" opacity="0.9" />
-      <polygon points="130,-15 50,25 50,80 130,40" fill="rgba(15,23,42,0.95)" stroke="#34d399" opacity="0.85" />
+      <polygon points="0,0 80,-40 130,-15 50,25" fill="url(#dash-panel)" stroke="#22D3EE" />
+      <polygon points="0,0 50,25 50,80 0,55" fill="rgba(2,6,23,0.95)" stroke="#22D3EE" opacity="0.9" />
+      <polygon points="130,-15 50,25 50,80 130,40" fill="rgba(15,23,42,0.95)" stroke="#22D3EE" opacity="0.85" />
       {/* donut chart */}
       <g transform="translate(36 -2) skewY(26.5) skewX(-26.5)">
         <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
         <motion.circle
           cx="20" cy="20" r="16" fill="none"
-          stroke="url(#dash-blue)" strokeWidth="6"
+          stroke="url(#dash-indigo)" strokeWidth="6"
           strokeDasharray="100" strokeDashoffset="30"
           strokeLinecap="round"
           transform="rotate(-90 20 20)"
@@ -246,8 +242,8 @@ export const IsoDashboard = ({ className }: Props) => (
     {/* Bottom mini stats — 3 floating chip-like tiles */}
     <g>
       {[
-        { x: 200, y: 410, label: "AI", c: "#a78bfa" },
-        { x: 300, y: 432, label: "DEV", c: "#34d399" },
+        { x: 200, y: 410, label: "AI", c: "#3B82F6" },
+        { x: 300, y: 432, label: "DEV", c: "#2DD4BF" },
         { x: 400, y: 410, label: "CLOUD", c: "#22d3ee" },
       ].map((t, i) => (
         <motion.g
@@ -283,7 +279,7 @@ export const IsoDashboard = ({ className }: Props) => (
     />
     <motion.path
       d="M 380 270 Q 425 275 470 285"
-      stroke="#34d399" strokeWidth="1.2" strokeDasharray="3 4" fill="none" opacity="0.55"
+      stroke="#22D3EE" strokeWidth="1.2" strokeDasharray="3 4" fill="none" opacity="0.55"
       animate={{ strokeDashoffset: [0, -14] }}
       transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: 0.3 }}
     />
@@ -303,7 +299,7 @@ export const IsoDashboard = ({ className }: Props) => (
             cx={300 + Math.cos(angle) * rx}
             cy={290 + Math.sin(angle) * ry}
             r="5"
-            fill={["#34d399", "#22d3ee", "#a78bfa", "#fbbf24"][i]}
+            fill={["#3B82F6", "#22d3ee", "#7C3AED", "#2DD4BF"][i]}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
           />
@@ -313,9 +309,9 @@ export const IsoDashboard = ({ className }: Props) => (
 
     {/* Floating code/symbol tags */}
     {[
-      { x: 110, y: 150, t: "{ }", c: "#34d399" },
+      { x: 110, y: 150, t: "{ }", c: "#3B82F6" },
       { x: 480, y: 130, t: "</>", c: "#60a5fa" },
-      { x: 100, y: 410, t: "λ", c: "#a78bfa" },
+      { x: 100, y: 410, t: "λ", c: "#7C3AED" },
       { x: 490, y: 410, t: "AI", c: "#22d3ee" },
     ].map((p, i) => (
       <motion.g

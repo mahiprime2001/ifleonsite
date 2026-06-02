@@ -9,9 +9,9 @@ export const IsoEcosystem = ({ className }: Props) => {
   // Six satellite nodes positioned on an ellipse around the hub
   const sats = [
     { angle: 0,            color: "#22d3ee", label: "AI",    icon: "ai" as const },
-    { angle: Math.PI / 3,  color: "#34d399", label: "DEV",   icon: "dev" as const },
-    { angle: 2 * Math.PI / 3, color: "#a78bfa", label: "CLOUD", icon: "cloud" as const },
-    { angle: Math.PI,         color: "#f472b6", label: "DATA",  icon: "data" as const },
+    { angle: Math.PI / 3,  color: "#2dd4bf", label: "DEV",   icon: "dev" as const },
+    { angle: 2 * Math.PI / 3, color: "#7c3aed", label: "CLOUD", icon: "cloud" as const },
+    { angle: Math.PI,         color: "#3b82f6", label: "DATA",  icon: "data" as const },
     { angle: 4 * Math.PI / 3, color: "#fbbf24", label: "SEC",  icon: "sec" as const },
     { angle: 5 * Math.PI / 3, color: "#60a5fa", label: "OPS",  icon: "ops" as const },
   ];
@@ -42,16 +42,16 @@ export const IsoEcosystem = ({ className }: Props) => {
           <stop offset="1" stopColor="#0f172a" />
         </linearGradient>
         <linearGradient id="eco-hub" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#34d399" />
+          <stop offset="0" stopColor="#2dd4bf" />
           <stop offset="0.5" stopColor="#22d3ee" />
           <stop offset="1" stopColor="#3b82f6" />
         </linearGradient>
         <linearGradient id="eco-hub-side" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#10b981" />
+          <stop offset="0" stopColor="#0d9488" />
           <stop offset="1" stopColor="#1e3a8a" />
         </linearGradient>
         <radialGradient id="eco-glow" cx="0.5" cy="0.5" r="0.6">
-          <stop offset="0" stopColor="#34d399" stopOpacity="0.5" />
+          <stop offset="0" stopColor="#2dd4bf" stopOpacity="0.5" />
           <stop offset="0.6" stopColor="#22d3ee" stopOpacity="0.18" />
           <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
         </radialGradient>
@@ -82,7 +82,7 @@ export const IsoEcosystem = ({ className }: Props) => {
         </g>
         {/* expanding scan ring */}
         <motion.ellipse
-          cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#34d399" strokeWidth="1.5"
+          cx="0" cy="0" rx="60" ry="20" fill="none" stroke="#2dd4bf" strokeWidth="1.5"
           animate={{ rx: [40, 220, 40], ry: [16, 88, 16], opacity: [0.7, 0, 0.7] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeOut" }}
         />
@@ -149,7 +149,7 @@ export const IsoEcosystem = ({ className }: Props) => {
       >
         <ellipse
           cx={cx} cy={cy} rx="250" ry="100"
-          fill="none" stroke="#a78bfa" strokeWidth="0.8" opacity="0.3"
+          fill="none" stroke="#60a5fa" strokeWidth="0.8" opacity="0.3"
           strokeDasharray="3 6"
         />
       </motion.g>
@@ -247,7 +247,7 @@ export const IsoEcosystem = ({ className }: Props) => {
         {/* small upward beam */}
         <motion.path
           d="M 0 -22 L 0 -50"
-          stroke="#34d399" strokeWidth="2" strokeLinecap="round"
+          stroke="#2dd4bf" strokeWidth="2" strokeLinecap="round"
           animate={{ opacity: [0.3, 0.9, 0.3], y: [0, -2, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
@@ -255,9 +255,9 @@ export const IsoEcosystem = ({ className }: Props) => {
 
       {/* Floating tags above the scene */}
       {[
-        { x: 110, y: 130, t: "{ }", c: "#34d399" },
+        { x: 110, y: 130, t: "{ }", c: "#2dd4bf" },
         { x: 480, y: 130, t: "</>", c: "#60a5fa" },
-        { x: 100, y: 460, t: "λ", c: "#a78bfa" },
+        { x: 100, y: 460, t: "λ", c: "#3b82f6" },
         { x: 490, y: 460, t: "@", c: "#fbbf24" },
       ].map((p, i) => (
         <motion.g

@@ -97,7 +97,12 @@
       "Bash(echo \"EXIT_CODE=$?\")",
       "Bash(grep -nE 'export \\(const|default|function\\)|type Props|variant' __TRACKED_VAR__.tsx)",
       "PowerShell(npx tsc -p tsconfig.app.json --noEmit 2>&1)",
-      "Bash(echo \"TSC_EXIT=$?\")"
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(echo \"EXIT: $? \\(no lines above = no SagaHome errors\\)\")",
+      "Bash(echo \"TOTAL ERRORS: $\\(npx tsc -p tsconfig.app.json --noEmit 2>&1)",
+      "Bash(echo \"===TSC $?===\")",
+      "Bash(echo \"---EXIT $?---\")"
     ]
   }
 }

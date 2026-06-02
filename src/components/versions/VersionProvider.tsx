@@ -15,9 +15,8 @@ import {
    ============================================================ */
 
 export type VersionId =
-  | "v1" | "v2" | "v3" | "v4" | "v5" | "v6" | "v7"
-  | "v8" | "v9" | "v10" | "v11" | "v12" | "v13" | "v14" | "v15" | "v16" | "v17"
-  | "v18" | "v19" | "v20" | "v21" | "v22" | "v23" | "v24" | "v25" | "v26" | "v27";
+  | "v1" | "v2" | "v3" | "v4" | "v5" | "v6" | "v7" | "v8"
+  | "v9" | "v10" | "v11" | "v12" | "v13";
 
 export type VersionMeta = {
   id: VersionId;
@@ -29,33 +28,22 @@ export type VersionMeta = {
 };
 
 export const VERSIONS: VersionMeta[] = [
-  { id: "v1", num: "V1", label: "Immersive", ref: "Light WebGL ∞ field · Lusion", skin: "light" },
-  { id: "v2", num: "V2", label: "Bento", ref: "Product-OS grid · Vercel / Raycast", skin: "dark" },
-  { id: "v3", num: "V3", label: "Cinematic", ref: "Dark-space 3D · Active Theory", skin: "dark" },
-  { id: "v4", num: "V4", label: "Editorial", ref: "Bold type · brutalist", skin: "light" },
-  { id: "v5", num: "V5", label: "Orbit", ref: "Glossy 3D object · light · R3F", skin: "light" },
-  { id: "v6", num: "V6", label: "Nebula", ref: "Immersive 3D scene · dark · R3F", skin: "dark" },
-  { id: "v7", num: "V7", label: "Kinetic", ref: "Real 3D + bold transitions · dark", skin: "dark" },
-  { id: "v8", num: "V8", label: "Aurora", ref: "Animated mesh-gradient · Stripe", skin: "light" },
-  { id: "v9", num: "V9", label: "Glass", ref: "Glassmorphism frosted panels", skin: "dark" },
-  { id: "v10", num: "V10", label: "Brutalist", ref: "Neubrutalism · hard shadows", skin: "light" },
-  { id: "v11", num: "V11", label: "Swiss", ref: "Swiss minimal grid · monochrome", skin: "light" },
-  { id: "v12", num: "V12", label: "Terminal", ref: "Dev terminal / code aesthetic", skin: "dark" },
-  { id: "v13", num: "V13", label: "Clay", ref: "Claymorphism · soft 3D pastel", skin: "light" },
-  { id: "v14", num: "V14", label: "Cyber", ref: "Cyberpunk neon grid", skin: "dark" },
-  { id: "v15", num: "V15", label: "Retro", ref: "Y2K / retro-web", skin: "dark" },
-  { id: "v16", num: "V16", label: "Press", ref: "Magazine editorial · serif", skin: "light" },
-  { id: "v17", num: "V17", label: "Enterprise", ref: "Corporate clean SaaS · Vanta", skin: "light" },
-  { id: "v18", num: "V18", label: "Aurora Noir", ref: "Aurora ribbons · deep dark", skin: "dark" },
-  { id: "v19", num: "V19", label: "Iso", ref: "Isometric illustration grid", skin: "light" },
-  { id: "v20", num: "V20", label: "Noir", ref: "Monochrome black & white", skin: "dark" },
-  { id: "v21", num: "V21", label: "Liquid", ref: "Organic morphing blobs", skin: "light" },
-  { id: "v22", num: "V22", label: "Bauhaus", ref: "Geometric Bauhaus blocks", skin: "light" },
-  { id: "v23", num: "V23", label: "Spotlight", ref: "Cursor-spotlight reveal · dark", skin: "dark" },
-  { id: "v24", num: "V24", label: "Pastel", ref: "Soft pastel · calm", skin: "light" },
-  { id: "v25", num: "V25", label: "Holo", ref: "Holographic iridescent", skin: "dark" },
-  { id: "v26", num: "V26", label: "Pulse", ref: "Data-viz dashboard · charts", skin: "dark" },
-  { id: "v27", num: "V27", label: "Type", ref: "Kinetic typography hero", skin: "light" },
+  // ── Kept favorites ──
+  { id: "v1", num: "V1", label: "Immersive", ref: "Light WebGL ∞ particle field", skin: "light" },
+  { id: "v2", num: "V2", label: "Terminal", ref: "Animated dev/CLI · typed commands", skin: "dark" },
+  // ── Motion-rich combination themes ──
+  { id: "v3", num: "C1", label: "Flux", ref: "Mesh-gradient + scrollytelling + parallax + live stats", skin: "light" },
+  { id: "v4", num: "C2", label: "Forge", ref: "3D objects + bento + glass + GSAP reveals", skin: "dark" },
+  { id: "v5", num: "C3", label: "Nexus", ref: "Interactive network/globe viz + cinematic transitions", skin: "dark" },
+  { id: "v6", num: "C4", label: "Motion", ref: "Moving illustrations (Lottie/SVG) + morphing + bento", skin: "light" },
+  { id: "v7", num: "C5", label: "Saga", ref: "Scrollytelling cinematic + SVG morph + parallax depth", skin: "dark" },
+  { id: "v8", num: "C6", label: "Prism", ref: "Light glass + bento + live interactive stats + mesh", skin: "light" },
+  // ── Advanced WebGL / shader / interaction combos ──
+  { id: "v9", num: "C7", label: "Distort", ref: "Liquid distortion + shaders + pixel displacement (WebGL)", skin: "dark" },
+  { id: "v10", num: "C8", label: "Trail", ref: "Image trail + mouse trail + cinematic transitions + smooth scroll", skin: "dark" },
+  { id: "v11", num: "C9", label: "Lumen", ref: "Dynamic lighting + volumetric + depth mapping (R3F)", skin: "dark" },
+  { id: "v12", num: "C10", label: "Canvas", ref: "Infinite draggable canvas + smooth scroll + motion system", skin: "light" },
+  { id: "v13", num: "C11", label: "Shader", ref: "Full-screen WebGL shader experience + scrollytelling", skin: "dark" },
 ];
 
 const STORAGE_KEY = "ifleon-version";

@@ -89,7 +89,15 @@
       "Bash(echo \"EXIT: $?\")",
       "Bash(curl -s http://localhost:5173/@vite/client)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({fm:p.dependencies['framer-motion'],lucide:p.dependencies['lucide-react'],rrd:p.dependencies['react-router-dom'],react:p.dependencies['react']},null,2\\)\\)\")",
+      "Bash(node -e \"console.log\\('fiber', require\\('./node_modules/@react-three/fiber/package.json'\\).version\\); console.log\\('drei', require\\('./node_modules/@react-three/drei/package.json'\\).version\\); console.log\\('three', require\\('./node_modules/three/package.json'\\).version\\); console.log\\('react', require\\('./node_modules/react/package.json'\\).version\\)\")",
+      "Bash(grep -rho \"MeshDistortMaterial\\\\|MeshWobbleMaterial\\\\|export { Float\\\\|Float,\" \"d:/ifleon/ifleonsite - 3d illsturators/node_modules/@react-three/drei/core/\")",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Bash(grep -nE 'export \\(const|default|function\\)|type Props|variant' __TRACKED_VAR__.tsx)",
+      "PowerShell(npx tsc -p tsconfig.app.json --noEmit 2>&1)",
+      "Bash(echo \"TSC_EXIT=$?\")"
     ]
   }
 }

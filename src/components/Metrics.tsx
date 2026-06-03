@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { animate, stagger } from "animejs";
 import { Briefcase, Layers, Users, ShieldCheck } from "lucide-react";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { site } from "../config/site";
 
 type MetricProps = {
@@ -136,8 +137,12 @@ export const Metrics = () => {
 
   return (
     <section className="relative py-20 md:py-24 bg-transparent overflow-hidden">
-      <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
-      <div className="absolute inset-0 iso-grid-bg opacity-15 pointer-events-none" />
+      <Parallax offset={40} className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 mesh-bg opacity-40" />
+      </Parallax>
+      <Parallax offset={-70} className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 iso-grid-bg opacity-15" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
@@ -172,12 +177,14 @@ export const Metrics = () => {
           </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <MetricCard value={site.metrics.projectsDelivered} label="Projects Delivered" icon={Briefcase} />
-          <MetricCard value={site.metrics.industriesServed} label="Industries Served" icon={Layers} />
-          <MetricCard value={site.metrics.clients} label="Clients & Individuals" icon={Users} />
-          <MetricCard value={site.metrics.securityFirstPct} suffix="%" label="Security-First Approach" icon={ShieldCheck} />
-        </div>
+        <Parallax offset={-30}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <MetricCard value={site.metrics.projectsDelivered} label="Projects Delivered" icon={Briefcase} />
+            <MetricCard value={site.metrics.industriesServed} label="Industries Served" icon={Layers} />
+            <MetricCard value={site.metrics.clients} label="Clients & Individuals" icon={Users} />
+            <MetricCard value={site.metrics.securityFirstPct} suffix="%" label="Security-First Approach" icon={ShieldCheck} />
+          </div>
+        </Parallax>
 
         <ScrollReveal direction="up">
           <div className="mt-12 md:mt-16 text-center">

@@ -17,6 +17,7 @@ import {
   type Service,
 } from "../data/services";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { SplitReveal } from "./motion/SplitReveal";
 import { MagnetCard } from "./animations/MagnetCard";
 import { IsoIcon } from "./illustrations/IsoIcon";
@@ -69,8 +70,18 @@ export const Services = () => {
       className="relative py-20 md:py-24 bg-transparent overflow-hidden"
     >
       <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
-      <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-primary/10 blur-[120px]" />
-      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-2/10 blur-[120px]" />
+      <Parallax
+        offset={40}
+        className="absolute inset-0 pointer-events-none -z-10"
+      >
+        <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-primary/10 blur-[120px]" />
+      </Parallax>
+      <Parallax
+        offset={-70}
+        className="absolute inset-0 pointer-events-none -z-10"
+      >
+        <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-2/10 blur-[120px]" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
@@ -189,15 +200,17 @@ export const Services = () => {
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex justify-center mb-20">
-          <Link
-            to="/services"
-            className="shine-on-hover inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:-translate-y-0.5 px-8 py-4 rounded-xl font-semibold transition-all shadow-card"
-          >
-            View All Services With Details
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        <ScrollReveal direction="up">
+          <div className="flex justify-center mb-20">
+            <Link
+              to="/services"
+              className="shine-on-hover inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:-translate-y-0.5 px-8 py-4 rounded-xl font-semibold transition-all shadow-card"
+            >
+              View All Services With Details
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </ScrollReveal>
 
         {/* Bottom CTA card */}
         <ScrollReveal direction="scale">

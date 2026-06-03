@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Mail, Send } from "lucide-react";
+import { Parallax } from "./animations/Parallax";
 import { ScrollReveal } from "./animations/ScrollReveal";
 import { SplitReveal } from "./motion/SplitReveal";
 import { NewsletterScene } from "./animations/NewsletterScene";
@@ -7,9 +8,11 @@ import { NewsletterScene } from "./animations/NewsletterScene";
 export const Newsletter = () => {
   return (
     <section className="relative py-16 md:py-20 bg-transparent overflow-hidden">
-      <div className="absolute inset-0 mesh-bg opacity-50" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-soft blur-3xl" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-soft blur-3xl" />
+      <Parallax offset={45} className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 mesh-bg opacity-50" />
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-soft blur-3xl" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-soft blur-3xl" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">

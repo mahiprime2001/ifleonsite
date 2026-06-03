@@ -9,7 +9,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 import { AuroraBackground } from "./components/AuroraBackground";
-import { ThemeProvider, useTheme } from "./components/theme/ThemeProvider";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { SmoothScrollProvider, useRouteScroll } from "./components/motion/SmoothScroll";
 import Cursor from "./components/motion/Cursor";
 import { Header } from "./components/Header";
@@ -130,7 +130,6 @@ const RouteCurtain = () => {
 
 function AppContent() {
   const location = useLocation();
-  const { setForced } = useTheme();
   useAnalytics();
 
   useEffect(() => {
@@ -154,12 +153,6 @@ function AppContent() {
     !isForgotPasswordPage &&
     !isSettingsPage &&
     !isProfilePage;
-
-  // Marketing pages follow the user's light/dark choice; the app/console
-  // "engine room" (auth, settings, profile, admin) is pinned to dark SIGNAL.
-  useEffect(() => {
-    setForced(showHeaderFooter ? null : "dark");
-  }, [showHeaderFooter, setForced]);
 
   // Smooth scroll on marketing routes; native scroll in the app/console.
   useRouteScroll(location.pathname, showHeaderFooter);

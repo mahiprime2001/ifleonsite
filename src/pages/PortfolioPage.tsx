@@ -8,6 +8,8 @@ import {
   TrendingUp,
   CheckCircle,
   ArrowRight,
+  Github,
+  ArrowUpRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageHero } from "../components/PageHero";
@@ -15,7 +17,22 @@ import { ScrollReveal } from "../components/animations/ScrollReveal";
 import { MagnetCard } from "../components/animations/MagnetCard";
 import { site } from "../config/site";
 
-const projects = [
+type Project = {
+  id: number;
+  title: string;
+  category: string;
+  client: string;
+  duration: string;
+  year: string;
+  image?: string;
+  repo?: string;
+  description: string;
+  technologies: string[];
+  results: string[];
+  tags: string[];
+};
+
+const projects: Project[] = [
   {
     id: 1,
     title: "AI-Powered Customer Analytics Platform",
@@ -124,6 +141,224 @@ const projects = [
     ],
     tags: ["IoT", "Smart Home"],
   },
+
+  // === Open Source — real public repositories (github.com/ifleonlabs & github.com/mahiprime2001) ===
+  {
+    id: 7,
+    title: "llmkit — Claude API Toolkit",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/llmkit",
+    description:
+      "Typed Python toolkit for the Claude API — chat & streaming, prompt templates, response & prompt caching, token usage, and an offline mock provider for fully testable code.",
+    technologies: ["Python", "Claude API", "httpx"],
+    results: [
+      "Chat + streaming over the Claude API",
+      "Response & prompt caching with token usage",
+      "Offline mock provider — testable with no API key",
+    ],
+    tags: ["AI", "Python", "Open Source"],
+  },
+  {
+    id: 8,
+    title: "askdocs — RAG Document Assistant",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/askdocs",
+    description:
+      "Ask questions over your own documents — a compact Retrieval-Augmented Generation assistant built on llmkit, with pluggable retrieval (keyword now, vector store next).",
+    technologies: ["Python", "RAG", "llmkit"],
+    results: [
+      "Q&A over your own document set",
+      "Pluggable retrieval (keyword → vector)",
+      "Runs offline in mock mode",
+    ],
+    tags: ["AI", "RAG", "Python"],
+  },
+  {
+    id: 9,
+    title: "vigil — Uptime & Change Monitoring",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/vigil",
+    description:
+      "An uptime & change-monitoring service assembled from the ifleonlabs engine parts (apikit + taskq), with FastAPI, SQLModel and JWT auth.",
+    technologies: ["Python", "FastAPI", "SQLModel", "JWT"],
+    results: [
+      "Uptime & change monitoring with alerts",
+      "JWT-authenticated REST API",
+      "Built on the apikit + taskq engine",
+    ],
+    tags: ["DevOps", "Monitoring", "Python"],
+  },
+  {
+    id: 10,
+    title: "taskq — Background Job Queue",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/taskq",
+    description:
+      "A small, persistent background job queue backed by SQLite — enqueue work and run it in a worker with retries, backoff, scheduling and priorities. No Redis required.",
+    technologies: ["Python", "SQLite", "SQLModel"],
+    results: [
+      "Persistent SQLite-backed job queue",
+      "Retries, backoff, scheduling & priorities",
+      "Zero external infrastructure (no Redis)",
+    ],
+    tags: ["DevOps", "Backend", "Python"],
+  },
+  {
+    id: 11,
+    title: "apikit — Typed REST Client Toolkit",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/apikit",
+    description:
+      "A typed REST API client toolkit on httpx — automatic retries with backoff, rate limiting, response caching and pagination, fully testable offline.",
+    technologies: ["Python", "httpx"],
+    results: [
+      "Automatic retries with backoff",
+      "Rate limiting + response caching",
+      "Pagination, fully testable offline",
+    ],
+    tags: ["Backend", "Python", "Open Source"],
+  },
+  {
+    id: 12,
+    title: "auth-api — FastAPI Auth Service",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/auth-api",
+    description:
+      "A production-shaped authentication service in FastAPI — bcrypt password hashing, JWT access/refresh tokens, OAuth2 password flow, and protected routes.",
+    technologies: ["Python", "FastAPI", "JWT", "OAuth2"],
+    results: [
+      "bcrypt password hashing",
+      "JWT access & refresh tokens",
+      "OAuth2 password flow + protected routes",
+    ],
+    tags: ["Security", "Auth", "Python"],
+  },
+  {
+    id: 13,
+    title: "realtime-chat — WebSocket Chat",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/realtime-chat",
+    description:
+      "Real-time WebSocket chat with rooms, live presence and persisted history, built on FastAPI + SQLModel.",
+    technologies: ["Python", "FastAPI", "WebSockets", "SQLModel"],
+    results: [
+      "Live rooms with presence",
+      "Persisted message history",
+      "WebSocket real-time delivery",
+    ],
+    tags: ["Backend", "Realtime", "Python"],
+  },
+  {
+    id: 14,
+    title: "roundup — Content Aggregator & Digests",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/roundup",
+    description:
+      "A content aggregator & digest builder — pull RSS/JSON sources on a schedule, dedupe and store, then push digests. Composed from apikit + taskq + notifykit.",
+    technologies: ["Python", "RSS/JSON", "Scheduling"],
+    results: [
+      "Scheduled RSS/JSON aggregation",
+      "Dedupe, store & build digests",
+      "Composed from reusable IFLEON toolkits",
+    ],
+    tags: ["Automation", "Python", "Open Source"],
+  },
+  {
+    id: 15,
+    title: "tablescope — CSV Analytics CLI",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/tablescope",
+    description:
+      "A microscope for your spreadsheets — profile, aggregate, chart and report on any CSV from the command line with pandas + matplotlib.",
+    technologies: ["Python", "pandas", "matplotlib"],
+    results: [
+      "Profile & aggregate any CSV",
+      "Charts & reports from the CLI",
+      "pandas + matplotlib under the hood",
+    ],
+    tags: ["Data", "CLI", "Python"],
+  },
+  {
+    id: 16,
+    title: "Siri Billing App",
+    category: "Open Source",
+    client: "Siri Art Jewellery",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/mahiprime2001/Siri-billing-app",
+    description:
+      "An inventory & billing system built as a cross-platform desktop app with Tauri, a Next.js front end and a Flask back end — delivered in partnership with IFLEON.",
+    technologies: ["Tauri", "Next.js", "Flask", "TypeScript"],
+    results: [
+      "Cross-platform desktop billing (Tauri)",
+      "Next.js UI + Flask API",
+      "Inventory & invoicing for a retail business",
+    ],
+    tags: ["Custom Development", "Full-Stack", "Desktop"],
+  },
+  {
+    id: 17,
+    title: "weather-app — Forecasts (CLI + Web)",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/mahiprime2001/weather-app",
+    description:
+      "Live weather & forecasts from the free Open-Meteo API with both a CLI and a web UI — async httpx, TTL caching and .env configuration.",
+    technologies: ["Python", "httpx", "Open-Meteo"],
+    results: [
+      "Live weather & multi-day forecasts",
+      "Async httpx with TTL caching",
+      "CLI + web UI from one codebase",
+    ],
+    tags: ["Python", "API", "Open Source"],
+  },
+  {
+    id: 18,
+    title: "url-shortener — Links + Analytics",
+    category: "Open Source",
+    client: "IFLEON Labs",
+    duration: "Open source",
+    year: "2026",
+    repo: "https://github.com/ifleonlabs/url-shortener",
+    description:
+      "A URL shortener with click analytics — SQLite/SQLModel storage plus a CLI, web UI and redirect server.",
+    technologies: ["Python", "SQLite", "SQLModel"],
+    results: [
+      "Short links with click analytics",
+      "CLI, web UI & redirect server",
+      "SQLModel persistence",
+    ],
+    tags: ["Backend", "Python", "Open Source"],
+  },
 ];
 
 const categories = [
@@ -133,6 +368,7 @@ const categories = [
   "Cloud Infrastructure",
   "Cybersecurity",
   "Custom Development",
+  "Open Source",
   "IoT Solutions",
 ];
 
@@ -224,14 +460,21 @@ export default function PortfolioPage() {
                     className="h-full surface-card !rounded-3xl overflow-hidden hover:border-brand/40 transition-all"
                   >
                     <div className="relative h-56 overflow-hidden">
-                      <motion.img
-                        src={project.image}
-                        alt={project.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.06 }}
-                        transition={{ duration: 0.5 }}
-                      />
+                      {project.image ? (
+                        <motion.img
+                          src={project.image}
+                          alt={project.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.06 }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#0e1a2e] via-[#0a121f] to-[#0a0f18]">
+                          <div className="absolute inset-0 iso-grid-bg opacity-30" />
+                          <Github className="relative h-16 w-16 text-brand/70" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
                       <div className="absolute top-4 right-4">
                         <span className="px-3 py-1 bg-white/15 backdrop-blur-md border border-white/20 text-white rounded-full text-xs font-bold">
@@ -306,6 +549,20 @@ export default function PortfolioPage() {
                           </span>
                         ))}
                       </div>
+
+                      {project.repo && (
+                        <a
+                          href={project.repo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-cursor
+                          className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline"
+                        >
+                          <Github className="h-4 w-4" />
+                          View on GitHub
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </a>
+                      )}
                     </div>
                   </MagnetCard>
                 </motion.div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Mail, MapPin, Send, CheckCircle, Phone, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { SplitReveal } from "./motion/SplitReveal";
 
 interface ContactFormResponse {
@@ -102,6 +103,17 @@ export const Contact = () => {
       id="contact"
       className="relative py-20 md:py-24 bg-transparent overflow-hidden"
     >
+      {/* Decorative parallax backdrop — drifts slowly on scroll */}
+      <Parallax
+        offset={45}
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div aria-hidden="true" className="absolute inset-0">
+          <div className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
+        </div>
+      </Parallax>
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">

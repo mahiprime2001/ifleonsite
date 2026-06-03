@@ -8,6 +8,7 @@ import {
   Zap,
 } from "lucide-react";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { MagnetCard } from "./animations/MagnetCard";
 import { SplitReveal } from "./motion/SplitReveal";
 
@@ -53,8 +54,12 @@ const reasons = [
 export const WhyChooseUs = () => {
   return (
     <section className="relative py-20 md:py-24 bg-transparent overflow-hidden">
-      <div className="absolute inset-0 iso-grid-bg opacity-25 pointer-events-none" />
-      <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
+      <Parallax offset={40} className="absolute -inset-y-24 inset-x-0 pointer-events-none">
+        <div className="absolute inset-0 iso-grid-bg opacity-25" />
+      </Parallax>
+      <Parallax offset={-70} className="absolute -inset-y-24 inset-x-0 pointer-events-none">
+        <div className="absolute inset-0 mesh-bg opacity-30" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">

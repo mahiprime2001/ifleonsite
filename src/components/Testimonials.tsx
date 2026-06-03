@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { SplitReveal } from "./motion/SplitReveal";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -45,8 +46,20 @@ export const Testimonials = () => {
       id="testimonials"
       className="relative py-20 md:py-24 bg-transparent overflow-hidden"
     >
-      <div className="absolute inset-0 iso-grid-bg opacity-25 pointer-events-none" />
-      <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
+      <Parallax
+        offset={50}
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ willChange: "transform" }}
+      >
+        <div className="absolute inset-0 iso-grid-bg opacity-25" />
+      </Parallax>
+      <Parallax
+        offset={-50}
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ willChange: "transform" }}
+      >
+        <div className="absolute inset-0 mesh-bg opacity-30" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">

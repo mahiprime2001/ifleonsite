@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Avatar from "./Avatar";
 import { Logo } from "./Logo";
-import ThemeToggle from "./theme/ThemeToggle";
 
 type User = Record<string, unknown>;
 
@@ -106,7 +105,6 @@ export const Header = () => {
 
             {/* Right-side actions */}
             <div className="hidden lg:flex items-center gap-3 ml-3">
-              <ThemeToggle />
               {user ? (
                 <Avatar />
               ) : (
@@ -159,11 +157,10 @@ export const Header = () => {
                   </Link>
                 );
               })}
-              <div className="pt-3 border-t border-border flex items-center justify-between gap-3">
-                <ThemeToggle />
+              <div className="pt-3 border-t border-border">
                 <Link
                   to="/#contact"
-                  className="flex-1 block text-sm font-semibold px-4 py-2.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-center"
+                  className="block text-sm font-semibold px-4 py-2.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-center"
                 >
                   Get Started
                 </Link>

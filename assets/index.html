@@ -15,8 +15,7 @@
     <link rel="shortcut icon" href="/assets/logo-ZU8Z2w3L.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/logo-ZU8Z2w3L.svg" />
     <link rel="mask-icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'%20fill='none'%20role='img'%20aria-label='IFLEON%20logo'%3e%3cdefs%3e%3clinearGradient%20id='ifleon-bg'%20x1='0'%20y1='0'%20x2='40'%20y2='40'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20offset='0'%20stop-color='%232563eb'%20/%3e%3cstop%20offset='0.55'%20stop-color='%231d8fd1'%20/%3e%3cstop%20offset='1'%20stop-color='%230d9488'%20/%3e%3c/linearGradient%3e%3cradialGradient%20id='ifleon-node'%20cx='0.5'%20cy='0.5'%20r='0.5'%3e%3cstop%20offset='0'%20stop-color='%23ffffff'%20/%3e%3cstop%20offset='1'%20stop-color='%2399f6e4'%20/%3e%3c/radialGradient%3e%3cfilter%20id='ifleon-glow'%20x='-50%25'%20y='-50%25'%20width='200%25'%20height='200%25'%3e%3cfeGaussianBlur%20stdDeviation='1.2'%20result='blur'%20/%3e%3cfeMerge%3e%3cfeMergeNode%20in='blur'%20/%3e%3cfeMergeNode%20in='SourceGraphic'%20/%3e%3c/feMerge%3e%3c/filter%3e%3c/defs%3e%3crect%20x='1'%20y='1'%20width='38'%20height='38'%20rx='10'%20fill='url(%23ifleon-bg)'%20/%3e%3crect%20x='1'%20y='1'%20width='38'%20height='38'%20rx='10'%20fill='none'%20stroke='%23ffffff'%20stroke-opacity='0.18'%20/%3e%3cpath%20d='M14%2020%20C%2014%2014,%2018%2014,%2020%2020%20C%2022%2026,%2026%2026,%2026%2020%20C%2026%2014,%2022%2014,%2020%2020%20C%2018%2026,%2014%2026,%2014%2020%20Z'%20stroke='%23ffffff'%20stroke-width='2.2'%20stroke-linecap='round'%20stroke-linejoin='round'%20fill='none'%20filter='url(%23ifleon-glow)'%20/%3e%3ccircle%20cx='14'%20cy='20'%20r='2.4'%20fill='url(%23ifleon-node)'%20/%3e%3ccircle%20cx='26'%20cy='20'%20r='2.4'%20fill='url(%23ifleon-node)'%20/%3e%3ccircle%20cx='20'%20cy='20'%20r='1.5'%20fill='%23ffffff'%20/%3e%3c/svg%3e" color="#2563EB" />
-    <meta name="theme-color" content="#FBFBFA" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0A0E14" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0A0E14" />
 
     <!-- Primary SEO -->
     <title>IFLEON — AI, DevOps &amp; IT Consulting | Nellore, India</title>
@@ -170,15 +169,12 @@
       src="https://plausible.io/js/script.js"
     ></script>
 
-    <!-- Set theme class before paint to avoid flash-of-wrong-skin -->
+    <!-- Dark-only theme: set the class before first paint (no flash) -->
     <script>
       (function () {
         try {
-          var p = localStorage.getItem("ifleon-theme");
-          var sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          var dark = p ? p === "dark" || (p === "system" && sysDark) : sysDark;
-          document.documentElement.classList.toggle("dark", dark);
-          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+          document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = "dark";
         } catch (e) {}
       })();
     </script>
@@ -191,11 +187,11 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     />
 
-    <script type="module" crossorigin src="/assets/index-D89aUMMz.js"></script>
+    <script type="module" crossorigin src="/assets/index-Dx0sD3x8.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-CKzJvXsF.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-SFxk91kW.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-anime-BBr17ej6.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-R9h6avDJ.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-BIh8ZtUk.css">
   </head>
 
   <body>

@@ -1,6 +1,7 @@
 import { Zap, Globe, Brain, GitBranch } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { Parallax } from "./animations/Parallax";
 import { MagnetCard } from "./animations/MagnetCard";
 import { SplitReveal } from "./motion/SplitReveal";
 
@@ -68,7 +69,13 @@ export const Experience = () => {
       id="experience"
       className="relative py-20 md:py-24 bg-transparent text-foreground overflow-hidden"
     >
-      <div className="absolute -top-40 left-1/3 w-[40rem] h-[40rem] rounded-full glow-brand opacity-30 pointer-events-none" />
+      <Parallax
+        offset={50}
+        className="absolute inset-0 -z-10 pointer-events-none"
+      >
+        <div className="absolute -top-40 left-1/3 w-[40rem] h-[40rem] rounded-full glow-brand opacity-30" />
+        <div className="absolute bottom-0 right-1/4 w-[32rem] h-[32rem] rounded-full bg-primary/10 blur-3xl opacity-40" />
+      </Parallax>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">

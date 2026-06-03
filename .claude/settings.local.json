@@ -102,7 +102,9 @@
       "Bash(echo \"EXIT: $? \\(no lines above = no SagaHome errors\\)\")",
       "Bash(echo \"TOTAL ERRORS: $\\(npx tsc -p tsconfig.app.json --noEmit 2>&1)",
       "Bash(echo \"===TSC $?===\")",
-      "Bash(echo \"---EXIT $?---\")"
+      "Bash(echo \"---EXIT $?---\")",
+      "PowerShell(foreach \\($p in 5173,5174,5175\\) { $c = Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { \"port $p LISTENING \\(PID $\\(\\($c|Select -First 1\\).OwningProcess\\)\\)\" } else { \"port $p free\" } })",
+      "Bash(git tag *)"
     ]
   }
 }

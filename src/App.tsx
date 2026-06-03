@@ -11,9 +11,6 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { AuroraBackground } from "./components/AuroraBackground";
 import { ThemeProvider, useTheme } from "./components/theme/ThemeProvider";
 import { SmoothScrollProvider, useRouteScroll } from "./components/motion/SmoothScroll";
-import { VersionProvider, useVersion } from "./components/versions/VersionProvider";
-import { VERSION_COMPONENTS } from "./components/versions/registry";
-import VersionSwitcher from "./components/versions/VersionSwitcher";
 import Cursor from "./components/motion/Cursor";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
@@ -134,7 +131,6 @@ const RouteCurtain = () => {
 function AppContent() {
   const location = useLocation();
   const { setForced } = useTheme();
-  const { meta } = useVersion();
   useAnalytics();
 
   useEffect(() => {
@@ -159,18 +155,11 @@ function AppContent() {
     !isSettingsPage &&
     !isProfilePage;
 
-  const isHome = location.pathname === "/";
-
-  // App/console routes pin dark SIGNAL. On the homepage the active theme
-  // VERSION dictates the skin (so each preview looks as designed). Other
-  // marketing routes follow the user's light/dark choice.
+  // Marketing pages follow the user's light/dark choice; the app/console
+  // "engine room" (auth, settings, profile, admin) is pinned to dark SIGNAL.
   useEffect(() => {
-    if (!showHeaderFooter) {
-      setForced("dark");
-    } else {
-      setForced(isHome ? meta.skin : null);
-    }
-  }, [showHeaderFooter, isHome, meta.skin, setForced]);
+    setForced(showHeaderFooter ? null : "dark");
+  }, [showHeaderFooter, setForced]);
 
   // Smooth scroll on marketing routes; native scroll in the app/console.
   useRouteScroll(location.pathname, showHeaderFooter);
@@ -179,7 +168,6 @@ function AppContent() {
     <>
       <a href="#main" className="skip-link">Skip to content</a>
       <Cursor />
-      {showHeaderFooter && <VersionSwitcher />}
       <AuroraBackground />
       <Toaster position="top-center" richColors />
       {showHeaderFooter && <Header />}
@@ -369,10 +357,6 @@ function HomePage() {
     description: "IFLEON delivers practical AI, DevOps automation, cloud engineering, and cybersecurity solutions for businesses and individuals across India. Get started today.",
     canonical: "https://ifleon.com/",
   });
-  const { version } = useVersion();
-  const VersionComp = VERSION_COMPONENTS[version];
-  if (VersionComp) return <VersionComp />;
-  // V1 — the current light-immersive composition
   return (
     <>
       <Hero />
@@ -402,13 +386,11 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <VersionProvider>
-          <Router>
-            <SmoothScrollProvider>
-              <AppContent />
-            </SmoothScrollProvider>
-          </Router>
-        </VersionProvider>
+        <Router>
+          <SmoothScrollProvider>
+            <AppContent />
+          </SmoothScrollProvider>
+        </Router>
       </ThemeProvider>
     </ErrorBoundary>
   );

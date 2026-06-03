@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { animate, stagger } from "animejs";
 import { Logo } from "./Logo";
+import { site } from "../config/site";
 import {
   businessServices,
   individualServices,
@@ -79,7 +80,7 @@ export const Footer = () => {
 
             <div className="flex items-center gap-4 mb-5">
               <a
-                href="https://github.com/ifleonlabs"
+                href={site.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="IFLEON on GitHub"
@@ -88,7 +89,7 @@ export const Footer = () => {
                 <Github className="h-4 w-4" />
               </a>
               <a
-                href="https://www.linkedin.com/company/ifleon/"
+                href={site.links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="IFLEON on LinkedIn"
@@ -97,7 +98,7 @@ export const Footer = () => {
                 <Linkedin className="h-4 w-4" />
               </a>
               <a
-                href="mailto:info@ifleon.com"
+                href={`mailto:${site.contact.email}`}
                 aria-label="Email IFLEON"
                 className="w-9 h-9 rounded-lg bg-primary/10 text-brand hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
               >
@@ -107,7 +108,7 @@ export const Footer = () => {
 
             <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <Calendar className="h-3.5 w-3.5" />
-              <span>Founded 2022 &bull; Nellore, Andhra Pradesh</span>
+              <span>Founded {site.foundedYear} &bull; {site.location.city}, {site.location.region}</span>
             </div>
           </div>
 
@@ -208,15 +209,15 @@ export const Footer = () => {
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4 shrink-0" />
                 <a
-                  href="mailto:info@ifleon.com"
+                  href={`mailto:${site.contact.email}`}
                   className="hover:text-brand transition-colors"
                 >
-                  info@ifleon.com
+                  {site.contact.email}
                 </a>
               </li>
               <li className="flex items-start gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>Nellore, Andhra Pradesh, India</span>
+                <span>{site.location.city}, {site.location.region}, {site.location.country}</span>
               </li>
             </ul>
           </div>
@@ -226,8 +227,8 @@ export const Footer = () => {
         <div className="border-t border-border mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
             <p className="text-muted-foreground text-xs">
-              &copy; {new Date().getFullYear()} IFLEON. All rights reserved.
-              &nbsp;&bull;&nbsp;Founded by S. Mahendra Reddy
+              &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+              &nbsp;&bull;&nbsp;Founded by {site.founder}
             </p>
           </div>
 
@@ -245,7 +246,7 @@ export const Footer = () => {
               Terms of Service
             </Link>
             <a
-              href="https://ifleon.com"
+              href={site.links.website}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-muted-foreground hover:text-brand transition-colors inline-flex items-center gap-1"

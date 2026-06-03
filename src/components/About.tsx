@@ -14,6 +14,7 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "./animations/Scroll
 import { Parallax } from "./animations/Parallax";
 import { MagnetCard } from "./animations/MagnetCard";
 import { SplitReveal } from "./motion/SplitReveal";
+import { site } from "../config/site";
 
 type Stat = {
   icon: typeof Calendar;
@@ -25,8 +26,8 @@ type Stat = {
 
 export const About = () => {
   const stats: Stat[] = [
-    { icon: Calendar, number: "2022", label: "Founded" },
-    { icon: Users, number: "20+", label: "Clients Served", countTo: 20, suffix: "+" },
+    { icon: Calendar, number: String(site.foundedYear), label: "Founded" },
+    { icon: Users, number: String(site.metrics.clients), label: "Clients Served", countTo: site.metrics.clients },
     { icon: MapPin, number: "Nellore, AP", label: "Headquarters" },
     { icon: TrendingUp, number: "Pan-India", label: "Growth Vision" },
   ];
@@ -37,46 +38,67 @@ export const About = () => {
     const statsEl = statsRef.current;
     if (!statsEl) return;
 
+    const cards = statsEl.querySelectorAll<HTMLElement>("[data-stat-card]");
+    const numEls = statsEl.querySelectorAll<HTMLElement>("[data-stat-num]");
+
+    const revealStatic = () => {
+      cards.forEach((c) => (c.style.opacity = "1"));
+      numEls.forEach((el) => {
+        el.textContent = (el.dataset.target || "0") + (el.dataset.suffix || "");
+      });
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      revealStatic();
+      return;
+    }
+
     let played = false;
+    const run = () => {
+      if (played) return;
+      played = true;
+
+      animate(cards, {
+        opacity: [0, 1],
+        translateY: [24, 0],
+        scale: [0.92, 1],
+        duration: 700,
+        delay: stagger(110),
+        easing: "easeOutExpo",
+      });
+
+      // Self-contained rAF count-up (version-proof — does not rely on the
+      // animation library's update callback, which changed name in anime v4).
+      numEls.forEach((el) => {
+        const target = Number(el.dataset.target || 0);
+        const suffix = el.dataset.suffix || "";
+        const dur = 1700;
+        const startT = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - startT) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * eased).toString() + suffix;
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    };
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || played) return;
-          played = true;
-
-          const cards = statsEl.querySelectorAll<HTMLElement>("[data-stat-card]");
-          animate(cards, {
-            opacity: [0, 1],
-            translateY: [24, 0],
-            scale: [0.92, 1],
-            duration: 700,
-            delay: stagger(110),
-            easing: "easeOutExpo",
-          });
-
-          statsEl
-            .querySelectorAll<HTMLElement>("[data-stat-num]")
-            .forEach((el) => {
-              const target = Number(el.dataset.target || 0);
-              const suffix = el.dataset.suffix || "";
-              const proxy = { v: 0 };
-              animate(proxy, {
-                v: target,
-                duration: 1800,
-                easing: "easeOutQuad",
-                delay: 300,
-                update: () => {
-                  el.textContent = Math.round(proxy.v).toString() + suffix;
-                },
-              });
-            });
-        });
-      },
+      (entries) => entries.forEach((e) => e.isIntersecting && run()),
       { threshold: 0.3 },
     );
-
     observer.observe(statsEl);
-    return () => observer.disconnect();
+
+    // Safety: if the observer never fires, still reveal cards + final numbers.
+    const safety = window.setTimeout(() => {
+      if (!played) revealStatic();
+    }, 2600);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(safety);
+    };
   }, []);
 
   const milestones = [

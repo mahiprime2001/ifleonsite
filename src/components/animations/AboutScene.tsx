@@ -273,34 +273,6 @@ export const AboutScene = ({ className }: Props) => {
           );
         })}
 
-        {/* === STATUS CARD (bottom-right) === */}
-        <div
-          data-chip
-          className="absolute right-[2%] bottom-[3%] w-[34%] h-[22%] rounded-2xl bg-slate-900/90 border border-white/15 backdrop-blur-md shadow-xl"
-          style={{ transform: "translateZ(50px)" }}
-        >
-          <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/10">
-            <ShieldCheck className="h-3 w-3 text-blue-400" />
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-200">
-              Status
-            </span>
-            <span data-pulse className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400" />
-          </div>
-          <div className="p-3 space-y-1.5">
-            {[
-              { label: "Pipelines", v: "100%", c: "#2dd4bf" },
-              { label: "Uptime",    v: "99.9%", c: "#22d3ee" },
-              { label: "Coverage",  v: "Pan-India", c: "#3b82f6" },
-            ].map((row, i) => (
-              <div key={i} className="flex items-center justify-between">
-                <span className="text-[10px] text-slate-400">{row.label}</span>
-                <span className="text-[10px] font-bold" style={{ color: row.c }}>
-                  {row.v}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
       </motion.div>
     </div>
   );

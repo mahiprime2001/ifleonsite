@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   MessageSquare,
   FileSearch,
@@ -7,13 +7,9 @@ import {
   Rocket,
   LifeBuoy,
 } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollReveal } from "./animations/ScrollReveal";
 import { SplitReveal } from "./motion/SplitReveal";
 import { IsoProcess } from "./illustrations/IsoProcess";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type Step = 1 | 2 | 3 | 4 | 5;
 
@@ -106,10 +102,12 @@ const StepCard = ({ item }: { item: (typeof steps)[number] }) => {
 };
 
 export const HowWeWork = () => {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  // true => render the pinned horizontal sequence; false => vertical stack fallback
+  // true => sticky horizontal sequence; false => vertical stack fallback
   const [horizontal, setHorizontal] = useState(false);
+  // horizontal scroll distance in px (track overflow beyond the viewport)
+  const [scrollRange, setScrollRange] = useState(0);
 
   // Decide layout based on viewport + reduced-motion preference.
   useEffect(() => {
@@ -118,98 +116,86 @@ export const HowWeWork = () => {
     );
     const apply = () => setHorizontal(mql.matches);
     apply();
-    // addEventListener for modern, addListener fallback handled via try/catch.
     mql.addEventListener?.("change", apply);
-    window.addEventListener("resize", apply);
-    return () => {
-      mql.removeEventListener?.("change", apply);
-      window.removeEventListener("resize", apply);
-    };
+    return () => mql.removeEventListener?.("change", apply);
   }, []);
 
-  // Pinned horizontal-scroll sequence — only when `horizontal` is active.
+  // Measure how far the track must travel horizontally.
   useEffect(() => {
-    if (!horizontal) return;
-    const section = sectionRef.current;
+    if (!horizontal) {
+      setScrollRange(0);
+      return;
+    }
     const track = trackRef.current;
-    if (!section || !track) return;
-
-    const ctx = gsap.context(() => {
-      const total = () => track.scrollWidth - window.innerWidth;
-
-      const tween = gsap.to(track, {
-        x: () => -total(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => "+=" + total(),
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // Recompute on size changes (track width / viewport width).
-      const ro = new ResizeObserver(() => ScrollTrigger.refresh());
-      ro.observe(track);
-
-      return () => {
-        ro.disconnect();
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    }, section);
-
-    return () => ctx.revert();
+    if (!track) return;
+    const measure = () =>
+      setScrollRange(Math.max(0, track.scrollWidth - window.innerWidth));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, [horizontal]);
 
+  // Drive the horizontal translate from this section's scroll progress.
+  // CSS `position: sticky` does the pinning (no GSAP pin → no StrictMode
+  // pin artifacts / leftover spacer / duplicate section).
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -scrollRange]);
+
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-transparent overflow-hidden"
-    >
-      {/* backdrop */}
-      <div className="absolute inset-0 mesh-bg opacity-50" />
-      <div className="absolute inset-0 iso-grid-bg opacity-20" />
+    <section ref={sectionRef} className="relative bg-transparent">
+      {/* backdrop (kept within section bounds; no overflow-hidden so sticky works) */}
+      <div className="pointer-events-none absolute inset-0 mesh-bg opacity-50" />
+      <div className="pointer-events-none absolute inset-0 iso-grid-bg opacity-20" />
 
       {horizontal ? (
-        /* ---------- PINNED HORIZONTAL SEQUENCE (desktop) ---------- */
-        <div className="relative flex h-screen flex-col justify-center py-16">
-          {/* heading */}
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 mb-10">
-            <p className="eyebrow mb-3">Our Process</p>
-            <SplitReveal
-              as="h2"
-              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-4"
-            >
-              How We Work
-            </SplitReveal>
-            <p className="text-base md:text-xl text-muted-foreground max-w-3xl">
-              A clear, transparent, and structured approach — from first
-              conversation to long-term success.
-            </p>
-          </div>
+        /* ---------- STICKY HORIZONTAL SEQUENCE (desktop) ---------- */
+        <div
+          className="relative"
+          style={{ height: `calc(100vh + ${scrollRange}px)` }}
+        >
+          <div className="sticky top-0 flex h-screen flex-col overflow-hidden py-16">
+            {/* heading */}
+            <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 mb-8 shrink-0">
+              <p className="eyebrow mb-3">Our Process</p>
+              <SplitReveal
+                as="h2"
+                className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight mb-4"
+              >
+                How We Work
+              </SplitReveal>
+              <p className="text-base md:text-xl text-muted-foreground max-w-3xl">
+                A clear, transparent, and structured approach — from first
+                conversation to long-term success.
+              </p>
+            </div>
 
-          {/* horizontal track */}
-          <div className="relative">
-            <div
-              ref={trackRef}
-              className="flex w-max items-stretch gap-8 px-4 sm:px-6 lg:px-8 will-change-transform"
-            >
-              {steps.map((item, i) => (
-                <div
-                  key={item.num}
-                  className="relative w-[78vw] max-w-[440px] shrink-0"
-                >
-                  {/* connector dot between panels */}
-                  {i < steps.length - 1 && (
-                    <span className="pointer-events-none absolute top-1/2 -right-[1.35rem] z-20 h-2 w-2 -translate-y-1/2 rounded-full bg-brand/70 shadow-[0_0_12px] shadow-brand/50" />
-                  )}
-                  <StepCard item={item} />
-                </div>
-              ))}
+            {/* horizontal track (fills & centers in the height below the heading) */}
+            <div className="relative flex flex-1 items-center overflow-hidden">
+              <motion.div
+                ref={trackRef}
+                style={{ x }}
+                className="flex w-max items-stretch gap-8 px-4 sm:px-6 lg:px-8 will-change-transform"
+              >
+                {steps.map((item, i) => (
+                  <div
+                    key={item.num}
+                    className="relative w-[78vw] max-w-[440px] shrink-0"
+                  >
+                    {i < steps.length - 1 && (
+                      <span className="pointer-events-none absolute top-1/2 -right-[1.35rem] z-20 h-2 w-2 -translate-y-1/2 rounded-full bg-brand/70 shadow-[0_0_12px] shadow-brand/50" />
+                    )}
+                    <StepCard item={item} />
+                  </div>
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
@@ -258,7 +244,7 @@ export const HowWeWork = () => {
 
       {/* closing note */}
       <ScrollReveal direction="up">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20 md:pb-24 text-center">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20 md:pb-24 pt-4 text-center">
           <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 border border-border px-5 py-3">
             <span className="h-2 w-2 animate-pulse rounded-full bg-brand" />
             <p className="text-foreground text-sm md:text-base">

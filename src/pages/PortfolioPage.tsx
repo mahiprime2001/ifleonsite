@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { PageHero } from "../components/PageHero";
 import { ScrollReveal } from "../components/animations/ScrollReveal";
 import { MagnetCard } from "../components/animations/MagnetCard";
+import { site } from "../config/site";
 
 const projects = [
   {
@@ -158,9 +159,9 @@ export default function PortfolioPage() {
       >
         <div className="grid grid-cols-3 gap-6 max-w-md mx-auto pt-2">
           {[
-            { num: "25+", label: "Projects" },
-            { num: "50+", label: "Clients" },
-            { num: "6", label: "Industries" },
+            { num: `${site.metrics.projectsDelivered}`, label: "Projects" },
+            { num: `${site.metrics.clients}`, label: "Clients" },
+            { num: `${site.metrics.industriesServed}`, label: "Industries" },
           ].map((s, i) => (
             <div key={i} className="text-center">
               <div className="font-display text-2xl md:text-3xl font-semibold text-brand">

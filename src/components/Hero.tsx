@@ -50,7 +50,16 @@ export const Hero = () => {
       )}
 
       {/* readability scrims so the copy stays crisp over the field */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-background/20 via-transparent to-background/55 pointer-events-none" />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-background/30 via-transparent to-background/55 pointer-events-none" />
+      {/* mobile/tablet: soft wash behind the stacked copy so text stays legible over the field */}
+      <div
+        className="absolute inset-0 z-[1] lg:hidden pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(120% 75% at 50% 40%, hsl(var(--background) / 0.8), hsl(var(--background) / 0.32) 62%, transparent 88%)",
+        }}
+      />
+      {/* desktop: left-weighted wash so the copy column stays crisp */}
       <div
         className="absolute inset-0 z-[1] hidden lg:block pointer-events-none"
         style={{

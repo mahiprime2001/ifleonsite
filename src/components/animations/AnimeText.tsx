@@ -29,25 +29,54 @@ export const AnimeText = ({
     const letters = el.querySelectorAll<HTMLElement>("[data-letter]");
     if (!letters.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          animate(letters, {
-            opacity: [0, 1],
-            translateY: [20, 0],
-            rotateZ: [-6, 0],
-            duration,
-            delay: stagger(staggerMs, { start: delay }),
-            easing: "easeOutExpo",
-          });
-          observer.disconnect();
+    const reveal = () => {
+      letters.forEach((l) => {
+        l.style.opacity = "1";
+        l.style.transform = "none";
+      });
+    };
+
+    // Reduced motion: show immediately, no animation.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      reveal();
+      return;
+    }
+
+    // Play on mount (no IntersectionObserver gate — this is used for
+    // above-the-fold headlines, where IO-gating caused the reveal to
+    // intermittently never fire and leave the letters stuck at opacity:0).
+    // A double rAF ensures layout is settled before animating.
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        animate(letters, {
+          opacity: [0, 1],
+          translateY: [20, 0],
+          rotateZ: [-6, 0],
+          duration,
+          delay: stagger(staggerMs, { start: delay }),
+          easing: "easeOutExpo",
         });
-      },
-      { threshold: 0.4 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+      });
+    });
+
+    // Safety net: whatever happens, never leave the text invisible.
+    const total = delay + duration + letters.length * staggerMs + 600;
+    const safety = window.setTimeout(() => {
+      letters.forEach((l) => {
+        if (getComputedStyle(l).opacity === "0") {
+          l.style.opacity = "1";
+          l.style.transform = "none";
+        }
+      });
+    }, total);
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      clearTimeout(safety);
+    };
   }, [delay, duration, staggerMs, text]);
 
   const children = text.split("").map((ch, i) =>

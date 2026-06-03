@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { animate, stagger } from "animejs";
 import { Briefcase, Layers, Users, ShieldCheck } from "lucide-react";
 import { ScrollReveal } from "./animations/ScrollReveal";
+import { site } from "../config/site";
 
 type MetricProps = {
   value: number;
@@ -20,27 +21,50 @@ const MetricCard = ({ value, label, suffix, icon: Icon }: MetricProps) => {
     const card = cardRef.current;
     if (!el || !card) return;
 
+    const setFinal = () => {
+      el.textContent = String(value);
+    };
+
+    // Reduced motion: just show the final number.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setFinal();
+      return;
+    }
+
+    // Self-contained rAF count-up (no animation-library dependency, so it can't
+    // silently break on a library version change). Plays once when scrolled in.
     let played = false;
+    let raf = 0;
+    const run = () => {
+      if (played) return;
+      played = true;
+      const dur = 1600;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 4); // ease-out
+        el.textContent = String(Math.round(value * eased));
+        if (t < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || played) return;
-          played = true;
-          const proxy = { v: 0 };
-          animate(proxy, {
-            v: value,
-            duration: 1800,
-            easing: "easeOutExpo",
-            update: () => {
-              el.textContent = Math.round(proxy.v).toString();
-            },
-          });
-        });
-      },
-      { threshold: 0.4 },
+      (entries) => entries.forEach((e) => e.isIntersecting && run()),
+      { threshold: 0.2 },
     );
     observer.observe(card);
-    return () => observer.disconnect();
+
+    // Safety net: never leave the number stuck at 0 if the observer never fires.
+    const safety = window.setTimeout(() => {
+      if (!played) setFinal();
+    }, 2500);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+      clearTimeout(safety);
+    };
   }, [value]);
 
   return (
@@ -149,10 +173,10 @@ export const Metrics = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} />
-          <MetricCard value={6} label="Industries Served" icon={Layers} />
-          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} />
-          <MetricCard value={99} suffix="%" label="Security-First Approach" icon={ShieldCheck} />
+          <MetricCard value={site.metrics.projectsDelivered} label="Projects Delivered" icon={Briefcase} />
+          <MetricCard value={site.metrics.industriesServed} label="Industries Served" icon={Layers} />
+          <MetricCard value={site.metrics.clients} label="Clients & Individuals" icon={Users} />
+          <MetricCard value={site.metrics.securityFirstPct} suffix="%" label="Security-First Approach" icon={ShieldCheck} />
         </div>
 
         <ScrollReveal direction="up">

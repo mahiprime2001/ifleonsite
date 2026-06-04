@@ -5,7 +5,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { useRef, type ReactNode, type CSSProperties } from "react";
+import { useRef, useState, type ReactNode, type CSSProperties } from "react";
 
 type Props = {
   children: ReactNode;
@@ -24,6 +24,7 @@ export const MagnetCard = ({
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const reduce = useReducedMotion();
+  const [hovering, setHovering] = useState(false);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -54,12 +55,14 @@ export const MagnetCard = ({
   const reset = () => {
     mx.set(0);
     my.set(0);
+    setHovering(false);
   };
 
   return (
     <motion.div
       ref={ref}
       onPointerMove={onMove}
+      onPointerEnter={() => setHovering(true)}
       onPointerLeave={reset}
       className={className}
       style={{
@@ -75,6 +78,11 @@ export const MagnetCard = ({
           <motion.div
             aria-hidden
             className="pointer-events-none absolute inset-0 rounded-[inherit]"
+            // Hover-only: invisible at rest (no static center circle); the
+            // highlight follows the cursor and fades in while pointing.
+            initial={{ opacity: 0 }}
+            animate={{ opacity: hovering ? 1 : 0 }}
+            transition={{ duration: 0.25 }}
             style={{
               background: glareBg,
               mixBlendMode: "overlay",

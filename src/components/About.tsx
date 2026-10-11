@@ -50,7 +50,7 @@ export const About = () => {
             scale: [0.92, 1],
             duration: 700,
             delay: stagger(110),
-            easing: "easeOutExpo",
+            ease: "outExpo",
           });
 
           statsEl
@@ -62,9 +62,9 @@ export const About = () => {
               animate(proxy, {
                 v: target,
                 duration: 1800,
-                easing: "easeOutQuad",
+                ease: "outQuad",
                 delay: 300,
-                update: () => {
+                onUpdate: () => {
                   el.textContent = Math.round(proxy.v).toString() + suffix;
                 },
               });

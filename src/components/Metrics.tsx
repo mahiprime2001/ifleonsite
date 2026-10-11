@@ -31,8 +31,8 @@ const MetricCard = ({ value, label, suffix, icon: Icon, accent }: MetricProps) =
           animate(proxy, {
             v: value,
             duration: 1800,
-            easing: "easeOutExpo",
-            update: () => {
+            ease: "outExpo",
+            onUpdate: () => {
               el.textContent = Math.round(proxy.v).toString();
             },
           });
@@ -99,7 +99,7 @@ export const Metrics = () => {
             rotateZ: [-8, 0],
             duration: 700,
             delay: stagger(28),
-            easing: "easeOutExpo",
+            ease: "outExpo",
           });
         });
       },

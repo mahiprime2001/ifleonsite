@@ -41,7 +41,7 @@ export const Footer = () => {
             translateY: [24, 0],
             duration: 650,
             delay: stagger(100),
-            easing: "easeOutExpo",
+            ease: "outExpo",
           });
         });
       },

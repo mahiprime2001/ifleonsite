@@ -39,7 +39,7 @@ export const AnimeText = ({
             rotateZ: [-6, 0],
             duration,
             delay: stagger(staggerMs, { start: delay }),
-            easing: "easeOutExpo",
+            ease: "outExpo",
           });
           observer.disconnect();
         });

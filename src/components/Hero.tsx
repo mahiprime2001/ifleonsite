@@ -1,13 +1,11 @@
 import { ArrowRight, Zap, Code, Shield, Sparkles, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import FloatingObjects from "./three/FloatingObjects";
 import { UndrawHero } from "./illustrations/UndrawHero";
 import { AnimeText } from "./animations/AnimeText";
 
 export const Hero = () => {
-  const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -15,7 +13,6 @@ export const Hero = () => {
   });
 
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const illoY = useTransform(scrollYProgress, [0, 1], [0, -140]);
   const illoRotate = useTransform(scrollYProgress, [0, 1], [0, -5]);
 
@@ -35,11 +32,6 @@ export const Hero = () => {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[32rem] h-[32rem] rounded-full bg-purple-500/12 blur-[120px]" />
         <div className="absolute inset-0 iso-grid-bg opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
-        {!shouldReduceMotion && (
-          <motion.div className="absolute inset-0" style={{ y: bgY }}>
-            <FloatingObjects density="low" palette="blue" />
-          </motion.div>
-        )}
       </div>
 
       {/* ===== Hero content ===== */}

@@ -201,3 +201,12 @@
   /* Disable text selection on decorative elements */
   .no-select { user-select: none; -webkit-user-select: none; }
 }
+
+/* ===== Rendering saver =====
+   .cv-auto lets the browser skip layout, paint and animations for sections that are far off-screen. */
+@layer utilities {
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+}

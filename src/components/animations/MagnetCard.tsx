@@ -19,7 +19,7 @@ export const MagnetCard = ({
   children,
   className,
   intensity = 14,
-  glare = true,
+  glare = false,
   style,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);

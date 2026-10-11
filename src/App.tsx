@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import ScrollToTop from "./components/ScrollToTop";
 import { Header } from "./components/Header";
@@ -18,65 +18,45 @@ import { Testimonials } from "./components/Testimonials";
 import { Newsletter } from "./components/Newsletter";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
-import { Blog } from "./pages/Blog";
-import { BlogPost } from "./pages/BlogPost";
-import { NotFoundPage } from "./components/Pagenotfound";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import Settings from "./components/Settings";
-import Profile from "./components/Profile";
 import { Metrics } from "./components/Metrics";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { HowWeWork } from "./components/HowWeWork";
-import FAQPage from "./pages/FAQPage";
-import TechStackPage from "./pages/TechStackPage";
-import CaseStudiesPage from "./pages/CaseStudiesPage";
 import { TrustStrip } from "./components/TrustStrip";
-import PricingPage from "./pages/PricingPage";
-import ServicesPage from "./pages/ServicesPage";
-import TeamPage from "./pages/TeamPage";
-import PortfolioPage from "./pages/PortfolioPage";
 import { useAnalytics } from "./hooks/useAnalytics";
 import { SectionCut } from "./components/animations/SectionCut";
+/* Inner pages load only when visited, so the home page doesn't hold every page in memory. */
+const Blog = lazy(() => import("./pages/Blog").then((m) => ({ default: m.Blog })));
+const BlogPost = lazy(() => import("./pages/BlogPost").then((m) => ({ default: m.BlogPost })));
+const NotFoundPage = lazy(() =>
+  import("./components/Pagenotfound").then((m) => ({ default: m.NotFoundPage }))
+);
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Settings = lazy(() => import("./components/Settings"));
+const Profile = lazy(() => import("./components/Profile"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const TechStackPage = lazy(() => import("./pages/TechStackPage"));
+const CaseStudiesPage = lazy(() => import("./pages/CaseStudiesPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
+const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 
 /* ---------------- Page Transition Wrapper ---------------- */
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
   <motion.div
-    initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-    exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
-    transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.25 }}
     className="min-h-screen"
   >
     {children}
   </motion.div>
 );
 
-/* ---------------- Route-change scrim sweep ---------------- */
-// Brief gradient sweep that paints across the screen on every route change
-// to feel like a premium dashboard transition.
-const RouteScrim = () => {
-  const location = useLocation();
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        className="fixed inset-0 z-[120] pointer-events-none"
-        initial={{ scaleX: 0, transformOrigin: "left" }}
-        animate={{ scaleX: 1, transformOrigin: "left" }}
-        exit={{ scaleX: 0, transformOrigin: "right" }}
-        transition={{ duration: 0.55, ease: [0.7, 0, 0.3, 1] }}
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(15,23,42,0) 0%, rgba(52,211,153,0.18) 35%, rgba(96,165,250,0.18) 65%, rgba(15,23,42,0) 100%)",
-          mixBlendMode: "screen",
-        }}
-      />
-    </AnimatePresence>
-  );
-};
 
 /* ---------------- App Content ---------------- */
 
@@ -112,6 +92,7 @@ function AppContent() {
       <Toaster position="top-center" richColors />
       {showHeaderFooter && <Header />}
 
+      <Suspense fallback={<div className="min-h-screen" />}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
@@ -259,9 +240,9 @@ function AppContent() {
           />
         </Routes>
       </AnimatePresence>
+      </Suspense>
 
       {showHeaderFooter && <Footer />}
-      <RouteScrim />
     </>
   );
 }
@@ -273,6 +254,8 @@ function HomePage() {
     <>
       <Hero />
       <TrustStrip />
+      {/* Sections below the first screen are skipped by the browser until they scroll near the viewport. */}
+      <div className="cv-auto">
       <SectionCut variant="blade" accent="emerald" label="What We Do" />
       <Services />
       <SectionCut variant="diagonal" accent="blue" label="By the Numbers" />
@@ -288,6 +271,7 @@ function HomePage() {
       <Newsletter />
       <SectionCut variant="diagonal" accent="orange" label="Let's Talk" />
       <Contact />
+      </div>
     </>
   );
 }

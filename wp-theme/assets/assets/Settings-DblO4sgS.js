@@ -1,0 +1,1 @@
+import{j as t}from"./index-TIX8Ghuv.js";import{S as e}from"./Sidebar-BubFwuzy.js";import"./search-B7LafW09.js";const i=()=>t.jsxs(e,{children:[t.jsx("h1",{className:"text-3xl font-bold",children:"Settings Page"}),t.jsx("p",{className:"mt-4",children:"Manage your application settings here."})]});export{i as default};

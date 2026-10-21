@@ -1,0 +1,82 @@
+# IFLEON backend stack: Postgres, a one-shot migration job, and the Next.js dashboard.
+#
+# Usage:
+#   cd backend
+#   cp .env.example .env     (then fill in every value)
+#   docker compose up -d --build
+#   docker compose ps
+#
+# Every port is bound to 127.0.0.1, so nothing is reachable from the internet directly.
+# On the VPS, Nginx proxies dashboard.ifleon.com to the dashboard port.
+
+# Explicit project name: without it Compose uses the folder name ("backend"), which collides
+# with other projects on the VPS and would share their network and `compose down`.
+name: ifleon
+
+services:
+  db:
+    image: docker.io/library/postgres:17-alpine
+    container_name: ifleon-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ifleon}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-ifleon}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      # 5433 on the host because the VPS already runs another Postgres on 5432.
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ifleon} -d ${POSTGRES_DB:-ifleon}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build:
+      context: ../dashboard
+      target: migrator
+    image: ifleon-dashboard-migrator
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-ifleon}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-ifleon}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  dashboard:
+    build:
+      context: ../dashboard
+      target: runner
+    image: ifleon-dashboard
+    container_name: ifleon-dashboard
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-ifleon}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-ifleon}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL in .env}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:?Set ADMIN_PASSWORD_HASH in .env}
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in .env}
+      DISPLAY_TIMEZONE: ${DISPLAY_TIMEZONE:-Asia/Kolkata}
+      UPLOAD_DIR: /app/uploads
+      # Uploaded image URLs are built from this, so they work when shown on ifleon.com.
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3100}
+      # AI writer: providers are tried in order; any without a key is skipped.
+      AI_PROVIDERS: ${AI_PROVIDERS:-gemini,nvidia}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-10}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      NVIDIA_MODEL: ${NVIDIA_MODEL:-}
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "127.0.0.1:${DASHBOARD_PORT:-3100}:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    mem_limit: 512m
+
+volumes:
+  db_data:
+  uploads:

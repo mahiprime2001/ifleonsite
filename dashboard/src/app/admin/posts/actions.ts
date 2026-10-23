@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, eq, inArray, isNull, ne, sql } from "drizzle-orm";
 import { refresh, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -102,7 +102,7 @@ export async function createPost(_prev: PostFormState, formData: FormData): Prom
   }
 
   revalidateTag("posts", "max");
-  redirect(`/admin/posts/${id}`);
+  redirect(`/admin/posts/${id}/edit`);
 }
 
 export async function updatePost(
@@ -165,77 +165,59 @@ export async function deletePost(id: number) {
 
 export type BulkActionResult = { success: boolean; count: number; error?: string };
 
-/* Archives selected posts. */
-export async function archiveSelected(formData: FormData): Promise<BulkActionResult> {
-  await requireAdmin();
-  const ids = formData.getAll("postId").map((id) => Number(id)).filter(Boolean);
-  if (ids.length === 0) {
-    return { success: false, count: 0, error: "No posts selected" };
-  }
+/* Post ids from the bulk form: positive integers only, at most 500 at a time. */
+function selectedIds(formData: FormData) {
+  return [...new Set(formData.getAll("postId").map(Number))].filter((id) => Number.isInteger(id) && id > 0).slice(0, 500);
+}
 
+/* Runs a bulk change, then refreshes the list. count = posts actually changed, not posts selected. */
+async function bulk(formData: FormData, label: string, change: (ids: number[]) => Promise<number>): Promise<BulkActionResult> {
+  await requireAdmin();
+  const ids = selectedIds(formData);
+  if (ids.length === 0) return { success: false, count: 0, error: "No posts selected" };
   try {
-    const result = await db
+    const count = await change(ids);
+    revalidateTag("posts", "max");
+    refresh();
+    return { success: true, count };
+  } catch (error) {
+    console.error(`[posts] bulk ${label} failed:`, error);
+    return { success: false, count: 0, error: `Failed to ${label} posts` };
+  }
+}
+
+/* Archives the selected posts (drafts or published; already-archived ones are left alone). */
+export async function archiveSelected(formData: FormData): Promise<BulkActionResult> {
+  return bulk(formData, "archive", async (ids) => {
+    const rows = await db
       .update(posts)
       .set({ status: "archived" })
-      .where(and(eq(posts.status, "draft"), inArray(posts.id, ids)));
-
-    revalidateTag("posts", "max");
-    return { success: true, count: ids.length };
-  } catch (error) {
-    return { success: false, count: 0, error: "Failed to archive posts" };
-  }
+      .where(and(isNull(posts.deletedAt), ne(posts.status, "archived"), inArray(posts.id, ids)))
+      .returning({ id: posts.id });
+    return rows.length;
+  });
 }
 
-/* Deletes selected posts (moves to trash). */
+/* Moves the selected posts to Trash (kept 30 days, restorable). */
 export async function deleteSelected(formData: FormData): Promise<BulkActionResult> {
-  await requireAdmin();
-  const ids = formData.getAll("postId").map((id) => Number(id)).filter(Boolean);
-  if (ids.length === 0) {
-    return { success: false, count: 0, error: "No posts selected" };
-  }
-
-  try {
-    const result = await db
+  return bulk(formData, "delete", async (ids) => {
+    const rows = await db
       .update(posts)
       .set({ deletedAt: new Date() })
-      .where(and(isNull(posts.deletedAt), inArray(posts.id, ids)));
-
-    revalidateTag("posts", "max");
-    return { success: true, count: ids.length };
-  } catch (error) {
-    return { success: false, count: 0, error: "Failed to delete posts" };
-  }
+      .where(and(isNull(posts.deletedAt), inArray(posts.id, ids)))
+      .returning({ id: posts.id });
+    return rows.length;
+  });
 }
 
-/* Publishes selected posts (sets status to published with current timestamp if not already scheduled). */
+/* Publishes the selected posts. Keeps an existing publish date (so scheduled posts stay scheduled), else now. */
 export async function republishSelected(formData: FormData): Promise<BulkActionResult> {
-  await requireAdmin();
-  const ids = formData.getAll("postId").map((id) => Number(id)).filter(Boolean);
-  if (ids.length === 0) {
-    return { success: false, count: 0, error: "No posts selected" };
-  }
-
-  try {
-    // Get the posts to check if they have publishedAt set
-    const postsToPublish = await db
-      .select({ id: posts.id, publishedAt: posts.publishedAt })
-      .from(posts)
-      .where(and(isNull(posts.deletedAt), inArray(posts.id, ids)));
-
-    // Update each post: if no publishedAt, set to now; otherwise keep existing
-    for (const post of postsToPublish) {
-      await db
-        .update(posts)
-        .set({
-          status: "published",
-          publishedAt: post.publishedAt || new Date(),
-        })
-        .where(eq(posts.id, post.id));
-    }
-
-    revalidateTag("posts", "max");
-    return { success: true, count: postsToPublish.length };
-  } catch (error) {
-    return { success: false, count: 0, error: "Failed to republish posts" };
-  }
+  return bulk(formData, "publish", async (ids) => {
+    const rows = await db
+      .update(posts)
+      .set({ status: "published", publishedAt: sql`coalesce(${posts.publishedAt}, now())` })
+      .where(and(isNull(posts.deletedAt), inArray(posts.id, ids)))
+      .returning({ id: posts.id });
+    return rows.length;
+  });
 }

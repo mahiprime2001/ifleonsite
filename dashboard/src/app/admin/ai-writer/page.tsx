@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNull } from "drizzle-orm";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
@@ -45,7 +45,7 @@ async function getWellRatedPosts() {
   return db
     .select({ id: posts.id, title: posts.title, tags: posts.tags })
     .from(posts)
-    .where(eq(posts.rating, 1))
+    .where(and(eq(posts.rating, 1), isNull(posts.deletedAt)))
     .orderBy(desc(posts.createdAt))
     .limit(10);
 }

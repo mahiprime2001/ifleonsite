@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       revalidateTag("posts", "max");
       const baseUrl = process.env.PUBLIC_BASE_URL || new URL(request.url).origin;
       return Response.json(
-        { ...created, editUrl: new URL(`/admin/posts/${created.id}`, baseUrl).toString() },
+        { ...created, editUrl: new URL(`/admin/posts/${created.id}/edit`, baseUrl).toString() },
         { status: 201 },
       );
     } catch (error) {

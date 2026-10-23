@@ -1,4 +1,4 @@
-import { count, desc, eq, gte, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
 import { aiRuns, posts } from "@/db/schema";
@@ -147,7 +147,8 @@ async function getWellRatedTopics(): Promise<string[]> {
   const rated = await db
     .select({ tags: posts.tags })
     .from(posts)
-    .where(eq(posts.rating, 1))
+    // Trashed posts don't count: deleting a post shouldn't leave its topic marked as a favourite.
+    .where(and(eq(posts.rating, 1), isNull(posts.deletedAt)))
     .orderBy(desc(posts.createdAt))
     .limit(20);
 
@@ -209,8 +210,9 @@ export async function writeAiDraft(hint: string | null, opts: GenerateOptions = 
       // Pressing Stop isn't a failed run; don't log it.
       if (reason === "stopped") return { ok: false, reason, error: "Stopped." };
 
-      // Retry with exponential backoff on generation failure
-      if (retryCount < MAX_RETRIES) {
+      // Retry with backoff only for real errors. Quota/limit/rate failures already waited (or can't
+      // improve by waiting a few seconds); returning them at once lets the autopilot pause properly.
+      if (reason === "error" && retryCount < MAX_RETRIES) {
         const delayMs = RETRY_DELAYS_MS[retryCount];
         console.log(`Generation failed, retrying after ${delayMs}ms (attempt ${attempt + 1}/${MAX_ATTEMPTS})...`);
         await new Promise((resolve) => setTimeout(resolve, delayMs));

@@ -227,7 +227,8 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <p className="text-gray-500 text-xs">
+            {/* Cached pages can be from last year; the browser's year wins without a hydration error. */}
+            <p className="text-gray-500 text-xs" suppressHydrationWarning>
               &copy; {new Date().getFullYear()} IFLEON. All rights reserved.
               &nbsp;&bull;&nbsp;Founded by S. Mahendra Reddy
             </p>

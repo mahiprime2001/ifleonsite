@@ -133,10 +133,12 @@ export const AboutScene = ({ className }: Props) => {
     { angle: (5 * Math.PI) / 3,     Icon: Bot,        label: "Auto",   c: "#60a5fa" },
   ];
 
-  // Compute %-based positions on an ellipse
+  // Compute %-based positions on an ellipse. Rounded so the server and the browser print the same
+  // numbers (their Math.sin/cos can differ in the last digit, which breaks hydration).
+  const round = (n: number) => Math.round(n * 100) / 100;
   const pos = (a: number) => ({
-    x: 50 + Math.cos(a) * 38,
-    y: 50 + Math.sin(a) * 32,
+    x: round(50 + Math.cos(a) * 38),
+    y: round(50 + Math.sin(a) * 32),
   });
 
   return (

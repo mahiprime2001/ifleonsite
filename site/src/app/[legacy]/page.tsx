@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getPost } from "@/lib/content";
 
@@ -6,6 +7,12 @@ import { getPost } from "@/lib/content";
  * send it to /blog/<slug> with a permanent (308) redirect and the ranking carries over.
  * Fixed pages (/blog, /services, ...) take precedence over this catch-all.
  */
+/* Only seen when the slug is not a post (real posts redirect before anything renders). */
+export const metadata: Metadata = {
+  title: { absolute: "Page not found | IFLEON" },
+  robots: { index: false, follow: true },
+};
+
 export default async function LegacyPostRedirect({ params }: PageProps<"/[legacy]">) {
   const slug = (await params).legacy.toLowerCase();
   if (!/^[a-z0-9-]{1,200}$/.test(slug)) notFound();

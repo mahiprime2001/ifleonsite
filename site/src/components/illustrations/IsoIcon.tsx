@@ -10,12 +10,12 @@ type Props = { variant: Variant; className?: string };
 export const IsoIcon = ({ variant, className }: Props) => {
   const id = `iso-${variant}`;
   const palette: Record<Variant, { a: string; b: string }> = {
-    ai: { a: "#a78bfa", b: "#7c3aed" },
-    devops: { a: "#34d399", b: "#059669" },
-    cloud: { a: "#60a5fa", b: "#2563eb" },
-    security: { a: "#22d3ee", b: "#0891b2" },
-    consulting: { a: "#fbbf24", b: "#d97706" },
-    data: { a: "#f472b6", b: "#db2777" },
+    ai: { a: "#C9B48A", b: "#8A7448" },
+    devops: { a: "#2E7A55", b: "#17583B" },
+    cloud: { a: "#45423C", b: "#1C1B19" },
+    security: { a: "#84B699", b: "#2E7A55" },
+    consulting: { a: "#C9A24A", b: "#8F6B1F" },
+    data: { a: "#B5714E", b: "#8C4F33" },
   };
   const { a, b } = palette[variant];
 
@@ -35,13 +35,13 @@ export const IsoIcon = ({ variant, className }: Props) => {
         </linearGradient>
         <linearGradient id={`${id}-side`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={b} />
-          <stop offset="1" stopColor="#0f172a" />
+          <stop offset="1" stopColor="#1C1B19" />
         </linearGradient>
       </defs>
 
       {/* Iso cube base for every variant */}
       <g transform="translate(40 56)">
-        <polygon points="0,-10 26,4 0,18 -26,4" fill="#0f172a" opacity="0.7" />
+        <polygon points="0,-10 26,4 0,18 -26,4" fill="#1C1B19" opacity="0.7" />
       </g>
 
       {variant === "ai" && (
@@ -70,7 +70,7 @@ export const IsoIcon = ({ variant, className }: Props) => {
               <rect key={deg} x="-2.5" y="-18" width="5" height="8" fill={a} transform={`rotate(${deg})`} />
             ))}
             <circle r="12" fill={`url(#${id}-grad)`} stroke={b} strokeWidth="1.5" />
-            <circle r="4" fill="#0f172a" />
+            <circle r="4" fill="#1C1B19" />
           </motion.g>
         </g>
       )}
@@ -105,7 +105,7 @@ export const IsoIcon = ({ variant, className }: Props) => {
       {variant === "consulting" && (
         <g transform="translate(40 38)">
           <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 3.2, repeat: Infinity }}>
-            <ellipse cx="0" cy="14" rx="14" ry="4" fill="#0f172a" opacity="0.5" />
+            <ellipse cx="0" cy="14" rx="14" ry="4" fill="#1C1B19" opacity="0.5" />
             <circle cx="0" cy="-8" r="6" fill={`url(#${id}-grad)`} stroke={b} />
             <path d="M -10 14 Q 0 -2 10 14 Z" fill={`url(#${id}-grad)`} stroke={b} />
           </motion.g>

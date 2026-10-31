@@ -18,62 +18,62 @@ const reasons = [
     title: "Practical AI, Not Hype",
     description:
       "We focus on AI solutions that solve real business problems — not experimental demos or buzzwords.",
-    accent: "from-purple-500 to-pink-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: GitBranch,
     title: "Strong DevOps Foundation",
     description:
       "From CI/CD pipelines to cloud automation, we build systems that are stable, scalable, and easy to maintain.",
-    accent: "from-emerald-500 to-teal-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: ShieldCheck,
     title: "Security-First Approach",
     description:
       "Every solution is designed with security, compliance, and data protection in mind from day one.",
-    accent: "from-cyan-500 to-blue-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Users,
     title: "Founder-Led Execution",
     description:
       "Your project is handled directly by experienced engineers, not passed between junior resources.",
-    accent: "from-amber-500 to-orange-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Target,
     title: "Business-Focused Delivery",
     description:
       "We align technology decisions with your business goals, timelines, and budgets.",
-    accent: "from-blue-500 to-indigo-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Zap,
     title: "Fast & Transparent Communication",
     description:
       "Clear updates, honest timelines, and no hidden surprises throughout the project lifecycle.",
-    accent: "from-pink-500 to-rose-500",
+    accent: "from-brand-700 to-brand-500",
   },
 ];
 
 export const WhyChooseUs = () => {
   return (
-    <section className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden">
+    <section className="relative py-20 md:py-24 bg-gradient-to-b from-paper via-paper-2 to-paper text-white overflow-hidden">
       <div className="absolute inset-0 iso-grid-bg opacity-25 pointer-events-none" />
       <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-brand-700 tracking-[0.3em] uppercase mb-3">
               Why IFLEON
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-ink mb-4 leading-tight">
               Engineering depth meets{" "}
               <span className="text-gradient-iflo">business clarity</span>
             </h2>
-            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-ink-2 max-w-3xl mx-auto">
               We combine technical depth with a business-first mindset to deliver
               solutions you can trust and scale with confidence.
             </p>
@@ -103,7 +103,7 @@ export const WhyChooseUs = () => {
               >
                 <MagnetCard
                   intensity={10}
-                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 hover:shadow-2xl transition-all"
+                  className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 hover:shadow-2xl transition-all"
                 >
                   <div className="p-6 md:p-8 h-full">
                     <motion.div
@@ -112,10 +112,10 @@ export const WhyChooseUs = () => {
                     >
                       <Icon className="h-7 w-7 text-white" />
                     </motion.div>
-                    <h3 className="text-xl font-bold text-white mb-3">
+                    <h3 className="text-xl font-bold text-ink mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-slate-300 leading-relaxed text-sm md:text-base">
+                    <p className="text-ink-2 leading-relaxed text-sm md:text-base">
                       {item.description}
                     </p>
                   </div>

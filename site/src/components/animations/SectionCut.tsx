@@ -13,11 +13,11 @@ type Props = {
 };
 
 const accentMap = {
-  emerald: { from: "#34d399", to: "#10b981", glow: "rgba(52,211,153,0.55)" },
-  blue: { from: "#60a5fa", to: "#3b82f6", glow: "rgba(96,165,250,0.55)" },
-  purple: { from: "#a78bfa", to: "#7c3aed", glow: "rgba(167,139,250,0.55)" },
-  teal: { from: "#5eead4", to: "#14b8a6", glow: "rgba(94,234,212,0.55)" },
-  orange: { from: "#fbbf24", to: "#f97316", glow: "rgba(251,191,36,0.55)" },
+  emerald: { from: "#2E7A55", to: "#1F6A47", glow: "rgba(46,122,85,0.55)" },
+  blue: { from: "#45423C", to: "#45423C", glow: "rgba(69,66,60,0.55)" },
+  purple: { from: "#C9B48A", to: "#8A7448", glow: "rgba(201,180,138,0.55)" },
+  teal: { from: "#84B699", to: "#2E7A55", glow: "rgba(132,182,153,0.55)" },
+  orange: { from: "#C9A24A", to: "#A3613F", glow: "rgba(201,162,74,0.55)" },
 };
 
 export const SectionCut = ({
@@ -56,7 +56,7 @@ export const SectionCut = ({
         />
         {label && (
           <div className="relative z-10 h-full flex items-center justify-center">
-            <span className="text-xs md:text-sm tracking-[0.4em] uppercase text-white/70 font-semibold">
+            <span className="text-xs md:text-sm tracking-[0.4em] uppercase text-ink-3 font-semibold">
               {label}
             </span>
           </div>
@@ -67,7 +67,7 @@ export const SectionCut = ({
 
   if (variant === "iris") {
     return (
-      <div ref={ref} className="relative h-40 overflow-hidden bg-slate-950">
+      <div ref={ref} className="relative h-40 overflow-hidden bg-paper">
         <motion.div
           aria-hidden
           className="absolute inset-0 mesh-bg"
@@ -83,7 +83,7 @@ export const SectionCut = ({
         />
         {label && (
           <div className="relative z-10 h-full flex items-center justify-center">
-            <span className="text-sm tracking-[0.3em] uppercase text-white/80 font-semibold">
+            <span className="text-sm tracking-[0.3em] uppercase text-ink-2 font-semibold">
               {label}
             </span>
           </div>
@@ -106,7 +106,7 @@ export const SectionCut = ({
             }}
           >
             {label && (
-              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-white/80 font-bold">
+              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-ink-2 font-bold">
                 {label}
               </span>
             )}
@@ -118,7 +118,7 @@ export const SectionCut = ({
             }}
           >
             {children ?? (
-              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-white/60 font-semibold">
+              <span className="text-sm md:text-base tracking-[0.4em] uppercase text-ink-3 font-semibold">
                 {label} • next
               </span>
             )}

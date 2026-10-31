@@ -18,7 +18,7 @@ const caseStudies = [
       "Restructured cloud resources, introduced cost monitoring, and optimized compute usage.",
     outcome:
       "Improved cost visibility and a significantly more efficient cloud setup.",
-    accent: "from-blue-500 to-cyan-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Shield,
@@ -29,7 +29,7 @@ const caseStudies = [
     solution:
       "Implemented security hardening, access controls, and monitoring best practices.",
     outcome: "Stronger security posture and improved operational confidence.",
-    accent: "from-emerald-500 to-teal-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Brain,
@@ -39,7 +39,7 @@ const caseStudies = [
     solution:
       "Designed an AI-assisted automation pipeline to process and validate data efficiently.",
     outcome: "Faster processing times and reduced manual effort.",
-    accent: "from-purple-500 to-pink-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     icon: Briefcase,
@@ -50,13 +50,13 @@ const caseStudies = [
     solution:
       "Introduced CI/CD pipelines, automated testing, and containerized deployments.",
     outcome: "More reliable releases and faster development cycles.",
-    accent: "from-amber-500 to-orange-500",
+    accent: "from-brand-700 to-brand-500",
   },
 ];
 
 export default function CaseStudiesPage() {
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-paper min-h-screen">
       <PageHero
         eyebrow="Case Studies"
         title="Real-world projects."
@@ -64,9 +64,9 @@ export default function CaseStudiesPage() {
         description="A selection of recent engagements that show how we approach problems and ship measurable solutions."
       />
 
-      <section className="relative py-20 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-b from-paper via-paper-2 to-paper overflow-hidden">
         <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
-        <div className="absolute -top-32 left-1/3 w-[36rem] h-[36rem] rounded-full bg-blue-500/10 blur-[120px]" />
+        <div className="absolute -top-32 left-1/3 w-[36rem] h-[36rem] rounded-full bg-brand-50 blur-[120px]" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -92,7 +92,7 @@ export default function CaseStudiesPage() {
                 >
                   <MagnetCard
                     intensity={6}
-                    className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                    className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 transition-all"
                   >
                     <div className="p-7 md:p-8">
                       <div className="flex items-center gap-3 mb-5">
@@ -103,16 +103,16 @@ export default function CaseStudiesPage() {
                           <Icon className="h-6 w-6 text-white" />
                         </motion.div>
                         <div>
-                          <h3 className="text-lg md:text-xl font-bold text-white leading-tight">
+                          <h3 className="text-lg md:text-xl font-bold text-ink leading-tight">
                             {item.title}
                           </h3>
-                          <p className="text-xs text-emerald-400 uppercase tracking-wider mt-1 font-semibold">
+                          <p className="text-xs text-brand-700 uppercase tracking-wider mt-1 font-semibold">
                             {item.industry}
                           </p>
                         </div>
                       </div>
 
-                      <div className="space-y-3 text-sm text-slate-300">
+                      <div className="space-y-3 text-sm text-ink-2">
                         <div>
                           <span className="text-xs font-bold tracking-[0.2em] uppercase text-rose-300 block mb-1">
                             Problem
@@ -120,13 +120,13 @@ export default function CaseStudiesPage() {
                           {item.problem}
                         </div>
                         <div>
-                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-blue-300 block mb-1">
+                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-700 block mb-1">
                             Solution
                           </span>
                           {item.solution}
                         </div>
                         <div>
-                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-emerald-300 block mb-1">
+                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-700 block mb-1">
                             Outcome
                           </span>
                           {item.outcome}
@@ -141,25 +141,25 @@ export default function CaseStudiesPage() {
 
           {/* WHITE highlight stat strip */}
           <ScrollReveal direction="scale">
-            <div className="mt-12 relative rounded-3xl bg-white p-8 md:p-10 shadow-[0_30px_80px_-20px_rgba(96,165,250,0.4)] overflow-hidden border border-blue-200">
-              <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-100 blur-3xl" />
-              <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-blue-100 blur-3xl" />
+            <div className="mt-12 relative rounded-3xl bg-white p-8 md:p-10 shadow-[0_30px_80px_-20px_rgba(69,66,60,0.4)] overflow-hidden border border-brand-200">
+              <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-brand-50 blur-3xl" />
+              <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-brand-50 blur-3xl" />
 
               <div className="relative grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 {[
-                  { num: "40%", label: "Average accuracy lift", color: "text-purple-600" },
-                  { num: "75%", label: "Faster deploys", color: "text-emerald-600" },
-                  { num: "50%", label: "Cloud cost savings", color: "text-blue-600" },
+                  { num: "40%", label: "Average accuracy lift", color: "text-brand-700" },
+                  { num: "75%", label: "Faster deploys", color: "text-brand-700" },
+                  { num: "50%", label: "Cloud cost savings", color: "text-brand-700" },
                   { num: "24h", label: "Avg. response time", color: "text-amber-600" },
                 ].map((m, i) => (
                   <div key={i}>
                     <div
-                      className={`text-3xl md:text-4xl font-black ${m.color} flex items-center justify-center gap-1`}
+                      className={`text-3xl md:text-4xl font-semibold ${m.color} flex items-center justify-center gap-1`}
                     >
                       <TrendingUp className="h-5 w-5" />
                       {m.num}
                     </div>
-                    <div className="text-gray-600 text-xs md:text-sm mt-1">
+                    <div className="text-ink-2 text-xs md:text-sm mt-1">
                       {m.label}
                     </div>
                   </div>
@@ -170,12 +170,12 @@ export default function CaseStudiesPage() {
 
           <ScrollReveal direction="up">
             <div className="mt-16 text-center">
-              <p className="text-slate-300 mb-5">
+              <p className="text-ink-2 mb-5">
                 Want to discuss a similar challenge?
               </p>
               <Link
                 to="/#contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-8 py-3.5 rounded-xl font-semibold transition-all"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white px-8 py-3.5 rounded-xl font-semibold transition-all"
               >
                 Start a Conversation
                 <ArrowRight className="h-4 w-4" />

@@ -6,7 +6,7 @@ type Props = { className?: string; step?: 1 | 2 | 3 | 4 | 5 };
 
 // Compact isometric scene per process step (used in HowWeWork)
 export const IsoProcess = ({ className, step = 1 }: Props) => {
-  const palette = ["#34d399", "#22d3ee", "#a78bfa", "#f472b6", "#fbbf24"];
+  const palette = ["#2E7A55", "#84B699", "#C9B48A", "#B5714E", "#C9A24A"];
   const accent = palette[step - 1];
 
   return (
@@ -22,8 +22,8 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
     >
       <defs>
         <linearGradient id={`p-bg-${step}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#0b1220" />
-          <stop offset="1" stopColor="#0f172a" />
+          <stop offset="0" stopColor="#1C1B19" />
+          <stop offset="1" stopColor="#1C1B19" />
         </linearGradient>
         <radialGradient id={`p-glow-${step}`} cx="0.5" cy="0.5" r="0.6">
           <stop offset="0" stopColor={accent} stopOpacity="0.4" />
@@ -40,7 +40,7 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
 
       {/* base tile */}
       <g transform="translate(110 130)">
-        <polygon points="0,-20 70,12 0,44 -70,12" fill="#0b1220" stroke="#1e293b" />
+        <polygon points="0,-20 70,12 0,44 -70,12" fill="#1C1B19" stroke="#2A2824" />
       </g>
 
       {/* Step-specific objects */}
@@ -49,7 +49,7 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
         <g transform="translate(110 70)">
           <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity }}>
             <path d="M -50 0 L 50 0 L 50 30 L 20 30 L 8 42 L 12 30 L -50 30 Z"
-              fill="rgba(52,211,153,0.15)" stroke={accent} />
+              fill="rgba(46,122,85,0.15)" stroke={accent} />
             <circle cx="-25" cy="15" r="3" fill={accent} />
             <circle cx="-10" cy="15" r="3" fill={accent} />
             <circle cx="5" cy="15" r="3" fill={accent} />
@@ -61,11 +61,11 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
         // Planning — document with checkmarks
         <g transform="translate(110 80)">
           <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 3, repeat: Infinity }}>
-            <polygon points="-40,-20 30,-20 30,30 -40,30" fill="#1e293b" stroke={accent} />
-            <polygon points="30,-20 50,-10 50,40 30,30" fill="#0f172a" stroke={accent} />
+            <polygon points="-40,-20 30,-20 30,30 -40,30" fill="#2A2824" stroke={accent} />
+            <polygon points="30,-20 50,-10 50,40 30,30" fill="#1C1B19" stroke={accent} />
             {[0, 1, 2].map((i) => (
               <g key={i} transform={`translate(0 ${-10 + i * 12})`}>
-                <line x1="-32" y1="0" x2="22" y2="0" stroke="#475569" strokeWidth="1" />
+                <line x1="-32" y1="0" x2="22" y2="0" stroke="#6F6B62" strokeWidth="1" />
                 <motion.path
                   d="M -34 0 l 3 3 l 6 -6"
                   stroke={accent} strokeWidth="2" fill="none"
@@ -83,8 +83,8 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
         // Implementation — code blocks
         <g transform="translate(110 80)">
           <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 3, repeat: Infinity }}>
-            <polygon points="-50,-20 30,-20 30,28 -50,28" fill="#0b1220" stroke={accent} />
-            <polygon points="30,-20 55,-8 55,40 30,28" fill="#1e293b" stroke={accent} />
+            <polygon points="-50,-20 30,-20 30,28 -50,28" fill="#1C1B19" stroke={accent} />
+            <polygon points="30,-20 55,-8 55,40 30,28" fill="#2A2824" stroke={accent} />
             {[0, 1, 2, 3].map((i) => (
               <motion.rect
                 key={i}
@@ -110,13 +110,13 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
         <g transform="translate(110 90)">
           <motion.g animate={{ y: [4, -8, 4] }} transition={{ duration: 2.4, repeat: Infinity }}>
             <path d="M 0 -30 Q 14 -10 14 10 L 0 16 L -14 10 Q -14 -10 0 -30 Z"
-              fill={accent} stroke="#0f172a" />
-            <circle cx="0" cy="-6" r="4" fill="#0f172a" />
-            <path d="M -14 4 L -22 14 L -10 12 Z" fill="#7c3aed" />
-            <path d="M 14 4 L 22 14 L 10 12 Z" fill="#7c3aed" />
+              fill={accent} stroke="#1C1B19" />
+            <circle cx="0" cy="-6" r="4" fill="#1C1B19" />
+            <path d="M -14 4 L -22 14 L -10 12 Z" fill="#8A7448" />
+            <path d="M 14 4 L 22 14 L 10 12 Z" fill="#8A7448" />
             <motion.path
               d="M -6 18 L 0 38 L 6 18 Z"
-              fill="#fbbf24"
+              fill="#C9A24A"
               animate={{ scaleY: [1, 1.4, 1] }}
               transition={{ duration: 0.4, repeat: Infinity }}
             />
@@ -132,7 +132,7 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
               {[0, 60, 120, 180, 240, 300].map((a) => (
                 <rect key={a} x="-4" y="-30" width="8" height="14" fill={accent} transform={`rotate(${a})`} />
               ))}
-              <circle cx="0" cy="0" r="22" fill="#1e293b" stroke={accent} strokeWidth="2" />
+              <circle cx="0" cy="0" r="22" fill="#2A2824" stroke={accent} strokeWidth="2" />
               <circle cx="0" cy="0" r="8" fill={accent} />
             </g>
           </motion.g>
@@ -148,7 +148,7 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
       {/* Step number badge */}
       <g transform="translate(186 18)">
         <circle r="14" fill={accent} />
-        <text x="0" y="5" textAnchor="middle" fontSize="14" fontWeight="800" fill="#0f172a">
+        <text x="0" y="5" textAnchor="middle" fontSize="14" fontWeight="800" fill="#1C1B19">
           {step}
         </text>
       </g>

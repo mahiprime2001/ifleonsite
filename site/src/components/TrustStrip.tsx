@@ -31,7 +31,7 @@ export const TrustStrip = () => {
   const loop = [...trustItems, ...trustItems];
 
   return (
-    <section className="relative py-10 md:py-12 bg-slate-950 border-y border-white/10 overflow-hidden">
+    <section className="relative py-10 md:py-12 bg-paper border-y border-line overflow-hidden">
       <div className="absolute inset-0 iso-grid-bg opacity-30 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,15 +41,15 @@ export const TrustStrip = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-slate-400 text-xs md:text-sm uppercase tracking-[0.3em] font-semibold">
+          <p className="text-ink-3 text-xs md:text-sm uppercase tracking-[0.3em] font-semibold">
             Trusted by teams across
           </p>
         </motion.div>
       </div>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 md:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 md:w-24 bg-gradient-to-r from-paper to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 bg-gradient-to-l from-paper to-transparent z-10" />
 
         <motion.div
           className="flex gap-8 md:gap-12 w-max"
@@ -63,10 +63,10 @@ export const TrustStrip = () => {
                 key={index}
                 className="flex items-center gap-3 shrink-0"
               >
-                <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center">
-                  <Icon className="h-4 w-4 text-emerald-400" />
+                <div className="w-9 h-9 rounded-lg bg-white border border-line backdrop-blur-md flex items-center justify-center">
+                  <Icon className="h-4 w-4 text-brand-700" />
                 </div>
-                <span className="text-sm md:text-base font-medium whitespace-nowrap text-slate-200">
+                <span className="text-sm md:text-base font-medium whitespace-nowrap text-ink">
                   {item.label}
                 </span>
               </div>

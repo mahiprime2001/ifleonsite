@@ -64,7 +64,7 @@ const steps: {
 
 export const HowWeWork = () => {
   return (
-    <section className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 to-slate-900 text-white overflow-hidden">
+    <section className="relative py-20 md:py-24 bg-gradient-to-b from-paper to-paper-2 text-white overflow-hidden">
       {/* backdrop */}
       <div className="absolute inset-0 mesh-bg opacity-50" />
       <div className="absolute inset-0 iso-grid-bg opacity-20" />
@@ -72,13 +72,13 @@ export const HowWeWork = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-brand-700 tracking-[0.3em] uppercase mb-3">
               Our Process
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-4 leading-tight">
               How We Work
             </h2>
-            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-ink-2 max-w-3xl mx-auto">
               A clear, transparent, and structured approach — from first
               conversation to long-term success.
             </p>
@@ -88,7 +88,7 @@ export const HowWeWork = () => {
         {/* Steps with illustrations + connecting line */}
         <div className="relative">
           {/* connecting line — desktop */}
-          <div className="hidden lg:block absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-emerald-400/0 via-emerald-400/50 to-emerald-400/0" />
+          <div className="hidden lg:block absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-brand-700/0 via-brand-600/50 to-brand-500/0" />
 
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-4"
@@ -120,9 +120,9 @@ export const HowWeWork = () => {
                     <IsoProcess step={item.num} className="w-full h-auto rounded-xl" />
                   </motion.div>
 
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-3">
-                    <Icon className="h-3.5 w-3.5 text-emerald-400" />
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-emerald-300">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-line backdrop-blur-md mb-3">
+                    <Icon className="h-3.5 w-3.5 text-brand-700" />
+                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-brand-700">
                       Step {item.step}
                     </span>
                   </div>
@@ -131,7 +131,7 @@ export const HowWeWork = () => {
                     {item.title}
                   </h3>
 
-                  <p className="text-slate-400 text-sm leading-relaxed">
+                  <p className="text-ink-3 text-sm leading-relaxed">
                     {item.description}
                   </p>
                 </motion.div>
@@ -142,9 +142,9 @@ export const HowWeWork = () => {
 
         <ScrollReveal direction="up">
           <div className="mt-12 md:mt-16 text-center">
-            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <p className="text-slate-200 text-sm md:text-base">
+            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-white border border-line backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
+              <p className="text-ink text-sm md:text-base">
                 No hidden steps. No surprises. Just clear execution.
               </p>
             </div>

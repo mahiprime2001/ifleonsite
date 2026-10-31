@@ -39,11 +39,11 @@ export const PageHero = ({
 
   return (
     <section
-      className={`relative ${padY} bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden border-b border-white/5`}
+      className={`relative ${padY} bg-gradient-to-b from-paper via-paper-2 to-paper text-white overflow-hidden border-b border-line`}
     >
       {/* glow orbs */}
-      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-emerald-500/10 blur-[120px]" />
-      <div className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full bg-blue-500/12 blur-[120px]" />
+      <div className="absolute -top-32 -left-32 w-[36rem] h-[36rem] rounded-full bg-brand-50 blur-[120px]" />
+      <div className="absolute -bottom-32 -right-32 w-[40rem] h-[40rem] rounded-full bg-brand-50 blur-[120px]" />
       <div className="absolute inset-0 mesh-bg opacity-30" />
       <div className="absolute inset-0 iso-grid-bg opacity-20" />
 
@@ -54,20 +54,20 @@ export const PageHero = ({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-line backdrop-blur-md mb-6"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-semibold text-emerald-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+              <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-semibold text-brand-700">
                 {eyebrow}
               </span>
             </motion.div>
           )}
 
-          <h1 className={`${titleSize} font-black leading-[1.05] mb-5`}>
+          <h1 className={`${titleSize} font-semibold leading-[1.05] mb-5`}>
             <AnimeText
               as="span"
               text={title}
-              className="block text-white"
+              className="block text-ink"
               staggerMs={28}
               duration={700}
             />
@@ -88,7 +88,7 @@ export const PageHero = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-base md:text-xl text-slate-300 leading-relaxed"
+              className="text-base md:text-xl text-ink-2 leading-relaxed"
             >
               {description}
             </motion.p>

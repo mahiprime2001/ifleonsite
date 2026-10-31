@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Figtree, JetBrains_Mono, Newsreader } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "sonner";
 import { Footer } from "@/components/Footer";
@@ -26,14 +27,27 @@ export const metadata: Metadata = {
   referrer: "strict-origin-when-cross-origin",
 };
 
-export const viewport: Viewport = { themeColor: "#0b1220" };
+export const viewport: Viewport = { themeColor: "#FAF8F4" };
 
 const GTM_ID = "GTM-MM5GJ8VG";
 
+/* Headlines: Newsreader (editorial serif). Body: Figtree. Labels and code: JetBrains Mono. */
+const serif = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
+const sans = Figtree({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
       <body>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+        >
+          Skip to content
+        </a>
+        {/* Paper grain over everything; never intercepts clicks. */}
+        <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60]" />
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
@@ -44,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
         <Toaster position="top-center" richColors />
         <Header />
-        {children}
+        <main id="main">{children}</main>
         <Footer />
         <Script src="https://plausible.io/js/script.js" data-domain="ifleon.com" strategy="afterInteractive" />
         <Script id="gtm" strategy="afterInteractive">

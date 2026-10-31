@@ -1,263 +1,170 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Link, useLocation } from "@/lib/router";
-import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
-
 
 const NAV = [
   { label: "Services", path: "/services" },
-  { label: "Portfolio", path: "/portfolio" },
+  { label: "Work", path: "/portfolio" },
   { label: "Team", path: "/team" },
   { label: "Blog", path: "/blog" },
   { label: "Pricing", path: "/pricing" },
 ];
 
-const REVEAL_MS = 30_000;
-// Easing curve from animations.dev — feels intentional, not sluggish
-const SMOOTH_EASE = [0.32, 0.72, 0, 1] as const;
+const EASE = [0.32, 0.72, 0, 1] as const;
 
+/*
+ * Sits flat on the paper at the top of the page; once scrolled it floats as a frosted bar that
+ * hides while scrolling down and returns on the way up. The active link's underline slides
+ * between items (shared layoutId).
+ */
 export const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
-  const [manualExpanded, setManualExpanded] = useState(false);
-  const location = useLocation();
-  const expandTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const isHome = location.pathname === "/";
-  // Show frosted bar once user has scrolled OR when on inner pages
-  const frosted = scrolled || !isHome;
-  // Collapse contents into logo only after the hero is mostly out of view
-  // and only on the home page (inner pages always show full nav).
-  const collapsed = isHome && pastHero && !manualExpanded;
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    setScrolled(y > 16);
+    setHidden(y > 240 && y > previous && !menuOpen);
+  });
 
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      // Threshold: roughly 60% of viewport height — past the hero copy area
-      setPastHero(y > window.innerHeight * 0.6);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Close mobile menu on route change
+  // Close the mobile menu after navigating.
   // eslint-disable-next-line react-hooks/set-state-in-effect -- closing the menu is a reaction to navigation
-  useEffect(() => setMenuOpen(false), [location.pathname]);
+  useEffect(() => setMenuOpen(false), [pathname]);
 
-  // Cleanup any pending 30s timer on unmount
+  // Lock page scroll behind the open mobile menu.
   useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      if (expandTimerRef.current) clearTimeout(expandTimerRef.current);
+      document.body.style.overflow = previous;
     };
-  }, []);
+  }, [menuOpen]);
 
-  const startReturnTimer = () => {
-    if (expandTimerRef.current) clearTimeout(expandTimerRef.current);
-    expandTimerRef.current = setTimeout(() => {
-      setManualExpanded(false);
-    }, REVEAL_MS);
-  };
-
-  const handleLogoClick = (e: React.MouseEvent) => {
-    if (collapsed) {
-      // First tap expands the header; navigation suppressed.
-      e.preventDefault();
-      setManualExpanded(true);
-      startReturnTimer();
-    }
-    // When already expanded, the <Link> handles normal navigation to "/"
-  };
+  const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        frosted
-          ? "bg-slate-950/85 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/30"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo — also acts as the "expand" button when collapsed */}
-          <Link
-            to="/"
-            onClick={handleLogoClick}
-            className="flex items-center gap-3 group relative"
-            aria-label={collapsed ? "Show navigation" : "Go home"}
+    <>
+      <motion.header
+        className="fixed inset-x-0 top-0 z-50"
+        animate={{ y: hidden ? "-110%" : "0%" }}
+        transition={{ duration: 0.45, ease: EASE }}
+      >
+        <div className={`transition-[padding] duration-500 ${scrolled ? "px-3 pt-3 sm:px-5" : "px-0 pt-0"}`}>
+          <div
+            className={`mx-auto flex h-16 items-center justify-between transition-all duration-500 ${
+              scrolled
+                ? "max-w-[1200px] rounded-full border border-line/80 bg-paper/80 px-4 shadow-soft backdrop-blur-xl sm:px-5"
+                : "max-w-[1240px] border border-transparent px-5 sm:px-8"
+            }`}
           >
-            <motion.div
-              animate={{
-                scale: collapsed ? 1.08 : 1,
-                filter: collapsed
-                  ? "drop-shadow(0 0 14px rgba(52,211,153,0.55))"
-                  : "drop-shadow(0 0 0 rgba(52,211,153,0))",
-              }}
-              transition={{ duration: 0.45, ease: SMOOTH_EASE }}
-            >
-              <Logo
-                size={36}
-                className="flex-shrink-0 transition-transform group-hover:scale-105"
-              />
-            </motion.div>
-            <div>
-              <span
-                className="font-bold text-lg leading-none text-white"
-                style={{ fontFamily: "'Syne', sans-serif" }}
-              >
-                IFLEON
-              </span>
-              <span className="block text-[10px] font-medium tracking-widest uppercase text-emerald-300">
-                Consulting
-              </span>
-            </div>
-            {/* Subtle pulse cue when collapsed (clickable hint) */}
-            {collapsed && (
-              <motion.span
-                aria-hidden
-                className="absolute -right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-400"
-                animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              />
-            )}
-          </Link>
+            <Link to="/" aria-label="IFLEON home" className="rounded-lg">
+              <Logo size={30} />
+            </Link>
 
-          {/* Right group — animates "into" the logo when collapsed */}
-          <AnimatePresence initial={false}>
-            {!collapsed && (
-              <motion.div
-                key="header-right"
-                className="flex items-center gap-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4, ease: SMOOTH_EASE }}
-              >
-                {/* Desktop nav */}
-                <nav className="hidden lg:flex items-center gap-1">
-                  {NAV.map((link, i) => {
-                    const active = location.pathname === link.path;
-                    return (
-                      <motion.div
-                        key={link.path}
-                        initial={{
-                          opacity: 0,
-                          x: -80 - (NAV.length - i) * 28,
-                          scale: 0.4,
-                        }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{
-                          opacity: 0,
-                          x: -80 - (NAV.length - i) * 28,
-                          scale: 0.4,
-                        }}
-                        transition={{
-                          duration: 0.55,
-                          ease: SMOOTH_EASE,
-                          delay: i * 0.04,
-                        }}
-                      >
-                        <Link
-                          to={link.path}
-                          className={`px-3.5 py-2 rounded-md text-sm font-medium transition-all ${
-                            active
-                              ? "text-white bg-white/15 border border-white/10"
-                              : "text-white/75 hover:text-white hover:bg-white/10"
-                          }`}
-                        >
-                          {link.label}
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </nav>
-
-                {/* Right-side actions */}
-                <div className="hidden lg:flex items-center gap-3 ml-3">
-                  {(
-                    <motion.div
-                      initial={{ opacity: 0, x: -120, scale: 0.4 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      exit={{ opacity: 0, x: -120, scale: 0.4 }}
-                      transition={{
-                        duration: 0.55,
-                        ease: SMOOTH_EASE,
-                        delay: NAV.length * 0.04,
-                      }}
-                    >
-                      <Link
-                        to="/#contact"
-                        className="text-sm font-semibold px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 text-white transition-all"
-                      >
-                        Get Started
-                      </Link>
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* Mobile burger */}
-                <motion.button
-                  className="lg:hidden p-2 rounded-md transition-colors text-white hover:bg-white/10"
-                  onClick={() => setMenuOpen((p) => !p)}
-                  aria-label="Toggle menu"
-                  aria-expanded={menuOpen}
-                  initial={{ opacity: 0, x: -60, scale: 0.4 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -60, scale: 0.4 }}
-                  transition={{ duration: 0.5, ease: SMOOTH_EASE }}
-                >
-                  {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {menuOpen && !collapsed && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="lg:hidden overflow-hidden bg-slate-950/95 backdrop-blur-md border-b border-white/10"
-          >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-1">
+            <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
               {NAV.map((link) => {
-                const active = location.pathname === link.path;
+                const active = isActive(link.path);
                 return (
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                      active
-                        ? "text-white bg-white/10"
-                        : "text-white/75 hover:text-white hover:bg-white/5"
+                    aria-current={active ? "page" : undefined}
+                    className={`relative rounded-full px-4 py-2 text-[0.92rem] font-medium transition-colors ${
+                      active ? "text-ink" : "text-ink-3 hover:text-ink"
                     }`}
                   >
                     {link.label}
+                    {active && (
+                      <motion.span
+                        layoutId="nav-underline"
+                        className="absolute inset-x-4 -bottom-0.5 h-[2px] rounded-full bg-brand-600"
+                        transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      />
+                    )}
                   </Link>
                 );
               })}
-              <div className="pt-3 border-t border-white/10">
-                <Link
-                  to="/#contact"
-                  className="block text-sm font-semibold px-4 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-emerald-500 text-white text-center"
-                >
-                  Get Started
-                </Link>
-              </div>
+            </nav>
+
+            <div className="flex items-center gap-2">
+              <Link to="/#contact" className="btn-primary hidden !px-5 !py-2.5 sm:inline-flex">
+                Book a call
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <button
+                type="button"
+                className="grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-white/70 text-ink transition hover:bg-white lg:hidden"
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+              >
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Mobile menu: a full-height sheet with staggered links */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            id="mobile-menu"
+            className="fixed inset-0 z-40 bg-paper pt-24 lg:hidden"
+            initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
+            exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <nav aria-label="Mobile" className="shell flex flex-col">
+              {[{ label: "Home", path: "/" }, ...NAV].map((link, i) => (
+                <motion.div
+                  key={link.path}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease: EASE }}
+                >
+                  <Link
+                    to={link.path}
+                    className={`flex items-baseline justify-between border-b border-line py-4 font-serif text-3xl ${
+                      isActive(link.path) && link.path !== "/" ? "text-brand-700" : "text-ink"
+                    }`}
+                  >
+                    {link.label}
+                    <span className="font-mono text-xs text-ink-4">0{i + 1}</span>
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5, ease: EASE }}
+                className="pt-8"
+              >
+                <Link to="/#contact" className="btn-primary w-full">
+                  Book a free consultation
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+                <p className="mt-6 text-sm text-ink-3">
+                  Or write to{" "}
+                  <a href="mailto:info@ifleon.com" className="font-medium text-ink underline decoration-line-strong underline-offset-4">
+                    info@ifleon.com
+                  </a>
+                </p>
+              </motion.div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };

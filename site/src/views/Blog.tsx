@@ -70,7 +70,7 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
   const allTags = Array.from(new Set(posts.flatMap((post) => post.tags))).sort();
 
   return (
-    <div className="bg-slate-950 min-h-screen">
+    <div className="bg-paper min-h-screen">
       <PageHero
         eyebrow="Tech Blog"
         title="Insights from"
@@ -78,14 +78,14 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
         description="Technical deep dives, project updates, and source code from our AI, DevOps, and IT consulting work — all examples available on our GitHub."
       />
 
-      <section className="relative py-12 md:py-16 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+      <section className="relative py-12 md:py-16 bg-gradient-to-b from-paper via-paper-2 to-paper overflow-hidden">
         <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search + Filters */}
           <div className="flex flex-col md:flex-row gap-3 mb-10 max-w-4xl mx-auto">
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 h-5 w-5" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3 h-5 w-5" />
               <input
                 type="text"
                 placeholder="Search articles..."
@@ -99,9 +99,9 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
               onChange={(e) => setSelectedTag(e.target.value)}
               className="input-dark cursor-pointer md:w-44 md:flex-none"
             >
-              <option value="" className="bg-slate-900">All Tags</option>
+              <option value="" className="bg-paper">All Tags</option>
               {allTags.map((tag) => (
-                <option key={tag} value={tag} className="bg-slate-900">
+                <option key={tag} value={tag} className="bg-paper">
                   {tag}
                 </option>
               ))}
@@ -111,14 +111,14 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
               onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'most-liked')}
               className="input-dark cursor-pointer md:w-44 md:flex-none"
             >
-              <option value="newest" className="bg-slate-900">Newest</option>
-              <option value="oldest" className="bg-slate-900">Oldest</option>
-              <option value="most-liked" className="bg-slate-900">Most Liked</option>
+              <option value="newest" className="bg-paper">Newest</option>
+              <option value="oldest" className="bg-paper">Oldest</option>
+              <option value="most-liked" className="bg-paper">Most Liked</option>
             </select>
           </div>
 
           {posts.length === 0 && (
-            <p className="text-center text-slate-400 py-16">No articles yet. Check back soon.</p>
+            <p className="text-center text-ink-3 py-16">No articles yet. Check back soon.</p>
           )}
 
           {/* Posts Grid */}
@@ -138,10 +138,10 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
               >
                 <MagnetCard
                   intensity={5}
-                  className="h-full bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl hover:bg-white/10 hover:border-emerald-400/40 transition-all"
+                  className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 transition-all"
                 >
                   <div className="p-6 h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-4 text-xs text-slate-400">
+                    <div className="flex items-center justify-between mb-4 text-xs text-ink-3">
                       <div className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>{formatShortDate(post.publishedAt)}</span>
@@ -153,24 +153,24 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
                     </div>
 
                     <Link to={`/blog/${post.slug}`} className="block group">
-                      <h3 className="text-lg font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-ink mb-3 group-hover:text-brand-700 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                     </Link>
 
-                    <p className="text-sm text-slate-300 mb-6 leading-relaxed line-clamp-3 flex-1">
+                    <p className="text-sm text-ink-2 mb-6 leading-relaxed line-clamp-3 flex-1">
                       {post.excerpt}
                     </p>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                    <div className="flex items-center justify-between pt-4 border-t border-line">
                       <Link
                         to={`/blog/${post.slug}`}
-                        className="text-emerald-400 hover:text-emerald-300 font-semibold text-sm flex items-center gap-1.5 group"
+                        className="text-brand-700 hover:text-brand-700 font-semibold text-sm flex items-center gap-1.5 group"
                       >
                         Read More
                         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                       </Link>
-                      <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                      <div className="flex items-center gap-1.5 text-ink-3 text-xs">
                         <Eye className="h-3.5 w-3.5" />
                         <span>{post.viewCount}</span>
                       </div>
@@ -182,19 +182,19 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
           </div>
 
           {isTransitioning && (
-            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center">
-              <div className="w-10 h-10 border-3 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin" />
+            <div className="fixed inset-0 bg-paper/80 backdrop-blur-sm z-50 flex items-center justify-center">
+              <div className="w-10 h-10 border-3 border-brand-600/30 border-t-emerald-400 rounded-full animate-spin" />
             </div>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-12 flex justify-center">
-              <nav className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <nav className="flex items-center gap-2 p-2 rounded-xl bg-white border border-line backdrop-blur-md">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10 transition"
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-paper-2 transition"
                 >
                   Previous
                 </button>
@@ -206,8 +206,8 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
                     disabled={isTransitioning}
                     className={`min-w-[40px] px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
                       currentPage === page
-                        ? 'bg-gradient-to-r from-blue-600 to-emerald-500 text-white shadow-lg'
-                        : 'text-slate-200 hover:bg-white/10'
+                        ? 'bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow-lg'
+                        : 'text-ink hover:bg-paper-2'
                     }`}
                   >
                     {page}
@@ -217,7 +217,7 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages || isTransitioning}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10 transition"
+                  className="px-4 py-2 rounded-lg text-sm font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-paper-2 transition"
                 >
                   Next
                 </button>
@@ -226,7 +226,7 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
           )}
 
           {totalPages > 0 && (
-            <div className="mt-6 text-center text-sm text-slate-400">
+            <div className="mt-6 text-center text-sm text-ink-3">
               Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, sortedPosts.length)} of {sortedPosts.length} posts
             </div>
           )}

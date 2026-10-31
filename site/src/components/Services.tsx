@@ -40,7 +40,7 @@ const categories: Category[] = [
     subtitle: "Enterprise capabilities to scale operations and teams.",
     icon: Briefcase,
     items: businessServices,
-    accent: "from-blue-500 to-emerald-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     key: "individual",
@@ -49,7 +49,7 @@ const categories: Category[] = [
     subtitle: "Personal tech setup, security, and career guidance.",
     icon: User,
     items: individualServices,
-    accent: "from-purple-500 to-pink-500",
+    accent: "from-brand-700 to-brand-500",
   },
   {
     key: "specialty",
@@ -58,7 +58,7 @@ const categories: Category[] = [
     subtitle: "Targeted offerings we plug into existing teams and products.",
     icon: Sparkles,
     items: specialtyServices,
-    accent: "from-amber-500 to-orange-500",
+    accent: "from-brand-700 to-brand-500",
   },
 ];
 
@@ -71,23 +71,23 @@ export const Services = () => {
   return (
     <section
       id="services"
-      className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden"
+      className="relative py-20 md:py-24 bg-gradient-to-b from-paper via-paper-2 to-paper text-white overflow-hidden"
     >
       <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
-      <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-[120px]" />
-      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-emerald-500/10 blur-[120px]" />
+      <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-50 blur-[120px]" />
+      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-50 blur-[120px]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="text-center mb-12">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-brand-700 tracking-[0.3em] uppercase mb-3">
               What We Do
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-ink mb-4 leading-tight">
               Solutions for{" "}
               <span className="text-gradient-iflo">every scale</span>
             </h2>
-            <p className="text-base md:text-lg text-slate-300 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-ink-2 max-w-2xl mx-auto">
               From enterprise platforms to personal tech setup — pick a category
               to see what we offer.
             </p>
@@ -110,13 +110,13 @@ export const Services = () => {
                   className={`relative inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all border ${
                     isActive
                       ? "text-white border-transparent shadow-lg"
-                      : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white backdrop-blur-md"
+                      : "bg-white text-ink-2 border-line hover:bg-paper-2 hover:text-ink backdrop-blur-md"
                   }`}
                   style={
                     isActive
                       ? {
-                          background: "linear-gradient(90deg, #3b82f6, #10b981)",
-                          boxShadow: "0 10px 30px -8px rgba(59,130,246,0.5)",
+                          background: "linear-gradient(90deg, #17583B, #1F6A47)",
+                          boxShadow: "0 10px 30px -12px rgba(23,88,59,0.45)",
                         }
                       : undefined
                   }
@@ -128,7 +128,7 @@ export const Services = () => {
                       layoutId="active-tab-glow"
                       className="absolute inset-0 rounded-full -z-10 blur-md"
                       style={{
-                        background: "linear-gradient(90deg, #3b82f6, #10b981)",
+                        background: "linear-gradient(90deg, #17583B, #1F6A47)",
                         opacity: 0.5,
                       }}
                     />
@@ -149,10 +149,10 @@ export const Services = () => {
             transition={{ duration: 0.4 }}
           >
             <div className="text-center mb-10">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              <h3 className="text-2xl md:text-3xl font-bold text-ink mb-2">
                 {active.title}
               </h3>
-              <p className="text-slate-300">{active.subtitle}</p>
+              <p className="text-ink-2">{active.subtitle}</p>
             </div>
 
             <motion.div
@@ -177,7 +177,7 @@ export const Services = () => {
                   >
                     <MagnetCard
                       intensity={8}
-                      className="h-full rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-emerald-400/40 backdrop-blur-md transition-colors"
+                      className="h-full rounded-2xl border border-line bg-white hover:bg-paper-2 hover:border-brand-600/40 backdrop-blur-md transition-colors"
                     >
                       <Link
                         to="/services"
@@ -185,15 +185,15 @@ export const Services = () => {
                       >
                         <div className="flex items-start justify-between mb-4">
                           <IsoIcon variant={variant} className="w-16 h-16" />
-                          <ArrowRight className="h-5 w-5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="h-5 w-5 text-ink-3 group-hover:text-brand-700 group-hover:translate-x-1 transition-all" />
                         </div>
-                        <div className="font-bold text-white leading-tight text-lg mb-2">
+                        <div className="font-bold text-ink leading-tight text-lg mb-2">
                           {s.title}
                         </div>
-                        <div className="text-sm text-slate-400 line-clamp-2">
+                        <div className="text-sm text-ink-3 line-clamp-2">
                           {s.tagline}
                         </div>
-                        <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="mt-4 pt-4 border-t border-line flex items-center gap-2 text-xs text-brand-700 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                           Learn more
                           <ArrowRight className="h-3 w-3" />
                         </div>
@@ -209,7 +209,7 @@ export const Services = () => {
         <div className="flex justify-center mb-20">
           <Link
             to="/services"
-            className="shine-on-hover inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 text-white px-8 py-4 rounded-xl font-semibold transition-all"
+            className="shine-on-hover inline-flex items-center gap-2 bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white px-8 py-4 rounded-xl font-semibold transition-all"
           >
             View All Services With Details
             <ArrowRight className="h-4 w-4" />
@@ -219,22 +219,22 @@ export const Services = () => {
         {/* Bottom CTA card */}
         <ScrollReveal direction="scale">
           <motion.div
-            className="relative rounded-3xl p-12 text-white text-center overflow-hidden border border-white/10"
+            className="relative rounded-3xl p-12 text-paper text-center overflow-hidden shadow-lift"
             style={{
               background:
-                "linear-gradient(135deg, rgba(30,58,138,0.5) 0%, rgba(15,118,110,0.4) 50%, rgba(14,165,233,0.4) 100%)",
+                "linear-gradient(135deg, #0F3A28 0%, #17583B 100%)",
             }}
             whileHover={{ y: -4 }}
           >
             <div className="absolute inset-0 mesh-bg opacity-50" />
-            <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-emerald-400/30 blur-3xl" />
-            <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-blue-400/30 blur-3xl" />
+            <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-brand-100 blur-3xl" />
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-brand-100 blur-3xl" />
 
             <div className="relative">
-              <h3 className="text-3xl md:text-4xl font-black mb-4">
+              <h3 className="text-3xl md:text-5xl font-normal mb-4 text-paper">
                 Technical Insights & Open Source
               </h3>
-              <p className="text-base md:text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              <p className="text-base md:text-xl text-brand-100 mb-8 max-w-3xl mx-auto">
                 Explore real-world implementations, technical blogs, and
                 open-source contributions from IFLEON.
               </p>
@@ -242,7 +242,7 @@ export const Services = () => {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   to="/blog"
-                  className="bg-white text-blue-700 hover:bg-gray-100 px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 shadow-lg"
+                  className="bg-white text-brand-700 hover:bg-paper-2 px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 shadow-lg"
                 >
                   <Bot className="h-5 w-5" /> Read Our Blog
                 </Link>
@@ -250,7 +250,7 @@ export const Services = () => {
                   href="https://github.com/ifleonlabs"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-white/60 hover:bg-white hover:text-blue-700 px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 backdrop-blur-md"
+                  className="border border-white/30 text-paper hover:bg-white hover:text-brand-700 px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 backdrop-blur-md"
                 >
                   <GitBranch className="h-5 w-5" /> View Source Code
                 </a>
@@ -258,7 +258,7 @@ export const Services = () => {
                   href="https://www.linkedin.com/company/ifleon/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-white/60 hover:bg-white hover:text-blue-700 px-6 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 backdrop-blur-md"
+                  className="border border-white/30 text-paper hover:bg-white hover:text-brand-700 px-6 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 backdrop-blur-md"
                 >
                   <Linkedin className="h-5 w-5" /> Visit Us on LinkedIn
                 </a>

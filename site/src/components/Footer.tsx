@@ -1,261 +1,165 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import {
-  Mail,
-  MapPin,
-  Calendar,
-  ArrowUpRight,
-  Github,
-  Linkedin,
-  ArrowUp,
-} from "lucide-react";
+import { useRef } from "react";
+import { ArrowUp, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/lib/router";
-import { animate, stagger } from "animejs";
-import { Logo } from "./Logo";
-import {
-  businessServices,
-  individualServices,
-  specialtyServices,
-} from "../data/services";
+import { businessServices } from "../data/services";
+import { LogoMark } from "./Logo";
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const COMPANY = [
+  { label: "About", to: "/#about" },
+  { label: "Our work", to: "/portfolio" },
+  { label: "Team", to: "/team" },
+  { label: "Pricing", to: "/pricing" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Blog", to: "/blog" },
+];
+
+/*
+ * The site's closing band in deep brand green: a last call to action, a few focused link
+ * columns, and the oversized wordmark that rises into place as the page ends.
+ */
 export const Footer = () => {
-  const gridRef = useRef<HTMLDivElement | null>(null);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    const el = gridRef.current;
-    if (!el) return;
-
-    let played = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || played) return;
-          played = true;
-
-          const cols = el.querySelectorAll<HTMLElement>("[data-footer-col]");
-          animate(cols, {
-            opacity: [0, 1],
-            translateY: [24, 0],
-            duration: 650,
-            delay: stagger(100),
-            ease: "outExpo",
-          });
-        });
-      },
-      { threshold: 0.15 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const wordRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: wordRef, offset: ["start end", "end end"] });
+  const wordY = useTransform(scrollYProgress, [0, 1], ["45%", "0%"]);
 
   return (
-    <footer className="bg-gray-950 text-gray-300 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10"
+    <footer className="relative overflow-hidden bg-brand-950 text-brand-100">
+      <div aria-hidden className="absolute inset-0 opacity-[0.07] iso-grid-bg invert" />
+
+      <div className="shell relative pt-20 md:pt-28">
+        {/* Closing call to action */}
+        <motion.div
+          className="flex flex-col gap-8 border-b border-white/10 pb-16 md:flex-row md:items-end md:justify-between"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: EASE }}
         >
-          {/* Brand */}
-          <div data-footer-col className="lg:col-span-2 opacity-0">
-            <div className="flex items-center gap-3 mb-4">
-              <Logo size={44} />
-              <div>
-                <span className="text-2xl font-bold text-white">IFLEON</span>
-                <div className="text-xs text-gray-400">
-                  Infinite Logical Elements of Network
-                </div>
-              </div>
-            </div>
+          <h2 className="max-w-2xl font-serif text-4xl font-normal leading-[1.05] text-paper md:text-6xl">
+            Have a system that should run <em className="text-brand-300">better</em>? Let&apos;s talk.
+          </h2>
+          <Link
+            to="/#contact"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-paper px-7 py-3.5 text-[0.95rem] font-semibold text-brand-950 transition hover:bg-white active:translate-y-px"
+          >
+            Book a free consultation
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+        </motion.div>
 
-            <p className="text-gray-400 mb-6 max-w-md leading-relaxed text-sm">
-              Practical AI solutions, DevOps automation, cloud engineering, and
-              secure digital systems for businesses and individuals across
-              India.
+        {/* Links */}
+        <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-3">
+              <LogoMark size={36} />
+              <span className="font-serif text-2xl font-semibold tracking-[-0.03em] text-paper">ifleon</span>
+            </div>
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-200/80">
+              Infinite Logical Elements of Network. AI, DevOps, cloud and security engineering for businesses and
+              individuals across India.
             </p>
-
-            <div className="flex items-center gap-4 mb-5">
-              <a
-                href="https://github.com/ifleonlabs"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="IFLEON on GitHub"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
-              >
-                <Github className="h-4 w-4 text-gray-300" />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/ifleon/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="IFLEON on LinkedIn"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
-              >
-                <Linkedin className="h-4 w-4 text-gray-300" />
-              </a>
-              <a
-                href="mailto:info@ifleon.com"
-                aria-label="Email IFLEON"
-                className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors"
-              >
-                <Mail className="h-4 w-4 text-gray-300" />
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2 text-gray-500 text-xs">
-              <Calendar className="h-3.5 w-3.5" />
-              <span>Founded 2022 &bull; Nellore, Andhra Pradesh</span>
-            </div>
-          </div>
-
-          {/* Business Services */}
-          <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
-              For Business
-            </h3>
-            <ul className="space-y-2 text-sm">
-              {businessServices.map((s) => (
-                <li key={s.id}>
-                  <Link
-                    to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
-                  >
-                    {s.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Individual Services */}
-          <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
-              For Individuals
-            </h3>
-            <ul className="space-y-2 text-sm mb-6">
-              {individualServices.map((s) => (
-                <li key={s.id}>
-                  <Link
-                    to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
-                  >
-                    {s.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">
-              Specialty
-            </h3>
-            <ul className="space-y-2 text-sm">
-              {specialtyServices.slice(0, 3).map((s) => (
-                <li key={s.id}>
-                  <Link
-                    to="/services"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
-                  >
-                    {s.title}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to="/services"
-                  className="text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1"
-                >
-                  View all <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company + Contact */}
-          <div data-footer-col className="opacity-0">
-            <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wide">
-              Company
-            </h3>
-            <ul className="space-y-2 text-sm mb-6">
-              <li>
-                <Link to="/#about" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  Technical Blog
-                </Link>
-              </li>
-              <li>
-                <Link to="/faq" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link to="/#contact" className="text-gray-400 hover:text-blue-400 transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-
-            <h3 className="text-sm font-semibold text-white mb-3 uppercase tracking-wide">
-              Get in Touch
-            </h3>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2 text-gray-400">
-                <Mail className="h-4 w-4 shrink-0" />
+            <div className="mt-6 flex gap-2">
+              {[
+                { href: "https://github.com/ifleonlabs", label: "IFLEON on GitHub", Icon: Github },
+                { href: "https://www.linkedin.com/company/ifleon/", label: "IFLEON on LinkedIn", Icon: Linkedin },
+                { href: "mailto:info@ifleon.com", label: "Email IFLEON", Icon: Mail },
+              ].map(({ href, label, Icon }) => (
                 <a
-                  href="mailto:info@ifleon.com"
-                  className="hover:text-blue-400 transition-colors"
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-brand-100 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
                 >
-                  info@ifleon.com
+                  <Icon className="h-4 w-4" />
                 </a>
-              </li>
-              <li className="flex items-start gap-2 text-gray-400">
-                <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>Nellore, Andhra Pradesh, India</span>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
+
+          <FooterColumn title="Services">
+            {businessServices.slice(0, 5).map((s) => (
+              <FooterLink key={s.id} to="/services">
+                {s.title}
+              </FooterLink>
+            ))}
+            <FooterLink to="/services" strong>
+              All services
+            </FooterLink>
+          </FooterColumn>
+
+          <FooterColumn title="Company">
+            {COMPANY.map((item) => (
+              <FooterLink key={item.label} to={item.to}>
+                {item.label}
+              </FooterLink>
+            ))}
+          </FooterColumn>
+
+          <FooterColumn title="Contact">
+            <li>
+              <a href="mailto:info@ifleon.com" className="text-brand-100/80 transition-colors hover:text-white">
+                info@ifleon.com
+              </a>
+            </li>
+            <li className="text-brand-100/80">Nellore, Andhra Pradesh, India</li>
+          </FooterColumn>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-center md:text-left">
-            {/* Cached pages can be from last year; the browser's year wins without a hydration error. */}
-            <p className="text-gray-500 text-xs" suppressHydrationWarning>
-              &copy; {new Date().getFullYear()} IFLEON. All rights reserved.
-              &nbsp;&bull;&nbsp;Founded by S. Mahendra Reddy
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <a
-              href="https://ifleon.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-gray-500 hover:text-blue-400 transition-colors inline-flex items-center gap-1"
-            >
-              Service Portal <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-
-            <button
-              type="button"
-              onClick={scrollToTop}
-              aria-label="Back to top"
-              className="inline-flex items-center gap-1 bg-gray-800 hover:bg-blue-600 text-gray-200 px-3 py-1.5 rounded-lg text-xs transition-colors"
-            >
-              <ArrowUp className="h-3.5 w-3.5" />
-              Top
-            </button>
-          </div>
+        {/* Bottom bar */}
+        <div className="flex flex-col items-start justify-between gap-4 border-t border-white/10 py-6 text-xs text-brand-200/70 sm:flex-row sm:items-center">
+          {/* Cached pages can be from last year; the browser's year wins without a hydration error. */}
+          <p suppressHydrationWarning>
+            &copy; {new Date().getFullYear()} IFLEON. Founded by S. Mahendra Reddy in 2022.
+          </p>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3.5 py-1.5 text-brand-100 transition hover:border-white/40 hover:text-white"
+          >
+            <ArrowUp className="h-3.5 w-3.5" />
+            Back to top
+          </button>
         </div>
+      </div>
+
+      {/* Oversized wordmark, rising as the page ends */}
+      <div ref={wordRef} aria-hidden className="relative -mb-[0.22em] overflow-hidden">
+        <motion.p
+          style={{ y: wordY }}
+          className="no-select text-center font-serif text-[27vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.06]"
+        >
+          ifleon
+        </motion.p>
       </div>
     </footer>
   );
 };
+
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h3 className="font-mono text-[0.7rem] font-medium uppercase tracking-[0.18em] text-brand-300">{title}</h3>
+      <ul className="mt-5 space-y-3 text-sm">{children}</ul>
+    </div>
+  );
+}
+
+function FooterLink({ to, children, strong }: { to: string; children: React.ReactNode; strong?: boolean }) {
+  return (
+    <li>
+      <Link
+        to={to}
+        className={`transition-colors hover:text-white ${strong ? "inline-flex items-center gap-1 font-semibold text-paper" : "text-brand-100/80"}`}
+      >
+        {children}
+        {strong && <ArrowUpRight className="h-3.5 w-3.5" />}
+      </Link>
+    </li>
+  );
+}

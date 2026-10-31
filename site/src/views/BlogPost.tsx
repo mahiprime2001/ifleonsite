@@ -18,12 +18,12 @@ export const BlogPost = ({ post }: { post: Post }) => {
   }, [post.id]);
 
   return (
-    <div className="relative min-h-screen bg-slate-950 pt-24 pb-20 text-slate-100 overflow-hidden">
+    <div className="relative min-h-screen bg-paper pt-24 pb-20 text-ink overflow-hidden">
       <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-[120px]" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-blue-500/10 blur-[120px]" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-50 blur-[120px]" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-50 blur-[120px]" />
 
-      <article className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white/5 border border-white/10 backdrop-blur-md rounded-3xl shadow-2xl">
+      <article className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white border border-line backdrop-blur-md rounded-3xl shadow-2xl">
         <BackButton />
 
         {post.coverImageUrl && (
@@ -32,7 +32,7 @@ export const BlogPost = ({ post }: { post: Post }) => {
           <img
             src={post.coverImageUrl}
             alt=""
-            className="w-full aspect-[2/1] object-cover rounded-2xl mb-8 border border-white/10"
+            className="w-full aspect-[2/1] object-cover rounded-2xl mb-8 border border-line"
           />
         )}
 
@@ -48,12 +48,12 @@ export const BlogPost = ({ post }: { post: Post }) => {
         />
 
         <div className="flex flex-wrap items-center gap-2 mb-8 text-xs">
-          <span className="flex items-center gap-1.5 text-slate-400 mr-2">
+          <span className="flex items-center gap-1.5 text-ink-3 mr-2">
             <Clock className="h-3.5 w-3.5" />
             {post.readingMinutes} min read
           </span>
           {post.tags.map((tag) => (
-            <span key={tag} className="rounded-full border border-white/15 bg-white/5 px-2.5 py-0.5 text-slate-300">
+            <span key={tag} className="rounded-full border border-line-strong bg-white px-2.5 py-0.5 text-ink-2">
               #{tag}
             </span>
           ))}

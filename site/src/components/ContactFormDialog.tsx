@@ -113,7 +113,7 @@ export const ContactFormDialog = ({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -133,38 +133,38 @@ export const ContactFormDialog = ({
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 z-10"
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-paper-2 hover:bg-paper-3 flex items-center justify-center text-ink-2 z-10"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="p-6 md:p-8">
               <div className="mb-6">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                <h3 className="text-2xl md:text-3xl font-bold text-ink">
                   {title}
                 </h3>
-                <p className="text-gray-600 mt-1">{subtitle}</p>
+                <p className="text-ink-2 mt-1">{subtitle}</p>
               </div>
 
               <div className="flex flex-wrap gap-4 mb-6 text-sm">
                 <a
                   href="mailto:info@ifleon.com"
-                  className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
+                  className="inline-flex items-center gap-2 text-ink-2 hover:text-brand-700"
                 >
                   <Mail className="h-4 w-4" /> info@ifleon.com
                 </a>
-                <span className="inline-flex items-center gap-2 text-gray-700">
+                <span className="inline-flex items-center gap-2 text-ink-2">
                   <MapPin className="h-4 w-4" /> Nellore, India
                 </span>
               </div>
 
               {isSubmitted ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-14 w-14 text-green-500 mx-auto mb-3" />
-                  <h4 className="text-xl font-bold text-gray-900 mb-1">
+                  <CheckCircle className="h-14 w-14 text-brand-700 mx-auto mb-3" />
+                  <h4 className="text-xl font-bold text-ink mb-1">
                     Message Sent
                   </h4>
-                  <p className="text-gray-600">
+                  <p className="text-ink-2">
                     Thanks — we&apos;ll respond within 24 hours.
                   </p>
                 </div>
@@ -258,7 +258,7 @@ export const ContactFormDialog = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-lg"
+                    className="w-full bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-700 hover:to-brand-500 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 shadow-lg"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                     <Send className="h-5 w-5" />

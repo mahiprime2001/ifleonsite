@@ -54,7 +54,7 @@ const MetricCard = ({ value, label, suffix, icon: Icon, accent }: MetricProps) =
       viewport={{ once: true }}
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 200, damping: 22 }}
-      className="relative bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 hover:bg-white/10 hover:shadow-2xl transition-all text-center border border-white/10 hover:border-emerald-400/40 overflow-hidden"
+      className="relative bg-white backdrop-blur-md rounded-2xl p-6 md:p-8 hover:bg-paper-2 hover:shadow-2xl transition-all text-center border border-line hover:border-brand-600/40 overflow-hidden"
     >
       <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accent}`} />
       <div className="relative">
@@ -65,18 +65,18 @@ const MetricCard = ({ value, label, suffix, icon: Icon, accent }: MetricProps) =
           <Icon className="h-7 w-7 text-white" />
         </motion.div>
 
-        <div className="flex items-end justify-center gap-1 text-white">
-          <span ref={numRef} className="text-4xl md:text-5xl font-black">
+        <div className="flex items-end justify-center gap-1 text-ink">
+          <span ref={numRef} className="text-4xl md:text-5xl font-semibold">
             0
           </span>
           {suffix && (
-            <span className="text-2xl md:text-3xl font-black text-slate-200 mb-1">
+            <span className="text-2xl md:text-3xl font-semibold text-ink mb-1">
               {suffix}
             </span>
           )}
         </div>
 
-        <p className="mt-2 text-slate-300 font-medium text-sm md:text-base">{label}</p>
+        <p className="mt-2 text-ink-2 font-medium text-sm md:text-base">{label}</p>
       </div>
     </motion.div>
   );
@@ -114,21 +114,21 @@ export const Metrics = () => {
   const headline = "Impact That Speaks for Itself";
 
   return (
-    <section className="relative py-20 md:py-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden">
+    <section className="relative py-20 md:py-24 bg-gradient-to-b from-paper via-paper-2 to-paper text-white overflow-hidden">
       <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
       <div className="absolute inset-0 iso-grid-bg opacity-15 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
           <ScrollReveal direction="up">
-            <p className="text-sm font-bold text-emerald-400 tracking-[0.3em] uppercase mb-3">
+            <p className="text-sm font-bold text-brand-700 tracking-[0.3em] uppercase mb-3">
               By the Numbers
             </p>
           </ScrollReveal>
 
           <h2
             ref={headRef}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-ink mb-4 leading-tight"
             aria-label={headline}
           >
             {headline.split("").map((ch, i) => (
@@ -144,7 +144,7 @@ export const Metrics = () => {
           </h2>
 
           <ScrollReveal direction="up" delay={0.1}>
-            <p className="text-base md:text-xl text-slate-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-ink-2 max-w-3xl mx-auto">
               Measurable outcomes from real-world projects across AI, DevOps,
               cloud, and cybersecurity.
             </p>
@@ -152,20 +152,20 @@ export const Metrics = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} accent="from-blue-500 to-cyan-500" />
-          <MetricCard value={6} label="Industries Served" icon={Layers} accent="from-purple-500 to-pink-500" />
-          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} accent="from-emerald-500 to-teal-500" />
-          <MetricCard value={99} suffix="%" label="Security-First Approach" icon={ShieldCheck} accent="from-amber-500 to-orange-500" />
+          <MetricCard value={25} label="Projects Delivered" icon={Briefcase} accent="from-brand-700 to-brand-500" />
+          <MetricCard value={6} label="Industries Served" icon={Layers} accent="from-brand-700 to-brand-500" />
+          <MetricCard value={50} suffix="+" label="Clients & Individuals" icon={Users} accent="from-brand-700 to-brand-500" />
+          <MetricCard value={99} suffix="%" label="Security-First Approach" icon={ShieldCheck} accent="from-brand-700 to-brand-500" />
         </div>
 
         <ScrollReveal direction="up">
           <div className="mt-12 md:mt-16 text-center">
-            <p className="text-slate-300 mb-4 text-base md:text-lg">
+            <p className="text-ink-2 mb-4 text-base md:text-lg">
               Want to be part of these numbers?
             </p>
             <a
               href="#contact"
-              className="shine-on-hover inline-block bg-gradient-to-r from-blue-600 to-emerald-500 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+              className="shine-on-hover inline-block bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold transition-all"
             >
               Start a Conversation
             </a>

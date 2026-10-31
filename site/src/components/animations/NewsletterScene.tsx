@@ -225,8 +225,8 @@ export const NewsletterScene = ({ className }: Props) => {
     >
       {/* mesh aura backdrop */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
-      <div className="absolute inset-[18%] rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
-      <div className="absolute inset-[32%] rounded-full bg-blue-500/15 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[18%] rounded-full bg-brand-50 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[32%] rounded-full bg-brand-50 blur-3xl pointer-events-none" />
 
       <motion.div
         className="relative w-full h-full"
@@ -239,12 +239,12 @@ export const NewsletterScene = ({ className }: Props) => {
       >
         {/* Outer rotating rings */}
         <motion.div
-          className="absolute inset-[5%] rounded-full border border-white/10 border-dashed pointer-events-none"
+          className="absolute inset-[5%] rounded-full border border-line border-dashed pointer-events-none"
           animate={{ rotate: 360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[12%] rounded-full border border-emerald-400/15 pointer-events-none"
+          className="absolute inset-[12%] rounded-full border border-brand-600/15 pointer-events-none"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
@@ -255,8 +255,8 @@ export const NewsletterScene = ({ className }: Props) => {
             <span
               key={i}
               data-ripple
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-emerald-400/40"
-              style={{ filter: "drop-shadow(0 0 10px rgba(52,211,153,0.4))" }}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-brand-600/40"
+              style={{ filter: "drop-shadow(0 0 10px rgba(46,122,85,0.4))" }}
             />
           ))}
         </div>
@@ -278,7 +278,7 @@ export const NewsletterScene = ({ className }: Props) => {
           <path
             d="M -8 80 Q 25 30 50 50 Q 75 70 108 20"
             fill="none"
-            stroke="#22d3ee"
+            stroke="#84B699"
             strokeWidth="0.4"
             strokeDasharray="1.5 2"
             opacity="0.35"
@@ -288,12 +288,12 @@ export const NewsletterScene = ({ className }: Props) => {
             <polygon
               points="-3,-1.6 4,0 -3,1.6 -1.4,0"
               fill="#fff"
-              stroke="#22d3ee"
+              stroke="#84B699"
               strokeWidth="0.3"
               vectorEffect="non-scaling-stroke"
-              style={{ filter: "drop-shadow(0 0 4px rgba(34,211,238,0.8))" }}
+              style={{ filter: "drop-shadow(0 0 4px rgba(132,182,153,0.8))" }}
             />
-            <polygon points="-3,-1.6 -1.4,0 -3,1.6" fill="#cbd5e1" />
+            <polygon points="-3,-1.6 -1.4,0 -3,1.6" fill="#D4CCBE" />
           </g>
         </svg>
 
@@ -309,26 +309,26 @@ export const NewsletterScene = ({ className }: Props) => {
             className="absolute inset-[-40%] rounded-full pointer-events-none"
             style={{
               background:
-                "radial-gradient(circle, rgba(52,211,153,0.55) 0%, rgba(34,211,238,0.3) 40%, transparent 70%)",
+                "radial-gradient(circle, rgba(46,122,85,0.55) 0%, rgba(132,182,153,0.3) 40%, transparent 70%)",
               transformOrigin: "center",
             }}
           />
 
           <div data-envelope className="relative">
             {/* envelope body */}
-            <div className="relative w-44 h-28 md:w-52 md:h-32 rounded-2xl bg-gradient-to-br from-blue-500 via-emerald-500 to-cyan-400 shadow-[0_30px_60px_-15px_rgba(34,211,238,0.6)] overflow-visible border border-white/30">
+            <div className="relative w-44 h-28 md:w-52 md:h-32 rounded-2xl bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 shadow-[0_30px_60px_-15px_rgba(132,182,153,0.6)] overflow-visible border border-ink/20">
               {/* shine */}
-              <div className="absolute inset-x-2 top-2 h-3 rounded-full bg-white/30 blur-md" />
+              <div className="absolute inset-x-2 top-2 h-3 rounded-full bg-paper-3 blur-md" />
 
               {/* inner letter peeking */}
               <div
                 data-letter
-                className="absolute left-3 right-3 top-3 h-16 md:h-20 rounded-lg bg-white shadow-md flex flex-col gap-1.5 p-3 border border-white/40"
+                className="absolute left-3 right-3 top-3 h-16 md:h-20 rounded-lg bg-white shadow-md flex flex-col gap-1.5 p-3 border border-ink/20"
               >
-                <div className="h-1.5 rounded-full bg-slate-300" style={{ width: "70%" }} />
-                <div className="h-1 rounded-full bg-slate-200" style={{ width: "55%" }} />
-                <div className="h-1 rounded-full bg-slate-200" style={{ width: "65%" }} />
-                <div className="h-1 rounded-full bg-emerald-400" style={{ width: "30%" }} />
+                <div className="h-1.5 rounded-full bg-paper-3" style={{ width: "70%" }} />
+                <div className="h-1 rounded-full bg-paper-3" style={{ width: "55%" }} />
+                <div className="h-1 rounded-full bg-paper-3" style={{ width: "65%" }} />
+                <div className="h-1 rounded-full bg-brand-500" style={{ width: "30%" }} />
               </div>
 
               {/* envelope flap (back triangle silhouette) */}
@@ -343,7 +343,7 @@ export const NewsletterScene = ({ className }: Props) => {
 
               {/* @ icon center */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 flex items-center justify-center shadow-lg">
-                <Mail className="h-5 w-5 text-blue-600" />
+                <Mail className="h-5 w-5 text-brand-700" />
               </div>
             </div>
           </div>
@@ -352,27 +352,27 @@ export const NewsletterScene = ({ className }: Props) => {
         {/* === LEFT TOP CARD: bell + new updates === */}
         <div
           data-side
-          className="absolute left-[2%] top-[6%] w-[36%] rounded-2xl bg-slate-900/90 border border-white/15 backdrop-blur-md shadow-xl p-3"
+          className="absolute left-[2%] top-[6%] w-[36%] rounded-2xl bg-white/90 border border-line-strong backdrop-blur-md shadow-xl p-3"
           style={{ transform: "translateZ(50px)" }}
         >
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center">
+            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center">
               <span data-bell style={{ display: "inline-flex", transformOrigin: "50% 0%" }}>
                 <Bell className="h-3.5 w-3.5 text-white" />
               </span>
             </span>
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-200">
+              <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-ink">
                 New Updates
               </div>
-              <div className="text-[9px] text-slate-400">Weekly digest</div>
+              <div className="text-[9px] text-ink-3">Weekly digest</div>
             </div>
-            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-brand-500" />
           </div>
           {[
-            { c: "#34d399", w: "85%" },
-            { c: "#22d3ee", w: "65%" },
-            { c: "#a78bfa", w: "75%" },
+            { c: "#2E7A55", w: "85%" },
+            { c: "#84B699", w: "65%" },
+            { c: "#C9B48A", w: "75%" },
           ].map((row, i) => (
             <div
               key={i}
@@ -388,30 +388,30 @@ export const NewsletterScene = ({ className }: Props) => {
         {/* === RIGHT BOTTOM CARD: inbox count === */}
         <div
           data-side
-          className="absolute right-[2%] bottom-[6%] w-[36%] rounded-2xl bg-slate-900/90 border border-white/15 backdrop-blur-md shadow-xl p-3"
+          className="absolute right-[2%] bottom-[6%] w-[36%] rounded-2xl bg-white/90 border border-line-strong backdrop-blur-md shadow-xl p-3"
           style={{ transform: "translateZ(50px)" }}
         >
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
+            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center">
               <Inbox className="h-3.5 w-3.5 text-white" />
             </span>
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-200">
+              <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-ink">
                 Subscribers
               </div>
-              <div className="text-[9px] text-slate-400">Live count</div>
+              <div className="text-[9px] text-ink-3">Live count</div>
             </div>
-            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span data-pulse className="w-1.5 h-1.5 rounded-full bg-brand-500" />
           </div>
           <div className="flex items-baseline gap-1">
-            <span data-count className="text-2xl font-black bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">
+            <span data-count className="text-2xl font-semibold bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent">
               1284
             </span>
-            <span className="text-xs font-semibold text-emerald-300">+1</span>
+            <span className="text-xs font-semibold text-brand-700">+1</span>
           </div>
-          <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div className="mt-2 h-1.5 rounded-full bg-paper-2 overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
+              className="h-full rounded-full bg-gradient-to-r from-brand-700 to-brand-500"
               style={{ width: "78%" }}
             />
           </div>
@@ -420,26 +420,26 @@ export const NewsletterScene = ({ className }: Props) => {
         {/* === SIDE CHIP: send icon === */}
         <div
           data-side
-          className="absolute right-[6%] top-[14%] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900/90 border border-emerald-400/40 backdrop-blur-md shadow-xl"
-          style={{ transform: "translateZ(60px)", boxShadow: "0 10px 25px -10px rgba(52,211,153,0.7)" }}
+          className="absolute right-[6%] top-[14%] flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/90 border border-brand-600/40 backdrop-blur-md shadow-xl"
+          style={{ transform: "translateZ(60px)", boxShadow: "0 10px 25px -10px rgba(46,122,85,0.7)" }}
         >
-          <span className="w-6 h-6 rounded-md flex items-center justify-center bg-gradient-to-br from-emerald-400 to-cyan-400">
+          <span className="w-6 h-6 rounded-md flex items-center justify-center bg-gradient-to-br from-brand-700 to-brand-500">
             <Send className="h-3 w-3 text-white" />
           </span>
-          <span className="text-[10px] font-bold text-slate-200">Sent</span>
+          <span className="text-[10px] font-bold text-ink">Sent</span>
         </div>
 
         {/* === Floating tags === */}
         {[
-          { x: "5%", y: "40%", t: "@", c: "#34d399" },
-          { x: "92%", y: "44%", t: "✉", c: "#60a5fa" },
-          { x: "88%", y: "78%", t: "@", c: "#a78bfa" },
-          { x: "8%", y: "76%", t: "✉", c: "#22d3ee" },
+          { x: "5%", y: "40%", t: "@", c: "#2E7A55" },
+          { x: "92%", y: "44%", t: "✉", c: "#45423C" },
+          { x: "88%", y: "78%", t: "@", c: "#C9B48A" },
+          { x: "8%", y: "76%", t: "✉", c: "#84B699" },
         ].map((p, i) => (
           <span
             key={i}
             data-tag
-            className="absolute font-mono font-extrabold text-xl pointer-events-none select-none"
+            className="absolute font-mono font-semibold text-xl pointer-events-none select-none"
             style={{
               left: p.x,
               top: p.y,

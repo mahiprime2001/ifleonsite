@@ -125,12 +125,12 @@ export const AboutScene = ({ className }: Props) => {
 
   // Chip positions on a hex layout around the hub
   const chips = [
-    { angle: 0,                     Icon: Brain,      label: "AI",     c: "#a78bfa" },
-    { angle: Math.PI / 3,           Icon: GitBranch,  label: "DevOps", c: "#34d399" },
-    { angle: (2 * Math.PI) / 3,     Icon: Cloud,      label: "Cloud",  c: "#22d3ee" },
-    { angle: Math.PI,               Icon: ShieldCheck,label: "Sec",    c: "#fbbf24" },
-    { angle: (4 * Math.PI) / 3,     Icon: Database,   label: "Data",   c: "#f472b6" },
-    { angle: (5 * Math.PI) / 3,     Icon: Bot,        label: "Auto",   c: "#60a5fa" },
+    { angle: 0,                     Icon: Brain,      label: "AI",     c: "#C9B48A" },
+    { angle: Math.PI / 3,           Icon: GitBranch,  label: "DevOps", c: "#2E7A55" },
+    { angle: (2 * Math.PI) / 3,     Icon: Cloud,      label: "Cloud",  c: "#84B699" },
+    { angle: Math.PI,               Icon: ShieldCheck,label: "Sec",    c: "#C9A24A" },
+    { angle: (4 * Math.PI) / 3,     Icon: Database,   label: "Data",   c: "#B5714E" },
+    { angle: (5 * Math.PI) / 3,     Icon: Bot,        label: "Auto",   c: "#45423C" },
   ];
 
   // Compute %-based positions on an ellipse. Rounded so the server and the browser print the same
@@ -151,7 +151,7 @@ export const AboutScene = ({ className }: Props) => {
     >
       {/* mesh aura */}
       <div className="absolute inset-0 mesh-bg blur-2xl opacity-60 pointer-events-none" />
-      <div className="absolute inset-[20%] rounded-full bg-emerald-500/15 blur-3xl pointer-events-none" />
+      <div className="absolute inset-[20%] rounded-full bg-brand-50 blur-3xl pointer-events-none" />
 
       <motion.div
         className="relative w-full h-full"
@@ -164,12 +164,12 @@ export const AboutScene = ({ className }: Props) => {
       >
         {/* outer rotating rings */}
         <motion.div
-          className="absolute inset-[4%] rounded-full border border-white/10 border-dashed pointer-events-none"
+          className="absolute inset-[4%] rounded-full border border-line border-dashed pointer-events-none"
           animate={{ rotate: 360 }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
         />
         <motion.div
-          className="absolute inset-[12%] rounded-full border border-emerald-400/15 pointer-events-none"
+          className="absolute inset-[12%] rounded-full border border-brand-600/15 pointer-events-none"
           animate={{ rotate: -360 }}
           transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
         />
@@ -227,16 +227,16 @@ export const AboutScene = ({ className }: Props) => {
             className="absolute inset-[-30%] rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(52,211,153,0.6) 0%, rgba(34,211,238,0.3) 40%, transparent 70%)",
+                "radial-gradient(circle, rgba(46,122,85,0.28) 0%, rgba(132,182,153,0.12) 40%, transparent 70%)",
               transformOrigin: "center",
             }}
           />
-          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 shadow-[0_20px_60px_-10px_rgba(34,211,238,0.6)] flex items-center justify-center border border-white/30">
-            <span className="text-white font-black text-xl md:text-2xl tracking-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-              IFLEON
+          <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-3xl bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 shadow-[0_20px_50px_-16px_rgba(23,88,59,0.55)] flex items-center justify-center border border-brand-800/40">
+            <span className="font-serif text-paper font-semibold text-2xl md:text-3xl tracking-[-0.03em]">
+              ifleon
             </span>
             {/* shine */}
-            <div className="absolute inset-x-2 top-2 h-3 rounded-full bg-white/30 blur-md" />
+            <div className="absolute inset-x-3 top-2 h-3 rounded-full bg-white/20 blur-md" />
           </div>
         </div>
 
@@ -248,7 +248,7 @@ export const AboutScene = ({ className }: Props) => {
             <div
               key={i}
               data-chip
-              className="absolute flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 border backdrop-blur-md shadow-xl"
+              className="absolute flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/90 border backdrop-blur-md shadow-xl"
               style={{
                 left: `${p.x}%`,
                 top: `${p.y}%`,
@@ -265,7 +265,7 @@ export const AboutScene = ({ className }: Props) => {
               >
                 <Icon className="h-3 w-3 text-white" />
               </span>
-              <span className="text-[10px] font-bold text-slate-200">
+              <span className="text-[10px] font-bold text-ink">
                 {chip.label}
               </span>
               <span
@@ -280,24 +280,24 @@ export const AboutScene = ({ className }: Props) => {
         {/* === STATUS CARD (bottom-right) === */}
         <div
           data-chip
-          className="absolute right-[2%] bottom-[3%] w-[34%] h-[22%] rounded-2xl bg-slate-900/90 border border-white/15 backdrop-blur-md shadow-xl"
+          className="absolute right-[2%] bottom-[3%] w-[34%] h-[22%] rounded-2xl bg-white/90 border border-line-strong backdrop-blur-md shadow-xl"
           style={{ transform: "translateZ(50px)" }}
         >
-          <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/10">
-            <ShieldCheck className="h-3 w-3 text-emerald-400" />
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-200">
+          <div className="flex items-center gap-1.5 px-3 py-2 border-b border-line">
+            <ShieldCheck className="h-3 w-3 text-brand-700" />
+            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-ink">
               Status
             </span>
-            <span data-pulse className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span data-pulse className="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500" />
           </div>
           <div className="p-3 space-y-1.5">
             {[
-              { label: "Pipelines", v: "100%", c: "#34d399" },
-              { label: "Uptime",    v: "99.9%", c: "#22d3ee" },
-              { label: "Coverage",  v: "Pan-India", c: "#a78bfa" },
+              { label: "Pipelines", v: "100%", c: "#2E7A55" },
+              { label: "Uptime",    v: "99.9%", c: "#84B699" },
+              { label: "Coverage",  v: "Pan-India", c: "#C9B48A" },
             ].map((row, i) => (
               <div key={i} className="flex items-center justify-between">
-                <span className="text-[10px] text-slate-400">{row.label}</span>
+                <span className="text-[10px] text-ink-3">{row.label}</span>
                 <span className="text-[10px] font-bold" style={{ color: row.c }}>
                   {row.v}
                 </span>

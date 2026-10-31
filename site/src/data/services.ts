@@ -68,7 +68,7 @@ export const services: Service[] = [
       "API or dashboard integration into your stack",
       "Monitoring, drift detection, and retraining playbook",
     ],
-    color: "from-purple-500 to-pink-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "devops",
@@ -102,7 +102,7 @@ export const services: Service[] = [
       "Secret management, RBAC, and audit trails",
       "Runbooks + team onboarding so it stays maintainable",
     ],
-    color: "from-blue-500 to-cyan-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "cloud-migration",
@@ -136,7 +136,7 @@ export const services: Service[] = [
       "Phased migration with zero-downtime cutover",
       "Post-migration cost & performance optimization",
     ],
-    color: "from-cyan-500 to-blue-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "cybersecurity",
@@ -170,7 +170,7 @@ export const services: Service[] = [
       "SIEM / EDR setup, alert tuning, and IR runbooks",
       "Audit-ready documentation and evidence packs",
     ],
-    color: "from-red-500 to-orange-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "custom-development",
@@ -204,7 +204,7 @@ export const services: Service[] = [
       "QA, load testing, and CI/CD delivery",
       "Ongoing maintenance and feature iteration",
     ],
-    color: "from-green-500 to-teal-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "digital-transformation",
@@ -238,7 +238,7 @@ export const services: Service[] = [
       "Legacy system modernization, incrementally",
       "Change management and team training",
     ],
-    color: "from-indigo-500 to-purple-500",
+    color: "from-brand-700 to-brand-500",
   },
 
   // ===== Individual Solutions =====
@@ -274,7 +274,7 @@ export const services: Service[] = [
       "Performance tuning, cleanup, and backups",
       "Remote or on-site support with clear handover",
     ],
-    color: "from-sky-500 to-blue-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "personal-security",
@@ -308,7 +308,7 @@ export const services: Service[] = [
       "Encrypted backups (local + cloud)",
       "Plain-language cyber awareness coaching",
     ],
-    color: "from-rose-500 to-red-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "smart-home",
@@ -342,7 +342,7 @@ export const services: Service[] = [
       "Alexa / Google / Siri integration",
       "Security camera + doorbell setup",
     ],
-    color: "from-teal-500 to-emerald-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "career-guidance",
@@ -376,7 +376,7 @@ export const services: Service[] = [
       "Hands-on project portfolio you can show off",
       "Mock interviews and resume / LinkedIn review",
     ],
-    color: "from-amber-500 to-yellow-500",
+    color: "from-brand-700 to-brand-500",
   },
 
   // ===== Specialty & Add-On Services =====
@@ -412,7 +412,7 @@ export const services: Service[] = [
       "Crash & analytics instrumentation",
       "Release pipeline with OTA updates",
     ],
-    color: "from-pink-500 to-rose-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "ui-ux",
@@ -446,7 +446,7 @@ export const services: Service[] = [
       "Clickable prototype for stakeholders",
       "Developer handoff with specs & tokens",
     ],
-    color: "from-fuchsia-500 to-pink-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "data-engineering",
@@ -480,7 +480,7 @@ export const services: Service[] = [
       "BI dashboards (Metabase / Looker / Power BI)",
       "Data quality alerts and runbook",
     ],
-    color: "from-amber-500 to-orange-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "seo-performance",
@@ -514,7 +514,7 @@ export const services: Service[] = [
       "Server-side rendering where it matters",
       "Before/after Lighthouse + analytics report",
     ],
-    color: "from-emerald-500 to-green-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "automation",
@@ -548,7 +548,7 @@ export const services: Service[] = [
       "Monitoring and failure alerts",
       "Documentation your non-technical team can own",
     ],
-    color: "from-yellow-500 to-amber-500",
+    color: "from-brand-700 to-brand-500",
   },
   {
     id: "ai-agents",
@@ -582,7 +582,7 @@ export const services: Service[] = [
       "Evaluation harness and guardrails",
       "Deployment with usage analytics",
     ],
-    color: "from-violet-500 to-indigo-500",
+    color: "from-brand-700 to-brand-500",
   },
 ];
 

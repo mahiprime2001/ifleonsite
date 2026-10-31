@@ -77,6 +77,22 @@ services:
         condition: service_completed_successfully
     mem_limit: 512m
 
+  # The public site (ifleon.com). Reads content from the dashboard over the Docker network.
+  site:
+    build:
+      context: ../site
+    image: ifleon-site
+    container_name: ifleon-site
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_BASE: http://dashboard:3000/api/public
+    ports:
+      - "127.0.0.1:${SITE_PORT:-3200}:3000"
+    depends_on:
+      dashboard:
+        condition: service_healthy
+    mem_limit: 384m
+
 volumes:
   db_data:
   uploads:

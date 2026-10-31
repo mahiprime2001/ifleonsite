@@ -182,7 +182,7 @@ export const Contact = () => {
                 <div className="mt-8 grid gap-x-6 sm:grid-cols-2">
                   <Field label="Your name" name="your-name" value={formData["your-name"]} onChange={handleChange} required autoComplete="name" />
                   <Field label="Email" name="your-email" type="email" value={formData["your-email"]} onChange={handleChange} required autoComplete="email" />
-                  <Field label="Phone" name="your-phone" type="tel" value={formData["your-phone"]} onChange={handleChange} required autoComplete="tel" />
+                  <Field label="Phone (optional)" name="your-phone" type="tel" value={formData["your-phone"]} onChange={handleChange} autoComplete="tel" />
                   <Field label="Company (optional)" name="your-company" value={formData["your-company"]} onChange={handleChange} autoComplete="organization" />
                 </div>
 

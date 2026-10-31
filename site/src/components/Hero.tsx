@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/lib/router";
-import { HeroVisual } from "./HeroVisual";
+import { HeroStack } from "./HeroStack";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -123,9 +123,9 @@ export const Hero = () => {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.15, ease: EASE }}
-            className="mx-auto mb-6 w-full max-w-[30rem] lg:mb-0 lg:max-w-[34rem]"
+            className="mx-auto -mb-10 mt-10 w-full max-w-[30rem] sm:mb-0 lg:mt-0 lg:max-w-[34rem]"
           >
-            <HeroVisual />
+            <HeroStack />
           </motion.div>
         </div>
 

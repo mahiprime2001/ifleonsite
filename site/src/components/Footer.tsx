@@ -5,6 +5,7 @@ import { ArrowUp, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/lib/router";
 import { businessServices } from "../data/services";
+import { CopyButton } from "./CopyButton";
 import { LogoMark } from "./Logo";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -114,9 +115,12 @@ export const Footer = () => {
 
           <FooterColumn title="Contact">
             <li>
-              <a href="mailto:info@ifleon.com" className="text-brand-100/80 transition-colors hover:text-white">
-                info@ifleon.com
-              </a>
+              <span className="inline-flex items-center gap-3">
+                <a href="mailto:info@ifleon.com" className="text-brand-100/80 transition-colors hover:text-white">
+                  info@ifleon.com
+                </a>
+                <CopyButton value="info@ifleon.com" label="Copy email" tone="dark" />
+              </span>
             </li>
             <li className="text-brand-100/80">Nellore, Andhra Pradesh, India</li>
           </FooterColumn>

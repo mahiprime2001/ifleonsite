@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Check } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sendContact } from "../lib/api";
+import { CopyButton } from "./CopyButton";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -97,7 +98,17 @@ export const Contact = () => {
 
           <dl className="mt-12 divide-y divide-line border-y border-line">
             {[
-              { label: "Email", value: <a href="mailto:info@ifleon.com" className="hover:text-brand-700">info@ifleon.com</a> },
+              {
+                label: "Email",
+                value: (
+                  <span className="inline-flex items-center gap-3">
+                    <a href="mailto:info@ifleon.com" className="hover:text-brand-700">
+                      info@ifleon.com
+                    </a>
+                    <CopyButton value="info@ifleon.com" label="Copy email" />
+                  </span>
+                ),
+              },
               { label: "Based in", value: "Nellore, Andhra Pradesh, India" },
               { label: "Reply time", value: "Within 24 hours" },
               { label: "First call", value: "Free, no commitment" },
@@ -156,7 +167,7 @@ export const Contact = () => {
                 />
 
                 <fieldset>
-                  <legend className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">I need help with</legend>
+                  <legend className="text-sm font-medium text-ink">What do you need help with?</legend>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {SERVICES.map((service) => {
                       const selected = formData["your-service"] === service;
@@ -180,14 +191,16 @@ export const Contact = () => {
                 </fieldset>
 
                 <div className="mt-8 grid gap-x-6 sm:grid-cols-2">
-                  <Field label="Your name" name="your-name" value={formData["your-name"]} onChange={handleChange} required autoComplete="name" />
-                  <Field label="Email" name="your-email" type="email" value={formData["your-email"]} onChange={handleChange} required autoComplete="email" />
-                  <Field label="Phone (optional)" name="your-phone" type="tel" value={formData["your-phone"]} onChange={handleChange} autoComplete="tel" />
-                  <Field label="Company (optional)" name="your-company" value={formData["your-company"]} onChange={handleChange} autoComplete="organization" />
+                  <Field label="Your name" placeholder="Full name" name="your-name" value={formData["your-name"]} onChange={handleChange} required autoComplete="name" />
+                  <Field label="Email" placeholder="you@company.com" name="your-email" type="email" value={formData["your-email"]} onChange={handleChange} required autoComplete="email" />
+                  <Field label="Phone (optional)" placeholder="+91" name="your-phone" type="tel" value={formData["your-phone"]} onChange={handleChange} autoComplete="tel" />
+                  <Field label="Company (optional)" placeholder="Company or organisation" name="your-company" value={formData["your-company"]} onChange={handleChange} autoComplete="organization" />
                 </div>
 
                 <label className="mt-2 block">
-                  <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">What are you working on?</span>
+                  <span className="text-sm font-medium text-ink">
+                    What are you working on? <span className="text-brand-700">*</span>
+                  </span>
                   <textarea
                     ref={messageRef}
                     name="your-message"
@@ -195,7 +208,7 @@ export const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="mt-2 w-full resize-none border-0 border-b border-line-strong bg-transparent px-0 py-2 text-lg text-ink placeholder:text-ink-4 focus:border-brand-700 focus:outline-none focus:ring-0"
+                    className="mt-2 w-full rounded-xl border border-line-strong bg-paper/60 px-4 py-3 text-base text-ink placeholder:text-ink-4 transition focus:border-brand-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-600/15 resize-none"
                     placeholder="A few lines about the project, the timeline and where you are stuck."
                   />
                 </label>
@@ -226,14 +239,14 @@ function Field({
   ...input
 }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <label className="mb-6 block">
-      <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">
+    <label className="mb-5 block">
+      <span className="text-sm font-medium text-ink">
         {label}
         {input.required && <span className="text-brand-700"> *</span>}
       </span>
       <input
         {...input}
-        className="mt-2 w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-lg text-ink placeholder:text-ink-4 focus:border-brand-700 focus:outline-none focus:ring-0"
+        className="mt-2 w-full rounded-xl border border-line-strong bg-paper/60 px-4 py-3 text-base text-ink placeholder:text-ink-4 transition focus:border-brand-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-600/15"
       />
     </label>
   );

@@ -152,7 +152,9 @@ export const UndrawHero = ({ className }: Props) => (
             rx="1.5"
             fill={l.c}
             opacity={l.o ?? 0.85}
-            animate={{ width: [l.w, l.w * 0.7, l.w] }}
+            // Scale from the left edge: animating the SVG width attribute logs errors in framer-motion.
+            style={{ transformBox: "fill-box", transformOrigin: "left center" }}
+            animate={{ scaleX: [1, 0.7, 1] }}
             transition={{ duration: 2.6 + (i % 3) * 0.3, repeat: Infinity, delay: i * 0.08 }}
           />
         ))}
@@ -193,7 +195,9 @@ export const UndrawHero = ({ className }: Props) => (
           rx="2"
           fill="#10b981"
           opacity="0.85"
-          animate={{ height: [b.h, b.h - 8, b.h] }}
+          // Grow from the bottom edge (see the code lines above for why not the height attribute).
+          style={{ transformBox: "fill-box", transformOrigin: "center bottom" }}
+          animate={{ scaleY: [1, (b.h - 8) / b.h, 1] }}
           transition={{ duration: 2 + i * 0.2, repeat: Infinity, delay: i * 0.15 }}
         />
       ))}

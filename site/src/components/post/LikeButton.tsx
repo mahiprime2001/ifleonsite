@@ -11,7 +11,7 @@ interface LikeButtonProps {
 export const LikeButton = ({ onClick, liked, likes }: LikeButtonProps) => (
   <button
     onClick={onClick}
-    className="flex items-center space-x-2 text-gray-600"
+    className="flex items-center space-x-2 text-slate-400"
   >
     <Heart
       className={`h-5 w-5 ${liked ? "fill-red-500 text-red-500" : ""}`}

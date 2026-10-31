@@ -95,7 +95,9 @@ export const IsoProcess = ({ className, step = 1 }: Props) => {
                 rx="1"
                 fill={accent}
                 opacity="0.85"
-                animate={{ width: [50 - (i % 2 ? 14 : 0), 30 - (i % 2 ? 8 : 0), 50 - (i % 2 ? 14 : 0)] }}
+                // Scale from the left edge: animating the SVG width attribute logs errors in framer-motion.
+                style={{ transformBox: "fill-box", transformOrigin: "left center" }}
+                animate={{ scaleX: [1, (30 - (i % 2 ? 8 : 0)) / (50 - (i % 2 ? 14 : 0)), 1] }}
                 transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.2 }}
               />
             ))}

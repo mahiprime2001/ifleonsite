@@ -97,7 +97,7 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
             <select
               value={selectedTag}
               onChange={(e) => setSelectedTag(e.target.value)}
-              className="input-dark cursor-pointer min-w-[160px]"
+              className="input-dark cursor-pointer md:w-44 md:flex-none"
             >
               <option value="" className="bg-slate-900">All Tags</option>
               {allTags.map((tag) => (
@@ -109,7 +109,7 @@ export const Blog = ({ posts }: { posts: PostSummary[] }) => {
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'most-liked')}
-              className="input-dark cursor-pointer min-w-[160px]"
+              className="input-dark cursor-pointer md:w-44 md:flex-none"
             >
               <option value="newest" className="bg-slate-900">Newest</option>
               <option value="oldest" className="bg-slate-900">Oldest</option>

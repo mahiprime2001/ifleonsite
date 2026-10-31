@@ -23,15 +23,26 @@ const COMPANY = [
  * columns, and the oversized wordmark that rises into place as the page ends.
  */
 export const Footer = () => {
-  const wordRef = useRef<HTMLDivElement | null>(null);
+  const wordRef = useRef<HTMLElement | null>(null);
+  // Rises from below while the footer scrolls in, settling with its base just past the bottom edge.
   const { scrollYProgress } = useScroll({ target: wordRef, offset: ["start end", "end end"] });
-  const wordY = useTransform(scrollYProgress, [0, 1], ["45%", "0%"]);
+  const wordY = useTransform(scrollYProgress, [0, 1], ["60%", "16%"]);
 
   return (
-    <footer className="relative overflow-hidden bg-brand-950 text-brand-100">
+    <footer ref={wordRef} className="relative overflow-hidden bg-brand-950 text-brand-100">
       <div aria-hidden className="absolute inset-0 opacity-[0.07] iso-grid-bg invert" />
 
-      <div className="shell relative pt-20 md:pt-28">
+      {/* Oversized wordmark behind the links, rising as the page ends */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden">
+        <motion.p
+          style={{ y: wordY }}
+          className="no-select text-center font-serif text-[27vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.06]"
+        >
+          ifleon
+        </motion.p>
+      </div>
+
+      <div className="shell relative z-10 pt-20 md:pt-28">
         {/* Closing call to action */}
         <motion.div
           className="flex flex-col gap-8 border-b border-white/10 pb-16 md:flex-row md:items-end md:justify-between"
@@ -126,16 +137,6 @@ export const Footer = () => {
             Back to top
           </button>
         </div>
-      </div>
-
-      {/* Oversized wordmark, rising as the page ends */}
-      <div ref={wordRef} aria-hidden className="relative -mb-[0.22em] overflow-hidden">
-        <motion.p
-          style={{ y: wordY }}
-          className="no-select text-center font-serif text-[27vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.06]"
-        >
-          ifleon
-        </motion.p>
       </div>
     </footer>
   );

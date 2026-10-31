@@ -1,20 +1,15 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/lib/router";
-import { UndrawHero } from "./illustrations/UndrawHero";
+import { HeroVisual } from "./HeroVisual";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* Headline words; the italic one is set in the accent colour. */
-const HEADLINE: Array<{ text: string; accent?: boolean }> = [
-  { text: "Infinite" },
-  { text: "possibilities," },
-  { text: "logical", accent: true },
-  { text: "solutions." },
-];
+/* The last word of the headline cycles through these. */
+const WORDS = ["running.", "scaling.", "secure.", "ahead."];
 
 const FACTS = [
   { value: "2022", label: "Founded in Nellore" },
@@ -25,111 +20,112 @@ const FACTS = [
 
 export const Hero = () => {
   const ref = useRef<HTMLElement | null>(null);
+  const reduce = useReducedMotion();
+  const [wordIndex, setWordIndex] = useState(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const artY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const artRotate = useTransform(scrollYProgress, [0, 1], [0, -3]);
+  const visualY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+
+  useEffect(() => {
+    if (reduce) return;
+    const timer = setInterval(() => setWordIndex((i) => (i + 1) % WORDS.length), 2600);
+    return () => clearInterval(timer);
+  }, [reduce]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden pb-16 pt-28 md:pb-24 md:pt-36">
-      {/* Ambient light + ruled paper */}
+    <section ref={ref} className="relative overflow-hidden pb-14 pt-28 md:pb-20 md:pt-36">
       <div aria-hidden className="absolute inset-0 mesh-bg" />
       <div
         aria-hidden
-        className="absolute inset-0 iso-grid-bg opacity-60 [mask-image:radial-gradient(70%_60%_at_70%_30%,black,transparent)]"
+        className="absolute inset-0 iso-grid-bg opacity-50 [mask-image:radial-gradient(65%_55%_at_75%_35%,black,transparent)]"
       />
 
       <div className="shell relative">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
-          <motion.div style={{ y: copyY }}>
+        <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8">
+          <div>
             <motion.p
               className="eyebrow"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE }}
             >
-              AI · DevOps · Cloud · Security
+              Infinite possibilities, logical solutions
             </motion.p>
 
-            <h1 className="mt-6 font-serif text-[2.9rem] font-normal leading-[1.02] tracking-tightest text-ink sm:text-6xl lg:text-[5.1rem]">
-              {HEADLINE.map((word, i) => (
-                <span key={word.text} className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+            <h1 className="mt-6 font-serif text-[2.7rem] font-normal leading-[1.03] tracking-tightest text-ink sm:text-6xl lg:text-[4.6rem]">
+              <motion.span
+                className="block"
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+              >
+                Software that keeps your business
+              </motion.span>
+              {/* Every word occupies the same grid cell, so the line never changes height or wraps differently. */}
+              <span className="relative inline-grid overflow-hidden pb-[0.1em] align-bottom">
+                {WORDS.map((word) => (
+                  <span key={word} aria-hidden className="invisible col-start-1 row-start-1 italic">
+                    {word}
+                  </span>
+                ))}
+                <AnimatePresence mode="popLayout" initial={false}>
                   <motion.span
-                    className={`inline-block ${word.accent ? "italic text-brand-700" : ""}`}
-                    initial={{ y: "110%" }}
-                    animate={{ y: "0%" }}
-                    transition={{ duration: 0.9, delay: 0.15 + i * 0.09, ease: EASE }}
+                    key={WORDS[wordIndex]}
+                    className="col-start-1 row-start-1 italic text-brand-700"
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.6, ease: EASE }}
                   >
-                    {word.text}
+                    {WORDS[wordIndex]}
                   </motion.span>
-                  {i < HEADLINE.length - 1 && " "}
-                </span>
-              ))}
+                </AnimatePresence>
+              </span>
             </h1>
 
             <motion.p
               className="mt-7 max-w-[34rem] text-lg leading-relaxed text-ink-2 md:text-xl"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55, ease: EASE }}
+              transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
             >
-              We build AI-powered software, automate delivery pipelines and run secure cloud systems for
-              businesses across India, from first commit to the 3&nbsp;a.m. pager.
+              IFLEON builds AI-powered software, automates delivery pipelines and runs secure cloud systems for
+              businesses across India. One founder-led team, from first commit to production.
             </motion.p>
 
             <motion.div
-              className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center"
+              className="mt-9 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.7, ease: EASE }}
+              transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
             >
               <Link to="/#contact" className="btn-primary shine-on-hover group !px-7 !py-3.5 text-[0.95rem]">
                 Book a free consultation
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
-              <Link to="/services" className="link-arrow group text-[0.95rem]">
+              <Link to="/services" className="link-arrow group justify-center text-[0.95rem] sm:justify-start">
                 See what we build
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
-          </motion.div>
 
-          {/* Illustration on a paper card, with floating status tiles */}
+            <motion.p
+              className="mt-6 text-sm text-ink-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.7 }}
+            >
+              Free first consultation · Reply within 24 hours
+            </motion.p>
+          </div>
+
           <motion.div
-            className="relative mx-auto w-full max-w-[560px]"
-            style={{ y: artY, rotate: artRotate }}
-            initial={{ opacity: 0, y: 40, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.1, delay: 0.25, ease: EASE }}
+            style={{ y: visualY }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.15, ease: EASE }}
+            className="mx-auto mb-6 w-full max-w-[30rem] lg:mb-0 lg:max-w-[34rem]"
           >
-            <div className="surface relative aspect-square overflow-hidden rounded-[2rem] p-6 shadow-lift">
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-br from-paper-2 via-white to-brand-50" />
-              <UndrawHero className="relative h-full w-full" />
-            </div>
-
-            <motion.div
-              className="surface no-select absolute -left-4 bottom-24 px-4 py-3 sm:-left-8"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <p className="flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-brand-700">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-600" />
-                </span>
-                Live
-              </p>
-              <p className="mt-1 text-sm font-semibold text-ink">Pipeline deployed</p>
-            </motion.div>
-
-            <motion.div
-              className="surface no-select absolute -right-3 top-[38%] px-4 py-3 sm:-right-6"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-            >
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-ink-3">Uptime target</p>
-              <p className="mt-1 font-serif text-2xl text-ink">99.9%</p>
-            </motion.div>
+            <HeroVisual />
           </motion.div>
         </div>
 
@@ -138,15 +134,15 @@ export const Hero = () => {
           className="mt-16 grid grid-cols-2 border-t border-line md:mt-24 md:grid-cols-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
         >
           {FACTS.map((fact, i) => (
             <div
               key={fact.label}
-              className={`py-6 pr-6 ${i > 0 ? "md:border-l md:border-line md:pl-6" : ""} ${i % 2 === 1 ? "border-l border-line pl-6 md:pl-6" : ""}`}
+              className={`py-6 pr-4 ${i % 2 === 1 ? "border-l border-line pl-5" : ""} ${i > 0 ? "md:border-l md:border-line md:pl-6" : ""} ${i >= 2 ? "border-t border-line md:border-t-0" : ""}`}
             >
-              <dt className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-ink-3">{fact.label}</dt>
-              <dd className="mt-2 font-serif text-2xl text-ink md:text-[1.7rem]">{fact.value}</dd>
+              <dt className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-3">{fact.label}</dt>
+              <dd className="mt-2 font-serif text-[1.45rem] text-ink md:text-[1.7rem]">{fact.value}</dd>
             </div>
           ))}
         </motion.dl>

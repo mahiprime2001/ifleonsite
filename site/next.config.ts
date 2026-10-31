@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // This app lives inside the Vite site's repo; keep Next from picking up the parent's config files.
   turbopack: { root: path.join(__dirname) },
+  // `npm run dev` only: let phones/laptops on the home network load the dev server (live reload).
+  allowedDevOrigins: ["192.168.29.97", "192.168.*.*"],
   // A new id per build, so tabs open from an older deploy reload instead of breaking.
   deploymentId: process.env.NEXT_DEPLOYMENT_ID || `build-${Date.now().toString(36)}`,
   async redirects() {

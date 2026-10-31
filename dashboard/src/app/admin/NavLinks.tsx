@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin/testimonials", label: "Testimonials" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/api-keys", label: "API keys" },
+  { href: "/admin/import", label: "Import" },
   { href: "/admin/trash", label: "Trash" },
   { href: "/admin/settings", label: "Settings" },
 ];

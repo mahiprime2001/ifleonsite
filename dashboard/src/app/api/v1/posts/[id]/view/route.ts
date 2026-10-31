@@ -1,6 +1,7 @@
-import { and, eq, isNull, lte, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { posts } from "@/db/schema";
+import { clientIp, corsHeaders as publicCors, isLivePost } from "@/lib/public-api";
 
 /*
  * POST /api/v1/posts/:id/view — count one view of a post. Public (no API key): the blog on
@@ -15,23 +16,7 @@ import { posts } from "@/db/schema";
 const DEDUPE_MS = 30 * 60_000;
 const recentViews = new Map<string, number>();
 
-const ALLOWED_ORIGINS = new Set(
-  (process.env.PUBLIC_SITE_ORIGINS || "https://ifleon.com,https://www.ifleon.com,http://localhost:5173")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean),
-);
-
-function corsHeaders(request: Request): HeadersInit {
-  const origin = request.headers.get("origin");
-  if (!origin || !ALLOWED_ORIGINS.has(origin)) return {};
-  return {
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    Vary: "Origin",
-  };
-}
+const corsHeaders = (request: Request) => publicCors(request, "POST");
 
 export function OPTIONS(request: Request) {
   return new Response(null, { status: 204, headers: corsHeaders(request) });
@@ -56,8 +41,7 @@ export async function POST(request: Request, { params }: RouteContext<"/api/v1/p
     return Response.json({ error: "Invalid post ID" }, { status: 400, headers });
   }
 
-  // Nginx overwrites X-Forwarded-For with the real client IP, so it can't be spoofed through the proxy.
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = clientIp(request);
   if (alreadyCounted(`${ip}:${id}`)) {
     return Response.json({ counted: false }, { headers });
   }
@@ -66,14 +50,7 @@ export async function POST(request: Request, { params }: RouteContext<"/api/v1/p
     const updated = await db
       .update(posts)
       .set({ viewCount: sql`${posts.viewCount} + 1` })
-      .where(
-        and(
-          eq(posts.id, id),
-          eq(posts.status, "published"),
-          isNull(posts.deletedAt),
-          lte(posts.publishedAt, sql`now()`),
-        ),
-      )
+      .where(and(eq(posts.id, id), isLivePost()))
       .returning({ id: posts.id });
     return Response.json({ counted: updated.length > 0 }, { headers });
   } catch (error) {

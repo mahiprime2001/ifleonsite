@@ -55,7 +55,12 @@ export function PostsBulkTable({ rows }: { rows: PostListRow[] }) {
       }
     } catch (error) {
       console.error("Bulk action failed:", error);
-      setMessage({ text: "Something went wrong. Try again.", ok: false });
+      // The usual cause: the dashboard was redeployed after this page was opened, so the page's
+      // server-action ids are stale. A reload fixes it.
+      setMessage({
+        text: "That didn't go through — the dashboard was probably updated since you opened this page. Reload the page (F5) and try again.",
+        ok: false,
+      });
     } finally {
       setActionInProgress(null);
     }

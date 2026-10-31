@@ -1,66 +1,121 @@
 "use client";
 
 import { useEffect } from "react";
-import { Clock } from "lucide-react";
-import { useLikes } from "../hooks/useLikes";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import { Link } from "@/lib/router";
 import { countView, type Post } from "../lib/api";
-import { BackButton } from "../components/post/BackButton";
-import { PostHeader } from "../components/post/PostHeader";
-import { PostMeta } from "../components/post/PostMeta";
+import { formatLongDate } from "../lib/format";
 import { PostRenderer } from "../components/post/PostRenderer";
+import { PageCta } from "../components/PageIntro";
 
-/* One blog post. Loaded on the server (app/blog/[slug]/page.tsx), so its text is in the HTML. */
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/* One article, set for reading: a single centred column with a reading-progress rule on top. */
 export const BlogPost = ({ post }: { post: Post }) => {
-  const { likes, liked, handleLike } = useLikes(String(post.id));
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 });
 
   useEffect(() => {
     countView(post.id);
   }, [post.id]);
 
   return (
-    <div className="relative min-h-screen bg-paper pt-24 pb-20 text-ink overflow-hidden">
-      <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-50 blur-[120px]" />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-50 blur-[120px]" />
+    <>
+      <motion.div aria-hidden style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[55] h-[3px] origin-left bg-brand-600" />
 
-      <article className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white border border-line backdrop-blur-md rounded-3xl shadow-2xl">
-        <BackButton />
+      <article className="pb-8 pt-32 md:pt-40">
+        <header className="mx-auto max-w-3xl px-5 sm:px-8">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: EASE }}>
+            <Link to="/blog" className="group inline-flex items-center gap-2 text-sm font-medium text-ink-3 hover:text-ink">
+              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+              Journal
+            </Link>
+            {post.tags.length > 0 && (
+              <p className="mt-8 font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brand-700">
+                {post.tags.slice(0, 3).map((t) => `#${t}`).join("  ")}
+              </p>
+            )}
+          </motion.div>
+
+          <h1 className="mt-5 overflow-hidden pb-[0.08em] font-serif text-[2.4rem] font-normal leading-[1.08] tracking-tightest sm:text-5xl md:text-6xl">
+            <motion.span
+              className="block"
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+            >
+              {post.title}
+            </motion.span>
+          </h1>
+
+          {post.excerpt && (
+            <motion.p
+              className="mt-6 text-xl leading-relaxed text-ink-2"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
+            >
+              {post.excerpt}
+            </motion.p>
+          )}
+
+          <motion.dl
+            className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-y border-line py-4 text-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.45 }}
+          >
+            {[
+              { label: "By", value: post.authorName || "IFLEON" },
+              { label: "Published", value: formatLongDate(post.publishedAt) },
+              { label: "Read", value: `${post.readingMinutes} min` },
+              ...(post.viewCount > 0 ? [{ label: "Views", value: String(post.viewCount) }] : []),
+            ].map((item) => (
+              <div key={item.label} className="flex items-baseline gap-2">
+                <dt className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-ink-3">{item.label}</dt>
+                <dd className="font-medium text-ink">{item.value}</dd>
+              </div>
+            ))}
+          </motion.dl>
+        </header>
 
         {post.coverImageUrl && (
-          // Cover images live on the dashboard; plain <img> keeps them out of Next's image optimizer.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={post.coverImageUrl}
-            alt=""
-            className="w-full aspect-[2/1] object-cover rounded-2xl mb-8 border border-line"
-          />
+          <motion.div
+            className="mx-auto mt-12 max-w-5xl px-5 sm:px-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+          >
+            {/* Cover images live on the dashboard; plain <img> keeps them out of Next's image optimizer. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={post.coverImageUrl} alt="" className="aspect-[2/1] w-full rounded-[1.5rem] object-cover shadow-lift" />
+          </motion.div>
         )}
 
-        <PostHeader title={post.title} />
+        <div className="mx-auto mt-12 max-w-3xl px-5 sm:px-8">
+          <PostRenderer html={post.contentHtml} />
 
-        <PostMeta
-          author={post.authorName || "IFLEON"}
-          publishedAt={post.publishedAt}
-          likes={likes}
-          liked={liked}
-          onLike={handleLike}
-          views={post.viewCount}
-        />
-
-        <div className="flex flex-wrap items-center gap-2 mb-8 text-xs">
-          <span className="flex items-center gap-1.5 text-ink-3 mr-2">
-            <Clock className="h-3.5 w-3.5" />
-            {post.readingMinutes} min read
-          </span>
-          {post.tags.map((tag) => (
-            <span key={tag} className="rounded-full border border-line-strong bg-white px-2.5 py-0.5 text-ink-2">
-              #{tag}
-            </span>
-          ))}
+          {post.tags.length > 0 && (
+            <ul className="mt-14 flex flex-wrap gap-2 border-t border-line pt-8">
+              {post.tags.map((t) => (
+                <li key={t} className="rounded-full border border-line-strong bg-white px-3 py-1 text-sm text-ink-2">
+                  #{t}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-
-        <PostRenderer html={post.contentHtml} />
       </article>
-    </div>
+
+      <PageCta
+        title={
+          <>
+            Want this done <em className="text-brand-300">for you?</em>
+          </>
+        }
+        text="We build and run systems like the one in this article. The first consultation is free."
+      />
+    </>
   );
 };

@@ -19,6 +19,9 @@ interface Props {
   subtitle?: string;
 }
 
+/* Fixed choices in the service dropdown; a prefilled service from the Services page is added on top. */
+const SERVICE_OPTIONS = ["AI Solutions", "DevOps", "Cloud Migration", "Cybersecurity", "Custom Software", "Data Engineering", "Mobile Apps", "UI/UX Design", "Other"];
+
 export const ContactFormDialog = ({
   open,
   onClose,
@@ -207,8 +210,7 @@ export const ContactFormDialog = ({
                       type="tel"
                       inputMode="tel"
                       pattern="[0-9+\-\s()]{7,}"
-                      required
-                      placeholder="Mobile Number *"
+                      placeholder="Phone (optional)"
                       value={formData["your-phone"]}
                       onChange={handleChange}
                       className="input"
@@ -229,6 +231,9 @@ export const ContactFormDialog = ({
                     className="input w-full mb-4"
                   >
                     <option value="">Select a service</option>
+                    {prefill?.service && !SERVICE_OPTIONS.includes(prefill.service) && (
+                      <option value={prefill.service}>{prefill.service}</option>
+                    )}
                     <option value="AI Solutions">AI Solutions</option>
                     <option value="DevOps">DevOps</option>
                     <option value="Cloud Migration">Cloud Migration</option>

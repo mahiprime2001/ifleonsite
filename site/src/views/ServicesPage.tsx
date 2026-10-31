@@ -1,444 +1,242 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "@/lib/router";
-import {
-  ArrowRight,
-  Briefcase,
-  User,
-  Sparkles,
-  X,
-  CheckCircle2,
-  Package,
-  Layers,
-  Target,
-} from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Check, Plus } from "lucide-react";
 import { ContactFormDialog } from "../components/ContactFormDialog";
+import { IntroFacts, PageCta, PageIntro } from "../components/PageIntro";
 import {
+  buildPrefillMessage,
   businessServices,
   individualServices,
   specialtyServices,
-  serviceSelectMap,
-  buildPrefillMessage,
   type Service,
 } from "../data/services";
-import { PageHero } from "../components/PageHero";
-import { ScrollReveal } from "../components/animations/ScrollReveal";
-import { MagnetCard } from "../components/animations/MagnetCard";
 
-type CategoryGroup = {
-  key: string;
-  title: string;
-  subtitle: string;
-  icon: React.ComponentType<{ className?: string }>;
-  items: Service[];
-  accent: string;
-};
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-const groups: CategoryGroup[] = [
-  {
-    key: "business",
-    title: "Business Solutions",
-    subtitle: "Scale your product, platform, and team.",
-    icon: Briefcase,
-    items: businessServices,
-    accent: "from-brand-700 to-brand-500",
-  },
-  {
-    key: "individual",
-    title: "Individual Solutions",
-    subtitle: "Personal tech setup, security, smart home, and career guidance.",
-    icon: User,
-    items: individualServices,
-    accent: "from-brand-700 to-brand-500",
-  },
-  {
-    key: "specialty",
-    title: "Specialty & Add-Ons",
-    subtitle: "Targeted offerings we plug into existing teams and products.",
-    icon: Sparkles,
-    items: specialtyServices,
-    accent: "from-brand-700 to-brand-500",
-  },
-];
+const GROUPS = [
+  { key: "business", label: "For business", blurb: "Platforms, automation and infrastructure for teams.", items: businessServices },
+  { key: "individual", label: "For individuals", blurb: "Setup, safety and guidance for people and homes.", items: individualServices },
+  { key: "specialty", label: "Specialty", blurb: "Focused work for one specific problem.", items: specialtyServices },
+] as const;
 
-const ServiceCard = ({
-  service,
-  onOpen,
-}: {
-  service: Service;
-  onOpen: (s: Service) => void;
-}) => {
-  const Icon = service.icon;
+type GroupKey = (typeof GROUPS)[number]["key"];
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24, rotateX: -10 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6 }}
-    >
-      <MagnetCard
-        intensity={6}
-        className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 transition-all"
-      >
-        <button
-          type="button"
-          onClick={() => onOpen(service)}
-          className="text-left w-full h-full p-6 flex flex-col group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 rounded-2xl"
-        >
-          <div className="flex items-start gap-4 mb-4">
-            <motion.div
-              whileHover={{ rotate: 6, scale: 1.06 }}
-              className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center shrink-0 shadow-lg"
-            >
-              <Icon className="h-5 w-5 text-white" />
-            </motion.div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-ink leading-tight">
-                {service.title}
-              </h3>
-              <p className="text-sm text-brand-700 mt-1">{service.tagline}</p>
-            </div>
-          </div>
-
-          <p className="text-ink-2 text-sm leading-relaxed mb-5 flex-1">
-            {service.description}
-          </p>
-
-          <span className="inline-flex items-center text-brand-700 font-medium text-sm group-hover:translate-x-1 transition-transform">
-            View details
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </span>
-        </button>
-      </MagnetCard>
-    </motion.div>
-  );
-};
-
-const DetailsDialog = ({
-  service,
-  onClose,
-  onDiscuss,
-}: {
-  service: Service | null;
-  onClose: () => void;
-  onDiscuss: (s: Service) => void;
-}) => {
-  useEffect(() => {
-    if (!service) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [service, onClose]);
-
-  return (
-    <AnimatePresence>
-      {service && (
-        <motion.div
-          className="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-paper/80 backdrop-blur-md"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-        >
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="details-dialog-title"
-            className="relative bg-paper border border-line rounded-3xl w-full max-w-3xl max-h-[92vh] overflow-y-auto shadow-2xl"
-            initial={{ opacity: 0, y: 30, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.97 }}
-            transition={{ type: "spring", damping: 22, stiffness: 260 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none rounded-3xl" />
-
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close"
-              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-paper-2 hover:bg-paper-3 flex items-center justify-center text-white z-10 transition"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div className="relative p-6 md:p-8">
-              <div className="flex items-start gap-4 mb-6 pr-10">
-                <motion.div
-                  whileHover={{ rotate: 6, scale: 1.06 }}
-                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center shrink-0 shadow-lg"
-                >
-                  <service.icon className="h-7 w-7 text-white" />
-                </motion.div>
-                <div>
-                  <h3
-                    id="details-dialog-title"
-                    className="text-2xl md:text-3xl font-semibold text-ink"
-                  >
-                    {service.title}
-                  </h3>
-                  <p className="text-brand-700 font-medium mt-1">
-                    {service.tagline}
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-ink-2 leading-relaxed mb-6">
-                {service.description}
-              </p>
-
-              <div className="mb-6 p-5 rounded-2xl bg-gradient-to-br from-brand-700/10 to-brand-500/10 border border-brand-600/20">
-                <div className="flex items-center gap-2 text-brand-700 font-bold mb-2">
-                  <Sparkles className="h-5 w-5" />
-                  Real-World Impact
-                </div>
-                <p className="text-ink leading-relaxed">
-                  {service.realWorld}
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <div className="flex items-center gap-2 text-ink font-bold mb-3">
-                    <Target className="h-5 w-5 text-brand-700" />
-                    Key Features
-                  </div>
-                  <ul className="space-y-2">
-                    {service.features.map((f, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-ink-2 text-sm"
-                      >
-                        <CheckCircle2 className="h-4 w-4 text-brand-700 shrink-0 mt-0.5" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-2 text-ink font-bold mb-3">
-                    <Package className="h-5 w-5 text-brand-700" />
-                    What We Deliver
-                  </div>
-                  <ul className="space-y-2">
-                    {service.deliverables.map((d, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-ink-2 text-sm"
-                      >
-                        <CheckCircle2 className="h-4 w-4 text-brand-700 shrink-0 mt-0.5" />
-                        <span>{d}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <div className="flex items-center gap-2 text-ink font-bold mb-3">
-                  <Layers className="h-5 w-5 text-brand-700" />
-                  Technologies
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {service.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-white text-ink rounded-full text-xs font-medium border border-line"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <div className="text-ink font-bold mb-3">Common Use Cases</div>
-                <div className="grid sm:grid-cols-2 gap-2">
-                  {service.useCases.map((u, i) => (
-                    <div
-                      key={i}
-                      className="text-sm text-ink bg-white border border-line rounded-lg px-3 py-2"
-                    >
-                      {u}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  type="button"
-                  onClick={() => onDiscuss(service)}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white font-semibold py-3 px-6 rounded-xl transition-all"
-                >
-                  Discuss This Service
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="sm:w-auto px-6 py-3 rounded-xl border border-line-strong text-ink hover:bg-paper-2 font-semibold transition"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
+/*
+ * Services, one group at a time (fewer choices on screen), each service a row that opens on demand.
+ * /services#<service-id> opens that service directly.
+ */
 export default function ServicesPage() {
-  const [active, setActive] = useState<Service | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogPrefill, setDialogPrefill] = useState<{
-    service?: string;
-    message?: string;
-  }>({});
+  const [group, setGroup] = useState<GroupKey>("business");
+  const [open, setOpen] = useState<string | null>(businessServices[0]?.id ?? null);
+  const [dialog, setDialog] = useState<{ open: boolean; prefill: { service?: string; message?: string } }>({
+    open: false,
+    prefill: {},
+  });
 
-  const openDiscuss = (s: Service) => {
-    setDialogPrefill({
-      service: serviceSelectMap[s.title] ?? "Other",
-      message: buildPrefillMessage(s.title, s.features),
-    });
-    setActive(null);
-    setDialogOpen(true);
-  };
+  // Deep link: /services#ai-solutions
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    const match = GROUPS.find((g) => g.items.some((s) => s.id === id));
+    if (!match) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the hash is only readable after hydration
+    setGroup(match.key);
+    setOpen(id);
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
+  }, []);
+
+  const current = GROUPS.find((g) => g.key === group)!;
+
+  const discuss = (s: Service) =>
+    setDialog({ open: true, prefill: { service: s.title, message: buildPrefillMessage(s.title, s.features) } });
 
   return (
-    <div className="bg-paper min-h-screen">
-      <PageHero
+    <>
+      <PageIntro
         eyebrow="Services"
-        title="What we build,"
-        highlight="deploy & maintain"
-        description="End-to-end AI, DevOps, cloud, and cybersecurity work for businesses and individuals — click any card for the full breakdown."
-      >
-        <div className="flex flex-wrap gap-2 justify-center">
-          {groups.map((g) => (
-            <a
-              key={g.key}
-              href={`#${g.key}`}
-              className="px-4 py-2 bg-white border border-line hover:bg-paper-2 hover:border-brand-600/40 text-ink hover:text-ink rounded-full text-sm font-medium transition-all backdrop-blur-md"
-            >
-              {g.title}
-            </a>
-          ))}
-        </div>
-      </PageHero>
+        title={
+          <>
+            Everything we build, deploy and <em className="text-brand-700">run.</em>
+          </>
+        }
+        intro="Pick a group, open a service, and you will see exactly what you get, what we hand over and the tools we use. Every engagement starts with a free consultation."
+        aside={
+          <IntroFacts
+            items={[
+              { value: businessServices.length, label: "For business" },
+              { value: individualServices.length, label: "For individuals" },
+              { value: specialtyServices.length, label: "Specialty" },
+            ]}
+          />
+        }
+      />
 
-      {groups.map((group, gIdx) => {
-        const GroupIcon = group.icon;
-        return (
-          <section
-            key={group.key}
-            id={group.key}
-            className="relative py-16 md:py-20 scroll-mt-24 bg-gradient-to-b from-paper via-paper-2 to-paper overflow-hidden border-b border-line"
+      {/* Group switcher, pinned while browsing */}
+      <div className="sticky top-3 z-30 mt-2 sm:top-4">
+        <div className="shell">
+          <div
+            role="tablist"
+            aria-label="Service groups"
+            className="mx-auto flex w-full max-w-max gap-1 overflow-x-auto rounded-full border border-line bg-paper/85 p-1 shadow-soft backdrop-blur-xl"
           >
-            <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
-            {gIdx === 1 && (
-              <div className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] rounded-full bg-brand-50 blur-[120px]" />
-            )}
+            {GROUPS.map((g) => {
+              const active = g.key === group;
+              return (
+                <button
+                  key={g.key}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => {
+                    setGroup(g.key);
+                    setOpen(g.items[0]?.id ?? null);
+                  }}
+                  className={`relative shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors sm:px-5 ${
+                    active ? "text-white" : "text-ink-2 hover:text-ink"
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="service-group"
+                      className="absolute inset-0 rounded-full bg-brand-700"
+                      transition={{ type: "spring", stiffness: 400, damping: 34 }}
+                    />
+                  )}
+                  <span className="relative">
+                    {g.label} <span className={active ? "text-brand-200" : "text-ink-4"}>{g.items.length}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <ScrollReveal direction="up">
-                <div className="flex items-center gap-3 mb-2">
-                  <motion.div
-                    whileHover={{ rotate: 6, scale: 1.06 }}
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br ${group.accent} shadow-lg`}
-                  >
-                    <GroupIcon className="h-5 w-5 text-white" />
-                  </motion.div>
-                  <h2 className="text-2xl md:text-3xl font-semibold text-ink">
-                    {group.title}
-                  </h2>
-                </div>
-                <p className="text-ink-2 mb-10 ml-13">{group.subtitle}</p>
-              </ScrollReveal>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 perspective-1000">
-                {group.items.map((service) => (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    onOpen={setActive}
-                  />
-                ))}
+      <section className="py-16 md:py-24">
+        <div className="shell">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={group}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.45, ease: EASE }}
+            >
+              <div className="flex flex-col justify-between gap-2 md:flex-row md:items-baseline">
+                <h2 className="font-serif text-3xl font-normal md:text-4xl">{current.label}</h2>
+                <p className="text-ink-3">{current.blurb}</p>
               </div>
-            </div>
-          </section>
-        );
-      })}
 
-      {/* Bottom CTA — strategic WHITE accent */}
-      <section className="relative py-20 bg-white overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-50 blur-3xl" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brand-50 blur-3xl" />
+              <ol className="mt-10 border-t border-line">
+                {current.items.map((service, i) => {
+                  const isOpen = open === service.id;
+                  return (
+                    <li key={service.id} id={service.id} className="scroll-mt-28 border-b border-line">
+                      <button
+                        type="button"
+                        onClick={() => setOpen(isOpen ? null : service.id)}
+                        aria-expanded={isOpen}
+                        className="group flex w-full items-baseline gap-5 py-7 text-left md:gap-8"
+                      >
+                        <span className="font-mono text-xs text-ink-4">{String(i + 1).padStart(2, "0")}</span>
+                        <span className="flex-1">
+                          <span
+                            className={`block font-serif text-2xl leading-tight transition-colors md:text-[2.2rem] ${
+                              isOpen ? "text-brand-700" : "text-ink group-hover:text-brand-700"
+                            }`}
+                          >
+                            {service.title}
+                          </span>
+                          <span className="mt-1 block text-sm text-ink-3">{service.tagline}</span>
+                        </span>
+                        <motion.span
+                          animate={{ rotate: isOpen ? 45 : 0 }}
+                          transition={{ duration: 0.35, ease: EASE }}
+                          className={`grid h-10 w-10 shrink-0 place-items-center self-center rounded-full border transition-colors ${
+                            isOpen ? "border-brand-700 bg-brand-700 text-white" : "border-line-strong text-ink-2"
+                          }`}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </motion.span>
+                      </button>
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <ScrollReveal direction="up">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-ink mb-4">
-              Not sure which service{" "}
-              <span className="bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-transparent">
-                fits?
-              </span>
-            </h2>
-            <p className="text-base md:text-lg text-ink-2 mb-8">
-              Tell us what you&apos;re working on. We&apos;ll suggest the right approach.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setDialogPrefill({});
-                  setDialogOpen(true);
-                }}
-                className="shine-on-hover inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white px-7 py-3.5 rounded-xl font-semibold transition-all"
-              >
-                Schedule Free Consultation
-                <ArrowRight className="h-4 w-4" />
-              </button>
-
-              <Link
-                to="/case-studies"
-                className="inline-flex items-center justify-center gap-2 border-2 border-line text-ink hover:border-brand-600 hover:text-brand-700 hover:-translate-y-0.5 px-7 py-3.5 rounded-xl font-semibold transition-all"
-              >
-                View Case Studies
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </ScrollReveal>
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.5, ease: EASE }}
+                            className="overflow-hidden"
+                          >
+                            <div className="grid gap-10 pb-10 md:grid-cols-[1.2fr_1fr] md:pl-14">
+                              <div>
+                                <p className="max-w-prose text-lg leading-relaxed text-ink-2">{service.description}</p>
+                                <p className="mt-6 border-l-2 border-brand-200 pl-4 font-serif text-lg italic leading-relaxed text-ink-2">
+                                  {service.realWorld}
+                                </p>
+                                <button type="button" onClick={() => discuss(service)} className="btn-primary group mt-8">
+                                  Discuss this service
+                                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                                </button>
+                              </div>
+                              <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+                                <Detail title="What you get" items={service.features.slice(0, 5)} />
+                                <Detail title="We hand over" items={service.deliverables.slice(0, 5)} />
+                                <div className="sm:col-span-2 md:col-span-1 lg:col-span-2">
+                                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-3">Typical stack</p>
+                                  <ul className="mt-3 flex flex-wrap gap-2">
+                                    {service.technologies.map((tech) => (
+                                      <li key={tech} className="rounded-full border border-line bg-white px-3 py-1 text-xs text-ink-2">
+                                        {tech}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                })}
+              </ol>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
-      <DetailsDialog
-        service={active}
-        onClose={() => setActive(null)}
-        onDiscuss={openDiscuss}
+      <PageCta
+        title={
+          <>
+            Not sure which one <em className="text-brand-300">fits?</em>
+          </>
+        }
+        text="Describe the problem in a few lines and we will suggest the right approach on a free call."
       />
 
       <ContactFormDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        prefill={dialogPrefill}
-        title={
-          dialogPrefill.service
-            ? `Discuss: ${dialogPrefill.service}`
-            : "Let's Talk"
-        }
-        subtitle="Share a few details and we'll get back within 24 hours."
+        open={dialog.open}
+        onClose={() => setDialog((d) => ({ ...d, open: false }))}
+        prefill={dialog.prefill}
       />
+    </>
+  );
+}
+
+function Detail({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-3">{title}</p>
+      <ul className="mt-3 space-y-2">
+        {items.map((item) => (
+          <li key={item} className="flex gap-2.5 text-[0.95rem] leading-snug text-ink-2">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

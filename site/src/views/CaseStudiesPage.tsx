@@ -1,189 +1,120 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, Cloud, Shield, Brain, ArrowRight, TrendingUp } from "lucide-react";
-import { Link } from "@/lib/router";
-import { PageHero } from "../components/PageHero";
-import { ScrollReveal } from "../components/animations/ScrollReveal";
-import { MagnetCard } from "../components/animations/MagnetCard";
+import { IntroFacts, PageCta, PageIntro } from "../components/PageIntro";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const caseStudies = [
   {
-    icon: Cloud,
-    title: "Cloud Cost Optimization for a Startup",
+    title: "Cloud cost optimisation for a startup",
     industry: "SaaS / Startup",
-    problem:
-      "High cloud costs from unoptimized infrastructure and lack of monitoring.",
-    solution:
-      "Restructured cloud resources, introduced cost monitoring, and optimized compute usage.",
-    outcome:
-      "Improved cost visibility and a significantly more efficient cloud setup.",
-    accent: "from-brand-700 to-brand-500",
+    problem: "High cloud costs from unoptimised infrastructure and no monitoring.",
+    solution: "Restructured cloud resources, introduced cost monitoring and optimised compute usage.",
+    outcome: "Clear cost visibility and a significantly more efficient cloud setup.",
   },
   {
-    icon: Shield,
-    title: "Security Hardening for Internal Systems",
+    title: "Security hardening for internal systems",
     industry: "Enterprise IT",
-    problem:
-      "Needed to improve system security and compliance across multiple Linux servers.",
-    solution:
-      "Implemented security hardening, access controls, and monitoring best practices.",
-    outcome: "Stronger security posture and improved operational confidence.",
-    accent: "from-brand-700 to-brand-500",
+    problem: "Security and compliance needed to improve across many Linux servers.",
+    solution: "Implemented hardening, access controls and monitoring best practices.",
+    outcome: "A stronger security posture and more confidence in daily operations.",
   },
   {
-    icon: Brain,
-    title: "AI Automation for Data Processing",
+    title: "AI automation for data processing",
     industry: "Data & Analytics",
     problem: "Manual data processing workflows were slow and error-prone.",
-    solution:
-      "Designed an AI-assisted automation pipeline to process and validate data efficiently.",
-    outcome: "Faster processing times and reduced manual effort.",
-    accent: "from-brand-700 to-brand-500",
+    solution: "Designed an AI-assisted pipeline to process and validate data automatically.",
+    outcome: "Faster processing and far less manual effort.",
   },
   {
-    icon: Briefcase,
-    title: "DevOps Pipeline Modernization",
+    title: "DevOps pipeline modernisation",
     industry: "Software Development",
-    problem:
-      "Slow releases and inconsistent deployment processes across the team.",
-    solution:
-      "Introduced CI/CD pipelines, automated testing, and containerized deployments.",
+    problem: "Slow releases and inconsistent deployments across the team.",
+    solution: "Introduced CI/CD pipelines, automated testing and containerised deployments.",
     outcome: "More reliable releases and faster development cycles.",
-    accent: "from-brand-700 to-brand-500",
   },
 ];
 
+const STAGES = [
+  { key: "problem", label: "Problem" },
+  { key: "solution", label: "What we did" },
+  { key: "outcome", label: "Outcome" },
+] as const;
+
+/* Each case reads left to right: problem, what we did, outcome; a rule draws across as it enters. */
 export default function CaseStudiesPage() {
   return (
-    <div className="bg-paper min-h-screen">
-      <PageHero
-        eyebrow="Case Studies"
-        title="Real-world projects."
-        highlight="Practical outcomes."
-        description="A selection of recent engagements that show how we approach problems and ship measurable solutions."
+    <>
+      <PageIntro
+        eyebrow="Case studies"
+        title={
+          <>
+            How we <em className="text-brand-700">think</em>, case by case.
+          </>
+        }
+        intro="Short write-ups of real engagements: the problem we were handed, what we changed and what it led to."
+        aside={<IntroFacts items={[{ value: caseStudies.length, label: "Case studies" }, { value: "4", label: "Industries" }]} />}
       />
 
-      <section className="relative py-20 bg-gradient-to-b from-paper via-paper-2 to-paper overflow-hidden">
-        <div className="absolute inset-0 mesh-bg opacity-30 pointer-events-none" />
-        <div className="absolute -top-32 left-1/3 w-[36rem] h-[36rem] rounded-full bg-brand-50 blur-[120px]" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 perspective-1000"
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.08 } },
-            }}
-          >
-            {caseStudies.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 30, rotateX: -10 },
-                    show: { opacity: 1, y: 0, rotateX: 0 },
-                  }}
-                  transition={{ duration: 0.7, ease: [0.2, 0.7, 0.2, 1] }}
-                >
-                  <MagnetCard
-                    intensity={6}
-                    className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 transition-all"
-                  >
-                    <div className="p-7 md:p-8">
-                      <div className="flex items-center gap-3 mb-5">
-                        <motion.div
-                          whileHover={{ rotate: 6, scale: 1.05 }}
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${item.accent} shadow-lg`}
-                        >
-                          <Icon className="h-6 w-6 text-white" />
-                        </motion.div>
-                        <div>
-                          <h3 className="text-lg md:text-xl font-bold text-ink leading-tight">
-                            {item.title}
-                          </h3>
-                          <p className="text-xs text-brand-700 uppercase tracking-wider mt-1 font-semibold">
-                            {item.industry}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3 text-sm text-ink-2">
-                        <div>
-                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-rose-300 block mb-1">
-                            Problem
-                          </span>
-                          {item.problem}
-                        </div>
-                        <div>
-                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-700 block mb-1">
-                            Solution
-                          </span>
-                          {item.solution}
-                        </div>
-                        <div>
-                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-700 block mb-1">
-                            Outcome
-                          </span>
-                          {item.outcome}
-                        </div>
-                      </div>
-                    </div>
-                  </MagnetCard>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          {/* WHITE highlight stat strip */}
-          <ScrollReveal direction="scale">
-            <div className="mt-12 relative rounded-3xl bg-white p-8 md:p-10 shadow-[0_30px_80px_-20px_rgba(69,66,60,0.4)] overflow-hidden border border-brand-200">
-              <div className="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-brand-50 blur-3xl" />
-              <div className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full bg-brand-50 blur-3xl" />
-
-              <div className="relative grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                {[
-                  { num: "40%", label: "Average accuracy lift", color: "text-brand-700" },
-                  { num: "75%", label: "Faster deploys", color: "text-brand-700" },
-                  { num: "50%", label: "Cloud cost savings", color: "text-brand-700" },
-                  { num: "24h", label: "Avg. response time", color: "text-amber-600" },
-                ].map((m, i) => (
-                  <div key={i}>
-                    <div
-                      className={`text-3xl md:text-4xl font-semibold ${m.color} flex items-center justify-center gap-1`}
-                    >
-                      <TrendingUp className="h-5 w-5" />
-                      {m.num}
-                    </div>
-                    <div className="text-ink-2 text-xs md:text-sm mt-1">
-                      {m.label}
-                    </div>
-                  </div>
-                ))}
+      <section className="pb-8">
+        <div className="shell space-y-20 md:space-y-28">
+          {caseStudies.map((study, i) => (
+            <motion.article
+              key={study.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease: EASE }}
+            >
+              <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:gap-8">
+                <span className="font-mono text-xs text-ink-4">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brand-700">{study.industry}</p>
+                  <h2 className="mt-2 font-serif text-3xl font-normal leading-tight md:text-5xl">{study.title}</h2>
+                </div>
               </div>
-            </div>
-          </ScrollReveal>
 
-          <ScrollReveal direction="up">
-            <div className="mt-16 text-center">
-              <p className="text-ink-2 mb-5">
-                Want to discuss a similar challenge?
-              </p>
-              <Link
-                to="/#contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 hover:-translate-y-0.5 text-white px-8 py-3.5 rounded-xl font-semibold transition-all"
-              >
-                Start a Conversation
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </ScrollReveal>
+              <div className="relative mt-10 md:ml-14">
+                <motion.div
+                  aria-hidden
+                  className="absolute left-0 right-0 top-0 h-px origin-left bg-brand-600"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 1.2, delay: 0.2, ease: EASE }}
+                />
+                <div className="grid border-t border-line md:grid-cols-3">
+                  {STAGES.map((stage, s) => (
+                    <motion.div
+                      key={stage.key}
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-80px" }}
+                      transition={{ duration: 0.6, delay: 0.3 + s * 0.15, ease: EASE }}
+                      className={`py-6 md:py-8 ${s > 0 ? "border-t border-line md:border-l md:border-t-0 md:pl-8" : ""} md:pr-8`}
+                    >
+                      <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-ink-3">{stage.label}</p>
+                      <p className={`mt-3 leading-relaxed ${stage.key === "outcome" ? "font-serif text-xl text-ink" : "text-ink-2"}`}>
+                        {study[stage.key]}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.article>
+          ))}
         </div>
       </section>
-    </div>
+
+      <PageCta
+        title={
+          <>
+            Have a problem like <em className="text-brand-300">these?</em>
+          </>
+        }
+        text="Share it in a few lines. We will tell you how we would approach it on a free call."
+      />
+    </>
   );
 }

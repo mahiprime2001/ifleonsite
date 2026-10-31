@@ -1,237 +1,244 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { Calendar, ArrowRight, Search, Heart, Eye } from 'lucide-react';
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Eye, Search } from "lucide-react";
+import { IntroFacts, PageIntro } from "../components/PageIntro";
 import { Link } from "@/lib/router";
-import { formatShortDate } from '@/lib/format';
-import { motion } from 'framer-motion';
-import { PageHero } from '../components/PageHero';
-import { MagnetCard } from '../components/animations/MagnetCard';
-import type { PostSummary } from '../lib/api';
+import type { PostSummary } from "../lib/api";
+import { formatShortDate } from "@/lib/format";
 
-/* The post list is loaded on the server (lib/content.ts) and passed in. */
+const EASE = [0.22, 1, 0.36, 1] as const;
+const PAGE = 12;
+
+type Sort = "newest" | "oldest" | "popular";
+
+/* The journal: search, topic chips and sort; newest article featured; more load on demand. */
 export const Blog = ({ posts }: { posts: PostSummary[] }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'most-liked'>('newest');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const postsPerPage = 9;
+  const [query, setQuery] = useState("");
+  const [tag, setTag] = useState<string | null>(null);
+  const [sort, setSort] = useState<Sort>("newest");
+  const [limit, setLimit] = useState(PAGE);
 
-  const handlePageChange = useCallback((newPage: number) => {
-    if (newPage === currentPage) return;
-    setIsTransitioning(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        setCurrentPage(newPage);
-        setIsTransitioning(false);
-      }, 250);
-    });
-  }, [currentPage]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [currentPage]);
-
-  // Likes live in this browser only, so they're read after hydration (the server can't know them).
-  const [likes, setLikes] = useState<Record<number, number>>({});
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage only exists after hydration
-    setLikes(Object.fromEntries(posts.map((p) => [p.id, parseInt(localStorage.getItem(`likes-${p.id}`) || '0', 10)])));
+  // The 12 most used topics, as quick filters.
+  const topTags = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const p of posts) for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([t]) => t);
   }, [posts]);
 
-  const getLikes = (id: number) => likes[id] ?? 0;
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const list = posts.filter(
+      (p) =>
+        (!tag || p.tags.includes(tag)) &&
+        (!q || p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.tags.some((t) => t.includes(q))),
+    );
+    return [...list].sort((a, b) =>
+      sort === "popular"
+        ? b.viewCount - a.viewCount
+        : sort === "oldest"
+          ? a.publishedAt.localeCompare(b.publishedAt)
+          : b.publishedAt.localeCompare(a.publishedAt),
+    );
+  }, [posts, query, tag, sort]);
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTag = !selectedTag || post.tags.includes(selectedTag);
-    return matchesSearch && matchesTag;
-  });
-
-  const sortedPosts = [...filteredPosts].sort((a, b) => {
-    switch (sortOrder) {
-      case 'oldest':
-        return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
-      case 'most-liked':
-        return getLikes(b.id) - getLikes(a.id);
-      case 'newest':
-      default:
-        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-    }
-  });
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
-  const allTags = Array.from(new Set(posts.flatMap((post) => post.tags))).sort();
+  const browsing = !query && !tag && sort === "newest";
+  const featured = browsing ? filtered[0] : undefined;
+  const rest = browsing ? filtered.slice(1) : filtered;
+  const visible = rest.slice(0, limit);
+  const reset = () => setLimit(PAGE);
 
   return (
-    <div className="bg-paper min-h-screen">
-      <PageHero
-        eyebrow="Tech Blog"
-        title="Insights from"
-        highlight="our engineering desk"
-        description="Technical deep dives, project updates, and source code from our AI, DevOps, and IT consulting work — all examples available on our GitHub."
+    <>
+      <PageIntro
+        eyebrow="Journal"
+        title={
+          <>
+            Notes from the <em className="text-brand-700">engineering</em> desk.
+          </>
+        }
+        intro="Practical guides and deep dives on AI, DevOps, cloud and security, written from real project work."
+        aside={
+          <IntroFacts
+            items={[
+              { value: posts.length, label: "Articles" },
+              { value: new Set(posts.flatMap((p) => p.tags)).size, label: "Topics" },
+            ]}
+          />
+        }
       />
 
-      <section className="relative py-12 md:py-16 bg-gradient-to-b from-paper via-paper-2 to-paper overflow-hidden">
-        <div className="absolute inset-0 mesh-bg opacity-25 pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Search + Filters */}
-          <div className="flex flex-col md:flex-row gap-3 mb-10 max-w-4xl mx-auto">
-            <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3 h-5 w-5" />
+      {/* Controls */}
+      <section className="pb-10">
+        <div className="shell">
+          <div className="flex flex-col gap-4 border-y border-line py-5 md:flex-row md:items-center">
+            <label className="relative flex-1">
+              <span className="sr-only">Search articles</span>
+              <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-3" />
               <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="input-dark w-full pl-11"
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  reset();
+                }}
+                placeholder="Search by title, topic or keyword"
+                className="w-full border-0 bg-transparent py-2 pl-7 pr-2 text-lg text-ink placeholder:text-ink-4 focus:outline-none focus:ring-0"
               />
-            </div>
-            <select
-              value={selectedTag}
-              onChange={(e) => setSelectedTag(e.target.value)}
-              className="input-dark cursor-pointer md:w-44 md:flex-none"
-            >
-              <option value="" className="bg-paper">All Tags</option>
-              {allTags.map((tag) => (
-                <option key={tag} value={tag} className="bg-paper">
-                  {tag}
-                </option>
+            </label>
+            <div className="flex items-center gap-1 self-start rounded-full border border-line bg-white p-1 md:self-auto" role="radiogroup" aria-label="Sort articles">
+              {(
+                [
+                  ["newest", "Newest"],
+                  ["popular", "Most read"],
+                  ["oldest", "Oldest"],
+                ] as const
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  role="radio"
+                  aria-checked={sort === key}
+                  onClick={() => {
+                    setSort(key);
+                    reset();
+                  }}
+                  className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
+                    sort === key ? "bg-ink text-paper" : "text-ink-2 hover:text-ink"
+                  }`}
+                >
+                  {label}
+                </button>
               ))}
-            </select>
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as 'newest' | 'oldest' | 'most-liked')}
-              className="input-dark cursor-pointer md:w-44 md:flex-none"
-            >
-              <option value="newest" className="bg-paper">Newest</option>
-              <option value="oldest" className="bg-paper">Oldest</option>
-              <option value="most-liked" className="bg-paper">Most Liked</option>
-            </select>
+            </div>
           </div>
 
-          {posts.length === 0 && (
-            <p className="text-center text-ink-3 py-16">No articles yet. Check back soon.</p>
-          )}
+          <div className="-mx-5 mt-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+            {[null, ...topTags].map((t) => {
+              const active = tag === t;
+              return (
+                <button
+                  key={t ?? "all"}
+                  onClick={() => {
+                    setTag(t);
+                    reset();
+                  }}
+                  aria-pressed={active}
+                  className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm transition-all ${
+                    active ? "border-brand-700 bg-brand-700 text-white" : "border-line-strong bg-white text-ink-2 hover:border-ink/30 hover:text-ink"
+                  }`}
+                >
+                  {t ? `#${t}` : "All topics"}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-          {/* Posts Grid */}
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out ${
-              isTransitioning
-                ? 'opacity-0 scale-[0.98] blur-sm translate-y-2'
-                : 'opacity-100 scale-100 blur-none translate-y-0'
-            }`}
-          >
-            {currentPosts.map((post, index) => (
-              <motion.article
-                key={`${post.id}-${currentPage}-${index}`}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.5 }}
+      <section className="pb-24 md:pb-32">
+        <div className="shell">
+          {featured && (
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }}>
+              <Link
+                to={`/blog/${featured.slug}`}
+                className="group mb-10 grid overflow-hidden rounded-[1.75rem] bg-brand-900 text-paper shadow-lift md:grid-cols-[1.4fr_1fr]"
               >
-                <MagnetCard
-                  intensity={5}
-                  className="h-full bg-white border border-line backdrop-blur-md rounded-2xl hover:bg-paper-2 hover:border-brand-600/40 transition-all"
-                >
-                  <div className="p-6 h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-4 text-xs text-ink-3">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="h-3.5 w-3.5" />
-                        <span>{formatShortDate(post.publishedAt)}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Heart className="h-3.5 w-3.5 text-rose-400 fill-rose-400" />
-                        <span>{getLikes(post.id)}</span>
-                      </div>
-                    </div>
-
-                    <Link to={`/blog/${post.slug}`} className="block group">
-                      <h3 className="text-lg font-bold text-ink mb-3 group-hover:text-brand-700 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                    </Link>
-
-                    <p className="text-sm text-ink-2 mb-6 leading-relaxed line-clamp-3 flex-1">
-                      {post.excerpt}
-                    </p>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-line">
-                      <Link
-                        to={`/blog/${post.slug}`}
-                        className="text-brand-700 hover:text-brand-700 font-semibold text-sm flex items-center gap-1.5 group"
-                      >
-                        Read More
-                        <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                      <div className="flex items-center gap-1.5 text-ink-3 text-xs">
-                        <Eye className="h-3.5 w-3.5" />
-                        <span>{post.viewCount}</span>
-                      </div>
-                    </div>
-                  </div>
-                </MagnetCard>
-              </motion.article>
-            ))}
-          </div>
-
-          {isTransitioning && (
-            <div className="fixed inset-0 bg-paper/80 backdrop-blur-sm z-50 flex items-center justify-center">
-              <div className="w-10 h-10 border-3 border-brand-600/30 border-t-emerald-400 rounded-full animate-spin" />
-            </div>
-          )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-12 flex justify-center">
-              <nav className="flex items-center gap-2 p-2 rounded-xl bg-white border border-line backdrop-blur-md">
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-paper-2 transition"
-                >
-                  Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    disabled={isTransitioning}
-                    className={`min-w-[40px] px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
-                      currentPage === page
-                        ? 'bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow-lg'
-                        : 'text-ink hover:bg-paper-2'
-                    }`}
+                <div className="p-8 md:p-12">
+                  <p className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-brand-300">
+                    Latest · {formatShortDate(featured.publishedAt)}
+                  </p>
+                  <h2 className="mt-5 font-serif text-3xl font-normal leading-tight text-paper md:text-5xl">{featured.title}</h2>
+                  <p className="mt-5 line-clamp-3 max-w-xl leading-relaxed text-brand-100/80">{featured.excerpt}</p>
+                  <span className="mt-8 inline-flex items-center gap-1.5 font-semibold">
+                    Read the article
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+                <div className="relative hidden border-l border-white/10 md:block">
+                  <div aria-hidden className="absolute inset-0 iso-grid-bg opacity-[0.12] invert" />
+                  <svg
+                    viewBox="0 0 200 200"
+                    aria-hidden
+                    className="absolute inset-[18%] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-105"
                   >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages || isTransitioning}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-paper-2 transition"
-                >
-                  Next
-                </button>
-              </nav>
-            </div>
+                    <circle cx="82" cy="100" r="52" fill="none" stroke="#FAF8F4" strokeOpacity="0.8" strokeWidth="2" />
+                    <circle cx="118" cy="100" r="52" fill="none" stroke="#84B699" strokeWidth="2" />
+                  </svg>
+                </div>
+              </Link>
+            </motion.div>
           )}
 
-          {totalPages > 0 && (
-            <div className="mt-6 text-center text-sm text-ink-3">
-              Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, sortedPosts.length)} of {sortedPosts.length} posts
+          {visible.length === 0 && !featured ? (
+            <div className="border-y border-line py-20 text-center">
+              <p className="font-serif text-2xl">No articles match that.</p>
+              <button
+                onClick={() => {
+                  setQuery("");
+                  setTag(null);
+                  setSort("newest");
+                }}
+                className="link-arrow mt-4"
+              >
+                Clear the filters
+              </button>
+            </div>
+          ) : (
+            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <AnimatePresence initial={false}>
+                {visible.map((post, i) => (
+                  <motion.li
+                    key={post.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, delay: (i % PAGE) * 0.03, ease: EASE }}
+                  >
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="group flex h-full flex-col rounded-2xl border border-line bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
+                    >
+                      <p className="flex items-center justify-between gap-3 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-ink-3">
+                        <span>{formatShortDate(post.publishedAt)}</span>
+                        {post.tags[0] && <span className="truncate text-brand-700">#{post.tags[0]}</span>}
+                      </p>
+                      <h2 className="mt-4 font-serif text-2xl font-normal leading-snug transition-colors group-hover:text-brand-700">
+                        {post.title}
+                      </h2>
+                      <p className="mt-3 line-clamp-3 text-[0.95rem] leading-relaxed text-ink-2">{post.excerpt}</p>
+                      <span className="mt-auto flex items-center justify-between pt-6 text-sm">
+                        <span className="inline-flex items-center gap-1.5 font-semibold text-brand-700">
+                          Read
+                          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        </span>
+                        {post.viewCount > 0 && (
+                          <span className="inline-flex items-center gap-1 text-xs text-ink-3">
+                            <Eye className="h-3.5 w-3.5" />
+                            {post.viewCount}
+                          </span>
+                        )}
+                      </span>
+                    </Link>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </ul>
+          )}
+
+          {rest.length > visible.length && (
+            <div className="mt-14 flex flex-col items-center gap-3">
+              <button onClick={() => setLimit((l) => l + PAGE)} className="btn-secondary">
+                Load more articles
+              </button>
+              <p className="text-sm text-ink-3">
+                Showing {visible.length + (featured ? 1 : 0)} of {filtered.length}
+              </p>
             </div>
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 };

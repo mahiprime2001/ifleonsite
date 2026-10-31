@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, CheckCircle, Mail, MapPin } from "lucide-react";
+import { sendContact } from "../lib/api";
 
-interface CF7Response {
-  status: string;
-  message: string;
-  invalid_fields?: { message: string }[];
-}
 
 interface Prefill {
   service?: string;
@@ -39,6 +35,7 @@ export const ContactFormDialog = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [website, setWebsite] = useState("");
   const messageRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -77,21 +74,17 @@ export const ContactFormDialog = ({
     setError(null);
     setIsSubmitting(true);
     try {
-      const cf7 = new FormData();
-      Object.entries(formData).forEach(([k, v]) => cf7.append(k, v || ""));
-      cf7.append("_wpcf7", "84");
-      cf7.append("_wpcf7_version", "5.8.7");
-      cf7.append("_wpcf7_locale", "en_US");
-      cf7.append("_wpcf7_unit_tag", "wpcf7-f84-p0-o1");
-      cf7.append("_wpcf7_container_post", "0");
+      const result = await sendContact({
+        name: formData["your-name"],
+        email: formData["your-email"],
+        phone: formData["your-phone"],
+        company: formData["your-company"],
+        service: formData["your-service"],
+        message: formData["your-message"],
+        website,
+      });
 
-      const res = await fetch(
-        "https://ifleon.com/wp-json/contact-form-7/v1/contact-forms/84/feedback",
-        { method: "POST", body: cf7 },
-      );
-      const result: CF7Response = await res.json();
-
-      if (result.status === "mail_sent") {
+      if (result.ok) {
         setIsSubmitted(true);
         setFormData({
           "your-name": "",
@@ -102,10 +95,8 @@ export const ContactFormDialog = ({
           "your-message": "",
         });
         setTimeout(() => onClose(), 2400);
-      } else if (result.invalid_fields?.length) {
-        setError(result.invalid_fields.map((f) => f.message).join(", "));
       } else {
-        setError(result.message || "Form submission failed.");
+        setError(result.error);
       }
     } catch (err) {
       console.error(err);
@@ -176,6 +167,17 @@ export const ContactFormDialog = ({
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
+                  {/* Spam trap: hidden from people, bots fill it in. */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <input
                       name="your-name"

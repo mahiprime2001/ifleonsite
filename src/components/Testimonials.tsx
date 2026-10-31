@@ -6,37 +6,23 @@ import { motion } from "framer-motion";
 import { ScrollReveal } from "./animations/ScrollReveal";
 import "swiper/css";
 import "swiper/css/pagination";
-
-interface Testimonial {
-  id: number;
-  acf: {
-    name: string;
-    title: string;
-    quote: string;
-    rating: number;
-    image?: { url?: string };
-  };
-}
+import { fetchTestimonials, getPreloaded, type Testimonial } from "../lib/api";
 
 export const Testimonials = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => getPreloaded().testimonials ?? []);
+  const [loading, setLoading] = useState(testimonials.length === 0);
 
   useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const res = await fetch(
-          "https://ifleon.com/wp-json/wp/v2/testimonials?_embed&acf_format=standard",
-        );
-        const data = await res.json();
-        if (Array.isArray(data)) setTestimonials(data);
-      } catch (error) {
-        console.error("Failed to fetch testimonials:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTestimonials();
+    const controller = new AbortController();
+    fetchTestimonials(controller.signal)
+      .then(setTestimonials)
+      .catch((error) => {
+        if (!controller.signal.aborted) console.error("Failed to fetch testimonials:", error);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
   return (
@@ -81,11 +67,8 @@ export const Testimonials = () => {
             className="!pb-12"
           >
             {testimonials.map((testimonial) => {
-              const rating = Math.min(
-                5,
-                Math.max(0, Number(testimonial.acf.rating)),
-              );
-              const hasImage = Boolean(testimonial.acf.image?.url);
+              const rating = Math.min(5, Math.max(0, Number(testimonial.rating ?? 5) || 0));
+              const role = [testimonial.role, testimonial.company].filter(Boolean).join(", ");
 
               return (
                 <SwiperSlide key={testimonial.id}>
@@ -103,7 +86,7 @@ export const Testimonials = () => {
 
                     <div>
                       <p className="text-slate-200 mb-6 mt-2 leading-relaxed text-base md:text-lg">
-                        "{testimonial.acf.quote}"
+                        "{testimonial.quote}"
                       </p>
 
                       <div className="flex items-center gap-1 mb-5">
@@ -117,10 +100,10 @@ export const Testimonials = () => {
                     </div>
 
                     <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                      {hasImage ? (
+                      {testimonial.avatarUrl ? (
                         <img
-                          src={testimonial.acf.image!.url}
-                          alt={testimonial.acf.name}
+                          src={testimonial.avatarUrl}
+                          alt={testimonial.name}
                           className="w-11 h-11 rounded-full object-cover border-2 border-white/20 shadow-sm"
                         />
                       ) : (
@@ -131,10 +114,10 @@ export const Testimonials = () => {
 
                       <div>
                         <div className="font-bold text-white text-sm md:text-base">
-                          {testimonial.acf.name}
+                          {testimonial.name}
                         </div>
                         <div className="text-slate-400 text-xs md:text-sm">
-                          {testimonial.acf.title}
+                          {role}
                         </div>
                       </div>
                     </div>

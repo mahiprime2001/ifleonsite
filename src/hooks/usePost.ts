@@ -1,76 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import he from "he";
+import { fetchPost, getPreloaded, type Post } from "../lib/api";
 
-// (interfaces and cleanMarkdown function would be here)
-// To keep this concise, let's assume they are defined elsewhere
-// and imported, or defined directly in this file.
-
-interface WPAuthor {
-  name: string;
-}
-
-interface WPPost {
-  id: number;
-  title: { rendered: string };
-  excerpt: { rendered: string };
-  content: { rendered: string };
-  date: string;
-  slug: string;
-  tags: number[];
-  _embedded?: { author?: WPAuthor[] };
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string;
-  publishedAt: string;
-  tags: string[];
-  slug: string;
-}
-
-
+/* The post for the current /blog/:slug route, from the prerendered page's data or the dashboard API. */
 export const usePost = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { slug = "" } = useParams<{ slug: string }>();
+  const [post, setPost] = useState<Post | null>(() => {
+    const preloaded = getPreloaded().post;
+    return preloaded?.slug === slug ? preloaded : null;
+  });
+  const [loading, setLoading] = useState(post === null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `https://ifleon.com/wp-json/wp/v2/posts?_embed&acf_format=standard`
-        );
-        const data: WPPost[] = await res.json();
-
-        const current = data.find((p) => p.slug === slug);
-        if (!current) {
-          setPost(null);
-        } else {
-          setPost({
-            id: String(current.id),
-            title: he.decode(current.title?.rendered || "Untitled"),
-            excerpt: current.excerpt?.rendered || "",
-            content: current.content?.rendered || "",
-            author: current._embedded?.author?.[0]?.name || "Author",
-            publishedAt: current.date,
-            tags: current.tags?.map((id) => `tag-${id}`) || [],
-            slug: current.slug,
-          });
-        }
-      } catch (e) {
-        console.error("Failed to load blog data:", e);
-        setPost(null);
-      } finally {
+    if (post?.slug === slug) return;
+    const controller = new AbortController();
+    setLoading(true);
+    setFailed(false);
+    fetchPost(slug, controller.signal)
+      .then((found) => {
+        setPost(found);
         setLoading(false);
-      }
-    };
-    fetchPost();
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        console.error("Failed to load the post:", error);
+        setPost(null);
+        setFailed(true);
+        setLoading(false);
+      });
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refetch only when the slug changes
   }, [slug]);
 
-  return { post, loading };
+  return { post, loading, failed };
 };

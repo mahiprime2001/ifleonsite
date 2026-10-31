@@ -210,3 +210,59 @@
     contain-intrinsic-size: auto 720px;
   }
 }
+
+/* ---- Blog post body from the dashboard: callout boxes (> [!NOTE] …) and code blocks with Copy ---- */
+.post-content .callout {
+  --callout: #2563eb;
+  margin: 1.25em 0;
+  border: 1px solid color-mix(in srgb, var(--callout) 35%, transparent);
+  border-left: 4px solid var(--callout);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--callout) 7%, transparent);
+  padding: 0.75rem 1rem;
+}
+.post-content .callout > :last-child { margin-bottom: 0; }
+.post-content .callout > p:nth-child(2) { margin-top: 0; }
+.post-content .callout-title { margin: 0 0 0.35rem; font-weight: 600; color: var(--callout); }
+.post-content .callout-note { --callout: #2563eb; }
+.post-content .callout-tip { --callout: #15803d; }
+.post-content .callout-important { --callout: #7c3aed; }
+.post-content .callout-warning { --callout: #b45309; }
+.post-content .callout-caution { --callout: #dc2626; }
+
+.post-content .code-block {
+  margin: 1.5em 0;
+  overflow: hidden;
+  border: 1px solid #30363d;
+  border-radius: 0.6rem;
+  background: #0d1117;
+}
+.post-content .code-block-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #30363d;
+  background: #161b22;
+  padding: 0.3rem 0.5rem 0.3rem 0.85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: #8b949e;
+}
+.post-content .code-block-copy {
+  border-radius: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  color: #c9d1d9;
+  cursor: pointer;
+}
+.post-content .code-block-copy:hover { background: #21262d; color: #fff; }
+.post-content .code-block pre {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.9rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.post-content .code-block pre code.hljs { background: transparent; padding: 0; }
+.post-content img { border-radius: 0.75rem; height: auto; }

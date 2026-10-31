@@ -1,9 +1,11 @@
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function NotFoundPage() {
   const navigate = useNavigate();
+  useDocumentMeta({ title: "Page not found | IFLEON", noIndex: true });
   const [randomQuote, setRandomQuote] = useState("");
 
   useEffect(() => {

@@ -1,50 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Calendar, ArrowRight, Search, Heart, MessageCircle } from 'lucide-react';
+import { Calendar, ArrowRight, Search, Heart, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import he from 'he';
 import { motion } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { MagnetCard } from '../components/animations/MagnetCard';
-
-interface WPAuthor {
-  name: string;
-}
-
-interface WPPost {
-  id: number;
-  title: { rendered: string };
-  excerpt: { rendered: string };
-  content: { rendered: string };
-  date: string;
-  slug: string;
-  tags: number[];
-  _embedded?: {
-    author?: WPAuthor[];
-  };
-  acf?: {
-    featured_post?: boolean;
-    github_link?: string;
-    demo_link?: string;
-  };
-}
-
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  author: string;
-  publishedAt: string;
-  tags: string[];
-  githubLink?: string;
-  demoLink?: string;
-  featured: boolean;
-  slug: string;
-}
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { fetchPosts, getPreloaded, type PostSummary } from '../lib/api';
 
 export const Blog = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  // Prerendered /blog pages arrive with the list already embedded; otherwise it's fetched below.
+  const [posts, setPosts] = useState<PostSummary[]>(() => getPreloaded().posts ?? []);
+  const [loading, setLoading] = useState(posts.length === 0);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest' | 'most-liked'>('newest');
@@ -68,62 +36,31 @@ export const Blog = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [currentPage]);
 
+  useDocumentMeta({
+    title: 'Tech Blog | IFLEON — AI, DevOps & Cloud Engineering',
+    description: 'Technical deep dives and practical guides on AI, DevOps, cloud and security from the IFLEON engineering team.',
+    canonical: 'https://ifleon.com/blog',
+  });
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const perPage = 100;
-        const firstPageUrl = `https://ifleon.com/wp-json/wp/v2/posts?_embed&acf_format=standard&per_page=${perPage}&page=1`;
-        const firstPageRes = await fetch(firstPageUrl);
-        const totalPages = parseInt(firstPageRes.headers.get('X-WP-TotalPages') || '1', 10);
-        const firstPageData: WPPost[] = await firstPageRes.json();
-
-        let allPosts: WPPost[] = [...firstPageData];
-
-        if (totalPages > 1) {
-          const pagePromises = [];
-          for (let page = 2; page <= totalPages; page++) {
-            const pageUrl = `https://ifleon.com/wp-json/wp/v2/posts?_embed&acf_format=standard&per_page=${perPage}&page=${page}`;
-            pagePromises.push(fetch(pageUrl).then((res) => res.json()));
-          }
-          const extraPagesData = await Promise.all(pagePromises);
-          allPosts = allPosts.concat(...extraPagesData);
-        }
-
-        const formatted: BlogPost[] = allPosts.map((post) => ({
-          id: post.id.toString(),
-          title: he.decode(post.title.rendered),
-          excerpt: he.decode(post.excerpt.rendered),
-          content: he.decode(post.content.rendered),
-          author: post._embedded?.author?.[0]?.name || 'Author',
-          publishedAt: post.date,
-          tags: post.tags?.map((id) => `tag-${id}`) || [],
-          githubLink: post.acf?.github_link || '',
-          demoLink: post.acf?.demo_link || '',
-          featured: post.acf?.featured_post || false,
-          slug: post.slug,
-        }));
-
-        setPosts((currentPosts) => {
-          const postMap = new Map(currentPosts.map((p) => [p.id, p]));
-          formatted.forEach((p) => postMap.set(p.id, p));
-          return Array.from(postMap.values());
-        });
-      } catch (err) {
-        console.error('Failed to load blog data', err);
-      }
-    };
-
-    fetchPosts();
-    const intervalId = setInterval(fetchPosts, 30000);
-    return () => clearInterval(intervalId);
+    const controller = new AbortController();
+    fetchPosts(controller.signal)
+      .then((latest) => {
+        setPosts(latest);
+        setLoadFailed(false);
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) return;
+        console.error('Failed to load blog posts', err);
+        setLoadFailed(true);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
-  const getLikes = (id: string) => parseInt(localStorage.getItem(`likes-${id}`) || '0');
-
-  const getCommentCount = (id: string) => {
-    const comments = localStorage.getItem(`comments-${id}`);
-    return comments ? JSON.parse(comments).length : 0;
-  };
+  const getLikes = (id: number) => parseInt(localStorage.getItem(`likes-${id}`) || '0');
 
   const filteredPosts = posts.filter((post) => {
     const matchesSearch =
@@ -149,7 +86,7 @@ export const Blog = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
-  const allTags = Array.from(new Set(posts.flatMap((post) => post.tags)));
+  const allTags = Array.from(new Set(posts.flatMap((post) => post.tags))).sort();
 
   return (
     <div className="bg-slate-950 min-h-screen">
@@ -199,6 +136,15 @@ export const Blog = () => {
             </select>
           </div>
 
+          {loading && posts.length === 0 && (
+            <p className="text-center text-slate-400 py-16">Loading articles…</p>
+          )}
+          {loadFailed && posts.length === 0 && (
+            <p className="text-center text-slate-400 py-16">
+              Articles couldn't be loaded right now. Please refresh the page in a moment.
+            </p>
+          )}
+
           {/* Posts Grid */}
           <div
             className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out ${
@@ -236,10 +182,9 @@ export const Blog = () => {
                       </h3>
                     </Link>
 
-                    <div
-                      className="text-sm text-slate-300 mb-6 leading-relaxed line-clamp-3 flex-1"
-                      dangerouslySetInnerHTML={{ __html: post.excerpt }}
-                    />
+                    <p className="text-sm text-slate-300 mb-6 leading-relaxed line-clamp-3 flex-1">
+                      {post.excerpt}
+                    </p>
 
                     <div className="flex items-center justify-between pt-4 border-t border-white/10">
                       <Link
@@ -250,8 +195,8 @@ export const Blog = () => {
                         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                       </Link>
                       <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-                        <MessageCircle className="h-3.5 w-3.5" />
-                        <span>{getCommentCount(post.id)}</span>
+                        <Eye className="h-3.5 w-3.5" />
+                        <span>{post.viewCount}</span>
                       </div>
                     </div>
                   </div>

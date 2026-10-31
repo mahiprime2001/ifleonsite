@@ -1,21 +1,29 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Mail, MapPin, Send, CheckCircle, Phone, Clock } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ScrollReveal } from "./animations/ScrollReveal";
+import { ArrowUpRight, Check } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { sendContact } from "../lib/api";
 
-export const Contact = () => {
-  const [formData, setFormData] = useState({
-    "your-name": "",
-    "your-email": "",
-    "your-phone": "",
-    "your-company": "",
-    "your-service": "",
-    "your-message": "",
-  });
+const EASE = [0.22, 1, 0.36, 1] as const;
 
+const SERVICES = ["AI Solutions", "DevOps", "Cloud Migration", "Cybersecurity", "Custom software", "Other"];
+
+const EMPTY = {
+  "your-name": "",
+  "your-email": "",
+  "your-phone": "",
+  "your-company": "",
+  "your-service": "",
+  "your-message": "",
+};
+
+/*
+ * Contact: an open invitation on the left, the form on a paper card on the right. Messages go to the
+ * dashboard (lib/api.ts). Other pages can prefill it with a "prefill-contact" window event.
+ */
+export const Contact = () => {
+  const [formData, setFormData] = useState(EMPTY);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,8 +32,7 @@ export const Contact = () => {
 
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent<{ service?: string; message?: string }>)
-        .detail;
+      const detail = (e as CustomEvent<{ service?: string; message?: string }>).detail;
       if (!detail) return;
       setFormData((prev) => ({
         ...prev,
@@ -42,7 +49,6 @@ export const Contact = () => {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
-
     try {
       const result = await sendContact({
         name: formData["your-name"],
@@ -53,281 +59,182 @@ export const Contact = () => {
         message: formData["your-message"],
         website,
       });
-
       if (result.ok) {
         setIsSubmitted(true);
-        setFormData({
-          "your-name": "",
-          "your-email": "",
-          "your-phone": "",
-          "your-company": "",
-          "your-service": "",
-          "your-message": "",
-        });
-        setTimeout(() => setIsSubmitted(false), 3500);
+        setFormData(EMPTY);
       } else {
         setError(result.error);
       }
     } catch (err) {
       console.error("Contact form error:", err);
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again, or email info@ifleon.com.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
-    <section
-      id="contact"
-      className="relative py-20 md:py-24 bg-gradient-to-b from-paper via-paper-2 to-paper text-white overflow-hidden"
-    >
-      <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
-      <div className="absolute -top-40 left-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-50 blur-[120px]" />
-      <div className="absolute -bottom-40 right-1/4 w-[40rem] h-[40rem] rounded-full bg-brand-50 blur-[120px]" />
+    <section id="contact" className="relative scroll-mt-20 py-24 md:py-36">
+      <div className="shell grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: EASE }}
+        >
+          <p className="eyebrow">Get in touch</p>
+          <h2 className="mt-5 font-serif text-4xl font-normal leading-[1.04] tracking-tightest md:text-6xl">
+            Tell us what you are <em className="text-brand-700">building.</em>
+          </h2>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-2">
+            A short note is enough. The first consultation is free, and you will hear back from an engineer, not a
+            sales team.
+          </p>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up">
-          <div className="text-center mb-12 md:mb-16">
-            <p className="text-sm font-bold text-brand-700 tracking-[0.3em] uppercase mb-3">
-              Get in Touch
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-ink mb-4 leading-tight">
-              Let&apos;s transform your{" "}
-              <span className="text-gradient-iflo">business.</span>
-            </h2>
-            <p className="text-base md:text-xl text-ink-2 max-w-3xl mx-auto">
-              Looking to implement AI, DevOps automation, or cloud solutions?
-              Reach out to IFLEON for a free consultation.
-            </p>
-          </div>
-        </ScrollReveal>
+          <dl className="mt-12 divide-y divide-line border-y border-line">
+            {[
+              { label: "Email", value: <a href="mailto:info@ifleon.com" className="hover:text-brand-700">info@ifleon.com</a> },
+              { label: "Based in", value: "Nellore, Andhra Pradesh, India" },
+              { label: "Reply time", value: "Within 24 hours" },
+              { label: "First call", value: "Free, no commitment" },
+            ].map((row) => (
+              <div key={row.label} className="flex items-baseline justify-between gap-6 py-4">
+                <dt className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">{row.label}</dt>
+                <dd className="text-right font-medium text-ink">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Info Panel */}
-          <ScrollReveal direction="right" className="lg:col-span-2">
-            <div className="space-y-4">
-              {[
-                {
-                  icon: Mail,
-                  label: "Email",
-                  value: "info@ifleon.com",
-                  href: "mailto:info@ifleon.com",
-                  accent: "from-brand-700 to-brand-500",
-                },
-                {
-                  icon: MapPin,
-                  label: "Location",
-                  value: "Nellore, Andhra Pradesh, India",
-                  accent: "from-brand-700 to-brand-500",
-                },
-                {
-                  icon: Phone,
-                  label: "Response time",
-                  value: "Within 24 hours",
-                  accent: "from-brand-700 to-brand-500",
-                },
-                {
-                  icon: Clock,
-                  label: "Engagement",
-                  value: "Free initial consultation",
-                  accent: "from-brand-700 to-brand-500",
-                },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                const Wrapper = item.href ? "a" : "div";
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06 }}
-                  >
-                    <Wrapper
-                      {...(item.href ? { href: item.href } : {})}
-                      className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-line backdrop-blur-md hover:bg-paper-2 hover:border-brand-600/40 hover:-translate-y-0.5 transition-all"
-                    >
-                      <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br ${item.accent} shadow-md`}
-                      >
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold tracking-[0.2em] uppercase text-ink-3">
-                          {item.label}
-                        </div>
-                        <div className="font-semibold text-ink truncate">
-                          {item.value}
-                        </div>
-                      </div>
-                    </Wrapper>
-                  </motion.div>
-                );
-              })}
-
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+          className="surface relative overflow-hidden rounded-[1.75rem] p-7 shadow-lift md:p-10"
+        >
+          <AnimatePresence mode="wait">
+            {isSubmitted ? (
               <motion.div
-                whileHover={{ y: -4 }}
-                className="relative p-6 rounded-2xl text-paper overflow-hidden shadow-lift"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #0F3A28 0%, #17583B 100%)",
-                }}
+                key="sent"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="flex min-h-[28rem] flex-col items-center justify-center text-center"
               >
-                <div className="absolute inset-0 mesh-bg opacity-50" />
-                <div className="relative">
-                  <h4 className="font-serif text-xl mb-2 text-paper">Free consultation</h4>
-                  <p className="text-brand-100 text-sm">
-                    Discuss your requirements with our experts and get practical,
-                    result-driven recommendations — no commitment required.
-                  </p>
-                </div>
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
+                  className="grid h-16 w-16 place-items-center rounded-full bg-brand-700 text-white"
+                >
+                  <Check className="h-7 w-7" />
+                </motion.span>
+                <h3 className="mt-6 font-serif text-3xl font-normal">Message received.</h3>
+                <p className="mt-3 max-w-sm text-ink-2">Thank you. We will reply within 24 hours.</p>
+                <button type="button" onClick={() => setIsSubmitted(false)} className="link-arrow mt-8">
+                  Send another message
+                </button>
               </motion.div>
-            </div>
-          </ScrollReveal>
+            ) : (
+              <motion.form key="form" onSubmit={handleSubmit} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                {/* Spam trap: hidden from people, bots fill it in. */}
+                <input
+                  type="text"
+                  name="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                />
 
-          {/* Form */}
-          <ScrollReveal direction="left" className="lg:col-span-3">
-            <div className="bg-white border border-line backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl">
-              <AnimatePresence mode="wait">
-                {isSubmitted ? (
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-center py-12"
-                  >
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1, rotate: 360 }}
-                      transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                      className="w-20 h-20 mx-auto mb-5 rounded-full bg-gradient-to-br from-brand-700 to-brand-500 flex items-center justify-center shadow-lg"
-                    >
-                      <CheckCircle className="h-10 w-10 text-white" />
-                    </motion.div>
-                    <h3 className="text-2xl font-semibold text-ink mb-2">
-                      Message Sent
-                    </h3>
-                    <p className="text-ink-2">
-                      Thanks for contacting IFLEON. We&apos;ll respond within 24 hours.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <motion.form
-                    key="form"
-                    onSubmit={handleSubmit}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    {/* Spam trap: hidden from people, bots fill it in. */}
-                    <input
-                      type="text"
-                      name="website"
-                      value={website}
-                      onChange={(e) => setWebsite(e.target.value)}
-                      tabIndex={-1}
-                      autoComplete="off"
-                      aria-hidden="true"
-                      className="absolute -left-[9999px] h-0 w-0 opacity-0"
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <input
-                        name="your-name"
-                        required
-                        placeholder="Full Name *"
-                        value={formData["your-name"]}
-                        onChange={handleChange}
-                        className="input-dark"
-                      />
-                      <input
-                        name="your-email"
-                        type="email"
-                        required
-                        placeholder="Email Address *"
-                        value={formData["your-email"]}
-                        onChange={handleChange}
-                        className="input-dark"
-                      />
-                    </div>
+                <fieldset>
+                  <legend className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">I need help with</legend>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {SERVICES.map((service) => {
+                      const selected = formData["your-service"] === service;
+                      return (
+                        <button
+                          key={service}
+                          type="button"
+                          aria-pressed={selected}
+                          onClick={() => setFormData((prev) => ({ ...prev, "your-service": selected ? "" : service }))}
+                          className={`rounded-full border px-4 py-2 text-sm transition-all duration-200 ${
+                            selected
+                              ? "border-brand-700 bg-brand-700 text-white"
+                              : "border-line-strong bg-white text-ink-2 hover:border-ink/30 hover:text-ink"
+                          }`}
+                        >
+                          {service}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <input
-                        name="your-phone"
-                        type="tel"
-                        inputMode="tel"
-                        pattern="[0-9+\-\s()]{7,}"
-                        placeholder="Mobile Number *"
-                        required
-                        value={formData["your-phone"]}
-                        onChange={handleChange}
-                        className="input-dark"
-                      />
-                      <input
-                        name="your-company"
-                        placeholder="Company / Organization"
-                        value={formData["your-company"]}
-                        onChange={handleChange}
-                        className="input-dark"
-                      />
-                    </div>
+                <div className="mt-8 grid gap-x-6 sm:grid-cols-2">
+                  <Field label="Your name" name="your-name" value={formData["your-name"]} onChange={handleChange} required autoComplete="name" />
+                  <Field label="Email" name="your-email" type="email" value={formData["your-email"]} onChange={handleChange} required autoComplete="email" />
+                  <Field label="Phone" name="your-phone" type="tel" value={formData["your-phone"]} onChange={handleChange} required autoComplete="tel" />
+                  <Field label="Company (optional)" name="your-company" value={formData["your-company"]} onChange={handleChange} autoComplete="organization" />
+                </div>
 
-                    <div className="mb-4">
-                      <select
-                        name="your-service"
-                        value={formData["your-service"]}
-                        onChange={handleChange}
-                        className="input-dark w-full"
-                      >
-                        <option value="" className="bg-paper">Select a service</option>
-                        <option value="AI Solutions" className="bg-paper">AI Solutions</option>
-                        <option value="DevOps" className="bg-paper">DevOps</option>
-                        <option value="Cloud Migration" className="bg-paper">Cloud Migration</option>
-                        <option value="Cybersecurity" className="bg-paper">Cybersecurity</option>
-                        <option value="Other" className="bg-paper">Other</option>
-                      </select>
-                    </div>
+                <label className="mt-2 block">
+                  <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">What are you working on?</span>
+                  <textarea
+                    ref={messageRef}
+                    name="your-message"
+                    value={formData["your-message"]}
+                    onChange={handleChange}
+                    required
+                    rows={4}
+                    className="mt-2 w-full resize-none border-0 border-b border-line-strong bg-transparent px-0 py-2 text-lg text-ink placeholder:text-ink-4 focus:border-brand-700 focus:outline-none focus:ring-0"
+                    placeholder="A few lines about the project, the timeline and where you are stuck."
+                  />
+                </label>
 
-                    <textarea
-                      ref={messageRef}
-                      name="your-message"
-                      rows={5}
-                      required
-                      placeholder="Tell us about your requirements..."
-                      value={formData["your-message"]}
-                      onChange={handleChange}
-                      className="input-dark resize-none mb-4 w-full"
-                    />
-
-                    {error && (
-                      <p className="text-red-400 text-sm mb-4">{error}</p>
-                    )}
-
-                    <motion.button
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="shine-on-hover w-full bg-gradient-to-r from-brand-700 to-brand-500 hover:shadow-xl hover:shadow-brand-900/15 disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2"
-                    >
-                      {isSubmitting ? "Sending..." : "Send Message"}
-                      <Send className="h-5 w-5" />
-                    </motion.button>
-                  </motion.form>
+                {error && (
+                  <p role="alert" className="mt-4 text-sm text-red-700">
+                    {error}
+                  </p>
                 )}
-              </AnimatePresence>
-            </div>
-          </ScrollReveal>
-        </div>
+
+                <button type="submit" disabled={isSubmitting} className="btn-primary group mt-8 w-full !py-4 text-[0.95rem] disabled:cursor-wait disabled:opacity-70">
+                  {isSubmitting ? "Sending…" : "Send message"}
+                  {!isSubmitting && (
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  )}
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
 };
+
+function Field({
+  label,
+  ...input
+}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <label className="mb-6 block">
+      <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ink-3">
+        {label}
+        {input.required && <span className="text-brand-700"> *</span>}
+      </span>
+      <input
+        {...input}
+        className="mt-2 w-full border-0 border-b border-line-strong bg-transparent px-0 py-2 text-lg text-ink placeholder:text-ink-4 focus:border-brand-700 focus:outline-none focus:ring-0"
+      />
+    </label>
+  );
+}

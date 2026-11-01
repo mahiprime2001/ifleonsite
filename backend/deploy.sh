@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deploys the dashboard or the public site from a tarball on stdin. Installed on the VPS as
+# Deploys the dashboard, the public site or the portfolio from a tarball on stdin. Installed on the VPS as
 # /opt/ifleon/deploy.sh and used as the *forced command* of the GitHub Actions SSH key
 # (authorized_keys: restrict,command="/opt/ifleon/deploy.sh" ssh-ed25519 ...), so that key can do
 # nothing else. The workflow runs:
@@ -19,7 +19,8 @@ target="${SSH_ORIGINAL_COMMAND:-${1:-}}"
 case "$target" in
   dashboard) dir=$ROOT/dashboard; services="migrate dashboard"; container=ifleon-dashboard ;;
   site)      dir=$ROOT/site;      services="site";              container=ifleon-site ;;
-  *) echo "usage: <tarball on stdin> | deploy.sh dashboard|site" >&2; exit 2 ;;
+  portfolio) dir=$ROOT/portfolio; services="portfolio";         container=ifleon-portfolio ;;
+  *) echo "usage: <tarball on stdin> | deploy.sh dashboard|site|portfolio" >&2; exit 2 ;;
 esac
 
 log() { echo "[deploy $target $(date -u +%H:%M:%S)] $*"; }

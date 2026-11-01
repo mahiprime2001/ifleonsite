@@ -93,6 +93,23 @@ services:
         condition: service_healthy
     mem_limit: 384m
 
+  # mahendra.ifleon.com: the personal portfolio. Its code is a separate repo (mahendra-portfolio),
+  # deployed to /opt/ifleon/portfolio by deploy.sh; content comes from the dashboard.
+  portfolio:
+    build:
+      context: ../portfolio
+    image: ifleon-portfolio
+    container_name: ifleon-portfolio
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_BASE: http://dashboard:3000/api/public
+    ports:
+      - "127.0.0.1:${PORTFOLIO_PORT:-3300}:3000"
+    depends_on:
+      dashboard:
+        condition: service_healthy
+    mem_limit: 384m
+
 volumes:
   db_data:
   uploads:

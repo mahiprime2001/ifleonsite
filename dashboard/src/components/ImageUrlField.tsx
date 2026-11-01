@@ -9,10 +9,14 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  /* "pdf" turns this into a document field (e.g. a résumé): PDF upload, a link instead of a preview. */
+  fileType?: "image" | "pdf";
+  placeholder?: string;
 };
 
 /* A URL input with an Upload button and a small preview. The form still submits the URL as text. */
-export function ImageUrlField({ name, label, value, onChange, error }: Props) {
+export function ImageUrlField({ name, label, value, onChange, error, fileType = "image", placeholder }: Props) {
+  const isPdf = fileType === "pdf";
   const fileInput = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -40,7 +44,7 @@ export function ImageUrlField({ name, label, value, onChange, error }: Props) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="input mt-1"
-          placeholder="https://… or upload"
+          placeholder={placeholder ?? "https://… or upload"}
         />
       </label>
       <div className="mt-2 flex items-center gap-3">
@@ -50,8 +54,13 @@ export function ImageUrlField({ name, label, value, onChange, error }: Props) {
           disabled={uploading}
           className="btn-secondary px-3 py-1.5 text-xs"
         >
-          {uploading ? "Uploading…" : "Upload image"}
+          {uploading ? "Uploading…" : isPdf ? "Upload PDF" : "Upload image"}
         </button>
+        {value && isPdf && (
+          <a href={value} target="_blank" rel="noopener noreferrer" className="text-xs text-accent hover:underline">
+            Open file
+          </a>
+        )}
         {value && (
           <button type="button" onClick={() => onChange("")} className="text-xs text-muted hover:underline">
             Remove
@@ -60,12 +69,12 @@ export function ImageUrlField({ name, label, value, onChange, error }: Props) {
         <input
           ref={fileInput}
           type="file"
-          accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+          accept={isPdf ? "application/pdf" : "image/png,image/jpeg,image/webp,image/gif,image/avif"}
           className="hidden"
           onChange={(e) => handleFile(e.target.files?.[0])}
         />
       </div>
-      {value && (
+      {value && !isPdf && (
         // eslint-disable-next-line @next/next/no-img-element -- user-supplied URL on any host
         <img src={value} alt="" className="mt-3 max-h-40 w-full rounded-lg border border-line object-cover" />
       )}

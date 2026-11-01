@@ -3,11 +3,11 @@ import { posts } from "@/db/schema";
 
 /*
  * Shared bits of the public API (/api/public/* and the view counter): no API key, called from the
- * browser by ifleon.com, so CORS is limited to the site's own origins.
+ * browser by ifleon.com and mahendra.ifleon.com, so CORS is limited to those sites' own origins.
  */
 
 const ALLOWED_ORIGINS = new Set(
-  (process.env.PUBLIC_SITE_ORIGINS || "https://ifleon.com,https://www.ifleon.com,http://localhost:5173")
+  (process.env.PUBLIC_SITE_ORIGINS || "https://ifleon.com,https://www.ifleon.com,https://testing.ifleon.com,https://mahendra.ifleon.com,http://localhost:3001,http://localhost:3002")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean),

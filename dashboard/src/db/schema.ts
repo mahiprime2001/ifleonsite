@@ -176,6 +176,79 @@ export const appSettings = pgTable("app_settings", {
     .$onUpdate(() => new Date()),
 });
 
+/*
+ * Portfolio (mahendra.ifleon.com). The profile is a single row (id 1); everything else shown on the
+ * portfolio is a portfolio entry, told apart by `kind` (lib/portfolio.ts says which fields each kind uses).
+ */
+export const portfolioProfile = pgTable("portfolio_profile", {
+  id: integer("id").primaryKey().default(1),
+  name: varchar("name", { length: 120 }).notNull().default(""),
+  headline: varchar("headline", { length: 200 }).notNull().default(""),
+  /* One or two sentences under the name. */
+  intro: text("intro").notNull().default(""),
+  /* Markdown, for the About section. */
+  bio: text("bio").notNull().default(""),
+  location: varchar("location", { length: 120 }),
+  email: varchar("email", { length: 320 }),
+  phone: varchar("phone", { length: 40 }),
+  /* e.g. "Open to freelance work"; empty hides the badge. */
+  availability: varchar("availability", { length: 160 }),
+  photoUrl: text("photo_url"),
+  resumeUrl: text("resume_url"),
+  /* [{ label: "GitHub", url: "https://github.com/…" }, …] in display order. */
+  links: jsonb("links").$type<{ label: string; url: string }[]>().notNull().default([]),
+  seoTitle: varchar("seo_title", { length: 300 }),
+  seoDescription: varchar("seo_description", { length: 500 }),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
+export const portfolioKind = pgEnum("portfolio_kind", [
+  "project",
+  "experience",
+  "education",
+  "skill",
+  "certification",
+  "achievement",
+  "photo",
+]);
+
+export const portfolioEntries = pgTable(
+  "portfolio_entries",
+  {
+    id: serial("id").primaryKey(),
+    kind: portfolioKind("kind").notNull(),
+    /* Projects only: the address of the project's own page. */
+    slug: varchar("slug", { length: 200 }).unique(),
+    title: varchar("title", { length: 300 }).notNull(),
+    /* Company, school, issuer, or a skill's group, depending on the kind. */
+    subtitle: varchar("subtitle", { length: 300 }),
+    location: varchar("location", { length: 120 }),
+    /* Free text such as "2023-06" or "Jun 2023", so partial dates work. Empty end date means "Present". */
+    startDate: varchar("start_date", { length: 40 }),
+    endDate: varchar("end_date", { length: 40 }),
+    summary: text("summary"),
+    /* Markdown. */
+    body: text("body"),
+    imageUrl: text("image_url"),
+    gallery: text("gallery").array().notNull().default(sql`'{}'::text[]`),
+    url: text("url"),
+    repoUrl: text("repo_url"),
+    tags: text("tags").array().notNull().default(sql`'{}'::text[]`),
+    isFeatured: boolean("is_featured").notNull().default(false),
+    isPublished: boolean("is_published").notNull().default(true),
+    sortOrder: integer("sort_order").notNull().default(0),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+    ...timestamps,
+  },
+  (t) => [index("portfolio_entries_kind_sort_idx").on(t.kind, t.sortOrder)],
+);
+
+export type PortfolioEntry = typeof portfolioEntries.$inferSelect;
+export type PortfolioKind = (typeof portfolioKind.enumValues)[number];
+
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
 export type ApiKey = typeof apiKeys.$inferSelect;

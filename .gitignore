@@ -29,4 +29,4 @@ dist-ssr
 .aice/
 
 # Separate repository (github.com/mahiprime2001/mahendra-portfolio)
-portfolio/
+/portfolio/

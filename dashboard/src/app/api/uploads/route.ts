@@ -1,9 +1,9 @@
 import { getAdmin } from "@/lib/auth";
-import { saveImage, UploadError } from "@/lib/uploads";
+import { saveUpload, UploadError } from "@/lib/uploads";
 
 /*
- * POST multipart/form-data with a `file` field. Admin only. Returns { url } as an absolute URL,
- * because posts and testimonials are shown on ifleon.com, not on the dashboard's own domain.
+ * POST multipart/form-data with a `file` field. Admin only. Accepts images and PDFs (a résumé).
+ * Returns { url } as an absolute URL, because posts, testimonials and the portfolio are shown on other sites, not on the dashboard's own domain.
  */
 export async function POST(request: Request) {
   if (!(await getAdmin())) {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const publicPath = await saveImage(file);
+    const publicPath = await saveUpload(file);
     const base =
       process.env.PUBLIC_BASE_URL ||
       `${request.headers.get("x-forwarded-proto") ?? "http"}://${host ?? "localhost"}`;

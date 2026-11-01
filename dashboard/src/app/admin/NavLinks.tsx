@@ -8,6 +8,7 @@ const NAV = [
   { href: "/admin/posts", label: "Posts" },
   { href: "/admin/ai-writer", label: "AI writer" },
   { href: "/admin/testimonials", label: "Testimonials" },
+  { href: "/admin/portfolio", label: "Portfolio" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/api-keys", label: "API keys" },
   { href: "/admin/import", label: "Import" },

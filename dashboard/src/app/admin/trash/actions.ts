@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { requireAdmin } from "@/lib/auth";
 import { TRASHABLE, type TrashKind } from "@/lib/trash";
 
-const CACHE_TAG: Record<TrashKind, string | null> = { post: "posts", testimonial: "testimonials", message: null };
+const CACHE_TAG: Record<TrashKind, string | null> = { post: "posts", testimonial: "testimonials", message: null, portfolio: "portfolio" };
 
 /* Arguments bound to server actions come from the browser, so check them before use. */
 function target(kind: string, id: number) {

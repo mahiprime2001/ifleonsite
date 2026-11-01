@@ -2,8 +2,9 @@ import { type AnyColumn, desc, isNotNull, sql } from "drizzle-orm";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { db } from "@/db";
-import { contactMessages, posts, testimonials } from "@/db/schema";
+import { contactMessages, portfolioEntries, posts, testimonials } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
+import { ENTRY_KINDS } from "@/lib/portfolio";
 import { formatDateTime } from "@/lib/format";
 import { TRASH_DAYS, type TrashKind } from "@/lib/trash";
 import { DeleteButton } from "../posts/DeleteButton";
@@ -13,7 +14,7 @@ export const metadata: Metadata = { title: "Trash" };
 
 type TrashRow = { kind: TrashKind; id: number; label: string; detail: string | null; deletedAt: Date; daysLeft: number };
 
-const KIND_LABEL: Record<TrashKind, string> = { post: "Post", testimonial: "Testimonial", message: "Message" };
+const KIND_LABEL: Record<TrashKind, string> = { post: "Post", testimonial: "Testimonial", message: "Message", portfolio: "Portfolio" };
 
 export default function TrashPage() {
   return (
@@ -21,7 +22,7 @@ export default function TrashPage() {
       <div>
         <h1 className="page-title">Trash</h1>
         <p className="mt-1 text-sm text-muted">
-          Deleted posts, testimonials and messages stay here for {TRASH_DAYS} days, then they&apos;re removed for good.
+          Deleted posts, testimonials, messages and portfolio entries stay here for {TRASH_DAYS} days, then they&apos;re removed for good.
         </p>
       </div>
       <Suspense fallback={<div className="card h-64 animate-pulse" />}>
@@ -38,7 +39,7 @@ function daysLeft(deletedAt: AnyColumn) {
 
 async function TrashList() {
   await requireAdmin();
-  const [postRows, testimonialRows, messageRows] = await Promise.all([
+  const [postRows, testimonialRows, messageRows, portfolioRows] = await Promise.all([
     db
       .select({ id: posts.id, label: posts.title, detail: posts.slug, deletedAt: posts.deletedAt, daysLeft: daysLeft(posts.deletedAt) })
       .from(posts)
@@ -64,12 +65,28 @@ async function TrashList() {
       .from(contactMessages)
       .where(isNotNull(contactMessages.deletedAt))
       .orderBy(desc(contactMessages.deletedAt)),
+    db
+      .select({
+        id: portfolioEntries.id,
+        label: portfolioEntries.title,
+        kind: portfolioEntries.kind,
+        deletedAt: portfolioEntries.deletedAt,
+        daysLeft: daysLeft(portfolioEntries.deletedAt),
+      })
+      .from(portfolioEntries)
+      .where(isNotNull(portfolioEntries.deletedAt)),
   ]);
 
   const rows: TrashRow[] = [
     ...postRows.map((r) => ({ ...r, kind: "post" as const })),
     ...testimonialRows.map((r) => ({ ...r, kind: "testimonial" as const })),
     ...messageRows.map((r) => ({ ...r, label: r.label || "(no subject)", kind: "message" as const })),
+    ...portfolioRows.map(({ kind, ...r }) => ({
+      ...r,
+      label: r.label || `Untitled ${ENTRY_KINDS[kind].singular}`,
+      detail: ENTRY_KINDS[kind].plural,
+      kind: "portfolio" as const,
+    })),
   ]
     .map((r) => ({ ...r, deletedAt: r.deletedAt! }))
     .sort((a, b) => b.deletedAt.getTime() - a.deletedAt.getTime());

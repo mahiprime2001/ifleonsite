@@ -27,3 +27,6 @@ dist-ssr
 
 # AICE memory
 .aice/
+
+# Separate repository (github.com/mahiprime2001/mahendra-portfolio)
+portfolio/

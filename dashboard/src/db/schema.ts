@@ -213,6 +213,8 @@ export const portfolioKind = pgEnum("portfolio_kind", [
   "certification",
   "achievement",
   "photo",
+  "service",
+  "interest",
 ]);
 
 export const portfolioEntries = pgTable(

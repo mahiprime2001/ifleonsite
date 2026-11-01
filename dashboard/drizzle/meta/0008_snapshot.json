@@ -1,6 +1,6 @@
 {
-  "id": "051843d7-2e89-49dc-969b-c7ef3c7e2a1b",
-  "prevId": "ea004b05-4bd4-4a0b-bf77-ed5819a0dd7b",
+  "id": "05af5168-cc3d-4d00-9f80-064e7d74b5a3",
+  "prevId": "15ab2a5d-cd63-4a24-92ae-860e5d05ac68",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1079,7 +1079,9 @@
         "skill",
         "certification",
         "achievement",
-        "photo"
+        "photo",
+        "service",
+        "interest"
       ]
     },
     "public.post_status": {

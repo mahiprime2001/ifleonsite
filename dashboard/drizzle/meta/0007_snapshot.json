@@ -1,5 +1,5 @@
 {
-  "id": "ea004b05-4bd4-4a0b-bf77-ed5819a0dd7b",
+  "id": "15ab2a5d-cd63-4a24-92ae-860e5d05ac68",
   "prevId": "585d019a-ff24-4f02-9019-c7d6268b3caa",
   "version": "7",
   "dialect": "postgresql",
@@ -1079,7 +1079,9 @@
         "skill",
         "certification",
         "achievement",
-        "photo"
+        "photo",
+        "service",
+        "interest"
       ]
     },
     "public.post_status": {

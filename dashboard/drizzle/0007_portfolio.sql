@@ -1,4 +1,4 @@
-CREATE TYPE "public"."portfolio_kind" AS ENUM('project', 'experience', 'education', 'skill', 'certification', 'achievement', 'photo');--> statement-breakpoint
+CREATE TYPE "public"."portfolio_kind" AS ENUM('project', 'experience', 'education', 'skill', 'certification', 'achievement', 'photo', 'service', 'interest');--> statement-breakpoint
 CREATE TABLE "portfolio_entries" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"kind" "portfolio_kind" NOT NULL,

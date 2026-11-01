@@ -140,4 +140,20 @@ BEGIN
     ('skill', 'Applied cryptography', 'Security & networks', false, 33),
     ('skill', 'Peer-to-peer networking', 'Security & networks', false, 34),
     ('skill', 'Computer networking', 'Security & networks', false, 35);
+
+  -- What I do: drawn from the work above.
+  INSERT INTO portfolio_entries (kind, title, summary, tags, is_featured, sort_order) VALUES
+    ('service', 'Desktop & web apps', 'Business software people use every day, from billing and inventory desktop apps to admin dashboards and websites.', '{"Next.js","Tauri","Vue","PostgreSQL"}', true, 0),
+    ('service', 'APIs & backends', 'Typed, tested services: REST APIs, authentication, background jobs, real-time features and integrations.', '{"FastAPI","Flask","WebSockets","JWT"}', false, 1),
+    ('service', 'DevOps & self-hosting', 'Docker, CI/CD and Linux servers set up so deploys are routine, backed up and easy to roll back.', '{"Docker","GitHub Actions","Nginx","Linux"}', false, 2),
+    ('service', 'AI integrations', 'LLM features that earn their place: document Q&A, assistants, agents and content tools, built to be testable.', '{"Claude API","RAG","Agents"}', false, 3),
+    ('service', 'Security', 'Security built in from the start: authentication, safe defaults, and reviews of how an attack would actually work.', '{"Cyber security","Auth","Hardening"}', false, 4);
+
+  -- Off the clock: from the old site's interests.
+  INSERT INTO portfolio_entries (kind, title, summary, sort_order) VALUES
+    ('interest', 'Reading', 'Mythology, novels and story books whenever there is a quiet hour.', 0),
+    ('interest', 'Making videos', 'I record my work and make content videos for my YouTube channel.', 1),
+    ('interest', 'Travel', 'Going to new places and exploring whatever is there.', 2),
+    ('interest', 'Building for fun', 'When the day''s work is done, I still end up making or remaking web pages.', 3),
+    ('interest', 'Testing hardware', 'Benchmarking my own machine to see what it can really handle.', 4);
 END $$;

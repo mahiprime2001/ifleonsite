@@ -28,5 +28,7 @@ dist-ssr
 # AICE memory
 .aice/
 
-# Separate repository (github.com/mahiprime2001/mahendra-portfolio)
+# Separate repositories, checked out here: github.com/mahiprime2001/mahendra-portfolio and
+# github.com/mahiprime2001/ifleon-dashboard (both private)
 /portfolio/
+/dashboard/
